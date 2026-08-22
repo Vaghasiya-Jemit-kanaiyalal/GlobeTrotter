@@ -8,7 +8,6 @@ import { CommunitySidebar } from './CommunitySidebar';
 import { ShareExperienceModal } from './ShareExperienceModal';
 import { EmptyCommunity } from './EmptyCommunity';
 import { CommunitySkeleton, CommunityError } from './CommunitySkeleton';
-import { RefreshCw, AlertCircle, Eye } from 'lucide-react';
 import './CommunityTabScreen.css';
 
 export const CommunityTabScreen = ({
@@ -136,34 +135,6 @@ export const CommunityTabScreen = ({
       />
 
       <main className="gt-community-container">
-        {/* State Simulator Controls (For testing Loading / Error states as required by Section 12) */}
-        <div className="gt-demo-state-bar flex items-center justify-between gap-2 p-2 mb-4 bg-subtle rounded-lg border text-xs">
-          <span className="font-semibold text-navy-800 flex items-center gap-1">
-            <Eye className="w-3.5 h-3.5 text-amber-600" />
-            Screen 10 Demo Controls:
-          </span>
-
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="gt-state-toggle-btn"
-              onClick={loadData}
-            >
-              <RefreshCw className="w-3 h-3 inline mr-1" />
-              Reload Posts
-            </button>
-
-            <button
-              type="button"
-              className={`gt-state-toggle-btn ${hasError ? 'gt-state-toggle-btn--active' : ''}`}
-              onClick={() => setHasError(!hasError)}
-            >
-              <AlertCircle className="w-3 h-3 inline mr-1" />
-              {hasError ? 'Clear Error' : 'Simulate Error State'}
-            </button>
-          </div>
-        </div>
-
         {/* 2. Community Intro Banner */}
         <CommunityIntro onOpenShareModal={() => setShareModalOpen(true)} />
 
