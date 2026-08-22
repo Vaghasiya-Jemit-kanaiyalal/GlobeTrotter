@@ -32,39 +32,42 @@ export const AddToTripModal = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={`Add "${itemName}" to Trip`} size="md">
-      <div className="gt-add-to-trip-modal flex flex-col gap-4">
-        <p className="text-sm text-navy-800 m-0">
-          Select an active or upcoming travel itinerary to associate <strong>{itemName}</strong> with.
+      <div className="gt-add-to-trip-modal flex flex-col gap-4 text-left">
+        {/* Left-Aligned Subtitle Description */}
+        <p className="text-sm text-navy-800 m-0 leading-relaxed text-left">
+          Select an active or upcoming travel itinerary to associate <strong className="text-navy-900">{itemName}</strong> with.
         </p>
 
         {userTrips.length > 0 ? (
-          <div className="gt-trips-radio-list flex flex-col gap-2.5">
+          <div className="gt-trips-radio-list flex flex-col gap-3">
             {userTrips.map((trip) => (
               <label
                 key={trip.id}
-                className={`gt-trip-radio-card flex justify-between items-center ${
+                className={`gt-trip-radio-card flex justify-between items-center gap-3 w-full text-left ${
                   selectedTripId === trip.id ? 'gt-trip-radio-card--selected' : ''
                 }`}
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
                   <input
                     type="radio"
                     name="selectedTrip"
                     value={trip.id}
                     checked={selectedTripId === trip.id}
                     onChange={() => setSelectedTripId(trip.id)}
-                    className="gt-radio-input"
+                    className="gt-radio-input flex-shrink-0"
                   />
-                  <div className="flex flex-col gap-0.5">
-                    <strong className="text-sm text-navy-900 font-bold">{trip.title || trip.name}</strong>
+                  <div className="flex flex-col gap-1 min-w-0 flex-1 text-left">
+                    <strong className="text-sm text-navy-900 font-bold truncate block">
+                      {trip.title || trip.name}
+                    </strong>
                     <div className="text-xs text-muted flex items-center gap-2 flex-wrap">
-                      <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3 text-amber-600 flex-shrink-0" />
+                      <span className="flex items-center gap-1.5 flex-shrink-0">
+                        <MapPin className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
                         <span>{trip.primaryLocation || trip.destinations?.[0] || 'Custom Location'}</span>
                       </span>
-                      <span>•</span>
-                      <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3 text-amber-600 flex-shrink-0" />
+                      <span className="text-border">•</span>
+                      <span className="flex items-center gap-1.5 flex-shrink-0">
+                        <Calendar className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
                         <span>{trip.dateRange || trip.startDate || 'Flexible Dates'}</span>
                       </span>
                     </div>
@@ -72,21 +75,21 @@ export const AddToTripModal = ({
                 </div>
 
                 {selectedTripId === trip.id && (
-                  <Check className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                  <Check className="w-4 h-4 text-amber-600 flex-shrink-0 ml-2" />
                 )}
               </label>
             ))}
           </div>
         ) : (
           <div className="gt-no-trips-box text-center py-6">
-            <p className="text-sm font-semibold text-navy-900">No active trips available.</p>
-            <p className="text-xs text-muted mt-1">
+            <p className="text-sm font-semibold text-navy-900 m-0">No active trips available.</p>
+            <p className="text-xs text-muted mt-1 m-0">
               Create a travel itinerary first to add this destination/activity.
             </p>
           </div>
         )}
 
-        {/* Action Buttons */}
+        {/* Footer Actions - Perfectly Aligned Horizontal Bottom Line */}
         <div className="gt-add-to-trip-footer flex justify-between items-center pt-3 border-t border-border mt-2">
           <Button variant="outline" size="sm" icon={Plus} onClick={onCreateNewTrip}>
             Create New Trip
