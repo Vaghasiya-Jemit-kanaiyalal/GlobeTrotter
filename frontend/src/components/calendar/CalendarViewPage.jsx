@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MOCK_CALENDAR_EVENTS } from '../../data/calendarData';
+import { apiClient } from '../../services/apiClient';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarControls } from './CalendarControls';
 import { MonthNavigator } from './MonthNavigator';
@@ -40,6 +41,45 @@ export const CalendarViewPage = ({
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [selectedDayObj, setSelectedDayObj] = useState(null);
   const [selectedDayEvents, setSelectedDayEvents] = useState([]);
+
+  // Fetch live calendar events from Express Backend (/api/v1/calendar)
+  useEffect(() => {
+    const fetchCalendarEvents = async () => {
+      setIsLoading(true);
+      setHasError(false);
+      try {
+        const month = currentDate.getMonth() + 1;
+        const year = currentDate.getFullYear();
+        const res = await apiClient.get('/calendar', { month, year });
+        if (res && Array.isArray(res.events) && res.events.length > 0) {
+          const mapped = res.events.map((e) => ({
+            id: e.id,
+            title: e.title,
+            type: e.type,
+            date: e.startDate || e.date,
+            startDate: e.startDate,
+            endDate: e.endDate,
+            startTime: e.startTime || '09:00 AM',
+            endTime: e.endTime || '11:00 AM',
+            destination: e.destination || e.city || 'Goa, India',
+            city: e.city || 'Goa',
+            category: e.category || (e.type === 'trip' ? 'Trip' : 'Sightseeing'),
+            cost: typeof e.cost === 'number' ? `₹${e.cost.toLocaleString()}` : (e.cost || '₹0'),
+            duration: e.duration ? `${e.duration} mins` : '2 hours',
+            notes: e.notes || '',
+            image: e.coverImage || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80',
+          }));
+          setEvents(mapped);
+        }
+      } catch (err) {
+        console.warn('Calendar API fetch warning:', err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCalendarEvents();
+  }, [currentDate]);
 
   // Extract available destinations
   const availableDestinations = useMemo(() => {

@@ -1,5 +1,5 @@
 /**
- * REST API Service Layer for GlobeTrotter Trips Management
+ * REST API Service Layer for GlobeTrotter Trips & Itinerary Management
  * Connected live to Express Backend (/api/v1/trips) and MySQL DB
  */
 
@@ -141,7 +141,7 @@ export const tripApi = {
         endDate: data.endDate || '2026-10-08',
         budgetLimit: typeof data.totalBudget === 'number' ? data.totalBudget : (parseFloat(String(data.totalBudget).replace(/[^0-9.]/g, '')) || 25000),
         coverImage: data.coverImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80',
-        cityId: data.cityId || null,
+        cityId: data.cityId || 1,
         isPublic: data.isPublic || false,
       };
 
@@ -180,6 +180,50 @@ export const tripApi = {
       return { success: true, message: 'Trip deleted successfully' };
     } catch (err) {
       console.error(`Delete trip ${id} failed:`, err.message);
+      throw err;
+    }
+  },
+
+  // GET /api/v1/trips/:id/itinerary
+  async getItinerary(tripId) {
+    try {
+      const res = await apiClient.get(`/trips/${tripId}/itinerary`);
+      return res || { stops: [] };
+    } catch (err) {
+      console.warn(`Get itinerary for ${tripId} failed:`, err.message);
+      return { stops: [] };
+    }
+  },
+
+  // POST /api/v1/trips/:id/stops
+  async addStop(tripId, stopData) {
+    try {
+      const res = await apiClient.post(`/trips/${tripId}/stops`, stopData);
+      return res;
+    } catch (err) {
+      console.warn(`Add stop to trip ${tripId} failed:`, err.message);
+      throw err;
+    }
+  },
+
+  // POST /api/v1/stops/:stopId/activities
+  async addActivity(stopId, activityData) {
+    try {
+      const res = await apiClient.post(`/stops/${stopId}/activities`, activityData);
+      return res;
+    } catch (err) {
+      console.warn(`Add activity to stop ${stopId} failed:`, err.message);
+      throw err;
+    }
+  },
+
+  // POST /api/v1/trips/:id/expenses
+  async addExpense(tripId, expenseData) {
+    try {
+      const res = await apiClient.post(`/trips/${tripId}/expenses`, expenseData);
+      return res;
+    } catch (err) {
+      console.warn(`Add expense to trip ${tripId} failed:`, err.message);
       throw err;
     }
   },

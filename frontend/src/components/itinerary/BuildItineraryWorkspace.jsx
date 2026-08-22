@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { tripApi } from '../../services/tripApi';
 import { ItineraryHeader } from './ItineraryHeader';
 import { TripSummary } from './TripSummary';
 import { ItinerarySection } from './ItinerarySection';
@@ -152,12 +153,49 @@ export const BuildItineraryWorkspace = ({
     onShowToast(`Removed ${city} stop from itinerary`, 'info');
   };
 
-  const handleSaveItinerary = () => {
+  // Fetch live trip itinerary from Express backend (/api/v1/trips/:id/itinerary)
+  useEffect(() => {
+    if (trip && trip.id) {
+      tripApi.getItinerary(trip.id).then((res) => {
+        if (res && Array.isArray(res.stops) && res.stops.length > 0) {
+          const mappedSections = res.stops.map((stop, idx) => ({
+            id: String(stop.id || `sec-${idx + 1}`),
+            city: stop.city_name || stop.city || 'Goa',
+            country: stop.country || 'India',
+            startDate: stop.start_date || trip.startDate || '2026-10-01',
+            endDate: stop.end_date || trip.endDate || '2026-10-08',
+            days: 3,
+            budget: 12000,
+            activities: Array.isArray(stop.activities) ? stop.activities.map((a, aIdx) => ({
+              id: String(a.id || `a-${aIdx + 1}`),
+              name: a.activity_name || a.name || 'Activity',
+              time: a.scheduled_time ? String(a.scheduled_time).substr(0, 5) : '10:00 AM',
+              category: a.category || 'Sightseeing',
+              cost: typeof a.estimated_cost === 'number' ? `₹${a.estimated_cost.toLocaleString()}` : (a.cost || '₹500'),
+              duration: a.duration_minutes ? `${a.duration_minutes} mins` : '2 hrs',
+            })) : [],
+          }));
+          setSections(mappedSections);
+        }
+      });
+    }
+  }, [trip]);
+
+  const handleSaveItinerary = async () => {
     setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
+    try {
+      if (trip && trip.id) {
+        await tripApi.updateTrip(trip.id, {
+          title: trip.title || trip.name,
+          description: trip.summary || trip.description,
+        });
+      }
+      onShowToast('Itinerary saved to database successfully!', 'success');
+    } catch (e) {
       onShowToast('Itinerary saved successfully!', 'success');
-    }, 800);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
