@@ -4,14 +4,15 @@ import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { ForgotPasswordModal } from './components/auth/ForgotPasswordModal';
 import { ItineraryViewPage } from './components/itinerary/ItineraryViewPage';
+import { CalendarViewPage } from './components/calendar/CalendarViewPage';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
-import { Home, LogIn, UserPlus, Compass, MapPin } from 'lucide-react';
+import { Home, LogIn, UserPlus, Compass, MapPin, Calendar as CalendarIcon } from 'lucide-react';
 import './styles/global.css';
 import './App.css';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'login' | 'register' | 'itinerary'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'login' | 'register' | 'itinerary' | 'calendar'
   const [currentUser, setCurrentUser] = useState({
     name: 'Alex Morgan',
     firstName: 'Alex',
@@ -70,6 +71,15 @@ export default function App() {
 
           <button
             type="button"
+            className={`gt-switcher-btn ${currentView === 'calendar' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('calendar')}
+          >
+            <CalendarIcon className="gt-icon text-amber-500" />
+            <span>Screen 11: Calendar View</span>
+          </button>
+
+          <button
+            type="button"
             className={`gt-switcher-btn ${currentView === 'itinerary' ? 'gt-switcher-btn--active' : ''}`}
             onClick={() => setCurrentView('itinerary')}
           >
@@ -104,6 +114,23 @@ export default function App() {
           trips={trips}
           onAddTrip={handleAddTrip}
           onNavigate={(view) => setCurrentView(view)}
+          onLogout={handleLogout}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'calendar' && (
+        <CalendarViewPage
+          currentUser={currentUser}
+          onBack={() => setCurrentView('landing')}
+          onOpenCreateTrip={() => {
+            setCurrentView('landing');
+            showToast('Opening Create Trip modal on Landing Page');
+          }}
+          onNavigateToItinerary={(tripId) => {
+            setCurrentView('itinerary');
+            showToast(`Opening Itinerary & Budget View for trip`, 'info');
+          }}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
@@ -163,4 +190,5 @@ export default function App() {
     </div>
   );
 }
+
 
