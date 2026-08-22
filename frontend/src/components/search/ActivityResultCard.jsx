@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, DollarSign, Star, Plus, Eye } from 'lucide-react';
+import { MapPin, Clock, IndianRupee, Star, Plus, Eye } from 'lucide-react';
 import { Button } from '../ui/Button';
 import './ActivityResultCard.css';
 
@@ -46,7 +46,7 @@ export const ActivityResultCard = ({ activity, onViewDetails, onAddToTrip }) => 
               <span>{activity.duration}</span>
             </span>
             <span className="flex items-center gap-1 gt-act-card__cost">
-              <DollarSign className="gt-icon text-amber-600" style={{ width: 13, height: 13 }} />
+              <IndianRupee className="gt-icon text-amber-600" style={{ width: 13, height: 13 }} />
               <span>{activity.cost}</span>
             </span>
           </div>

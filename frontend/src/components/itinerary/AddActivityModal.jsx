@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, SlidersHorizontal, Plus, Check, Clock, DollarSign, X } from 'lucide-react';
+import { Search, SlidersHorizontal, Plus, Check, Clock, IndianRupee, X } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { ACTIVITIES_DATA, ACTIVITY_CATEGORIES } from '../../data/activitiesData';

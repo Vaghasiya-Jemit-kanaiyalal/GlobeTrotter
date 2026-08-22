@@ -3,7 +3,7 @@ import { PostAuthor } from './PostAuthor';
 import { PostImage } from './PostImage';
 import { PostActions } from './PostActions';
 import { CommentSection } from './CommentSection';
-import { MapPin, Calendar, Eye } from 'lucide-react';
+import { MapPin, Compass, Calendar, Tag, IndianRupee, Eye } from 'lucide-react';
 import './CommunityPostCard.css';
 
 export const CommunityPostCard = ({
@@ -11,6 +11,7 @@ export const CommunityPostCard = ({
   onLike,
   onAddComment,
   onShare,
+  onViewTrip,
 }) => {
   const [commentsOpen, setCommentsOpen] = useState(false);
 
@@ -84,6 +85,7 @@ export const CommunityPostCard = ({
         onLike={onLike}
         onToggleComments={() => setCommentsOpen(!commentsOpen)}
         onShare={onShare}
+        onViewTrip={onViewTrip}
         commentsOpen={commentsOpen}
       />
 

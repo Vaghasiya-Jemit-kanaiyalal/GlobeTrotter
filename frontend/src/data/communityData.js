@@ -79,7 +79,7 @@ export const INITIAL_COMMUNITY_POSTS = [
     description: 'Comprehensive 2-week itinerary connecting Western Europe high-speed rail lines, Louvre Renaissance tours, Colosseum arena floor walks, and Catalan gastronomy.',
     duration: '14 Days',
     destinationsCount: 3,
-    cost: '€4,200',
+    cost: '₹3,50,000',
     tripId: 'trip-europe',
     image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
     author: {

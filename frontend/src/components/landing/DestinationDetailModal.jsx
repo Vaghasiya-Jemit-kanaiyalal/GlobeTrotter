@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Star, Calendar, DollarSign, Compass, ArrowRight, CheckCircle2, X } from 'lucide-react';
+import { MapPin, Star, Calendar, IndianRupee, Compass, ArrowRight, CheckCircle2, X } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import './DestinationDetailModal.css';
@@ -43,7 +43,7 @@ export const DestinationDetailModal = ({ destination, isOpen, onClose, onStartTr
 
           <div className="gt-dest-modal__spec-card">
             <div className="gt-dest-modal__spec-header flex items-center gap-1">
-              <DollarSign className="gt-icon" />
+              <IndianRupee className="gt-icon" />
               <span>Estimated Budget</span>
             </div>
             <strong>{destination.avgDailyBudget}</strong>

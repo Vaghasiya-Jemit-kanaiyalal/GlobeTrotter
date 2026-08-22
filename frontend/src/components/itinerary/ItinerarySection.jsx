@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   MapPin,
   Calendar,
-  DollarSign,
+  IndianRupee,
   Plus,
   Clock,
   Trash2,
@@ -123,7 +123,7 @@ export const ItinerarySection = ({
                   setIsEditingBudget(!isEditingBudget);
                 }}
               >
-                <DollarSign className="gt-icon" />
+                <IndianRupee className="gt-icon" />
                 <span>Edit Budget</span>
               </button>
               <div className="gt-user-dropdown__divider" />
@@ -191,7 +191,7 @@ export const ItinerarySection = ({
         <div className="gt-spec-box">
           <div className="gt-spec-box__header flex justify-between items-center">
             <span className="gt-spec-label flex items-center gap-1">
-              <DollarSign className="gt-icon" />
+              <IndianRupee className="gt-icon" />
               <span>Section Budget</span>
             </span>
             <button

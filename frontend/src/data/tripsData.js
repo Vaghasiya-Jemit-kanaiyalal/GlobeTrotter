@@ -13,7 +13,7 @@ export const INITIAL_TRIPS_DATA = [
     status: 'Completed',
     summary: 'A 14-day journey across Western Europe exploring the Louvre, Roman Colosseum, and Sagrada Família with regional high-speed rail connections.',
     activitiesCount: 18,
-    totalBudget: '$4,200',
+    totalBudget: '₹3,50,000',
   },
   {
     id: 'trip-2',
@@ -25,7 +25,7 @@ export const INITIAL_TRIPS_DATA = [
     status: 'Completed',
     summary: 'Autumn foliage tour spanning Tokyo neon districts, traditional Mount Fuji onsen ryokans, and historic Kyoto temples.',
     activitiesCount: 14,
-    totalBudget: '$3,800',
+    totalBudget: '₹3,00,000',
   },
   {
     id: 'trip-3',
@@ -37,6 +37,6 @@ export const INITIAL_TRIPS_DATA = [
     status: 'Upcoming',
     summary: 'Summer Mediterranean coastal journey along cliffside villages with private catamaran day cruises and sunset gastronomy tours.',
     activitiesCount: 8,
-    totalBudget: '$5,100',
+    totalBudget: '₹4,20,000',
   },
 ];

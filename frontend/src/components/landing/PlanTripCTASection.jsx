@@ -1,5 +1,5 @@
 import React from 'react';
-import { Compass, Sparkles, Map, Calendar, DollarSign, ArrowRight } from 'lucide-react';
+import { Compass, Sparkles, Map, Calendar, IndianRupee, ArrowRight } from 'lucide-react';
 import { Button } from '../ui/Button';
 import './PlanTripCTASection.css';
 
@@ -33,7 +33,7 @@ export const PlanTripCTASection = ({ onPlanTrip }) => {
                 <span>Timeline Scheduling</span>
               </div>
               <div className="gt-cta-feature-item flex items-center gap-1">
-                <DollarSign className="gt-icon" />
+                <IndianRupee className="gt-icon" />
                 <span>Budget Tracking</span>
               </div>
             </div>

@@ -5,7 +5,7 @@ import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 import { Textarea } from '../ui/Textarea';
 import { ExpenseDisplay } from './ExpenseDisplay';
-import { Clock, Tag, MapPin, DollarSign, Check, X } from 'lucide-react';
+import { Clock, Tag, MapPin, IndianRupee, Check, X } from 'lucide-react';
 import './ActivityEditModal.css';
 
 export const ActivityEditModal = ({

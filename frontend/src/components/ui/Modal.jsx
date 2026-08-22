@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { X } from 'lucide-react';
 import './Modal.css';
 
-export const Modal = ({ isOpen, onClose, title, children }) => {
+export const Modal = ({ isOpen, onClose, title, size = 'default', children }) => {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape' && isOpen) {
@@ -18,7 +18,7 @@ export const Modal = ({ isOpen, onClose, title, children }) => {
   return (
     <div className="gt-modal-overlay" onClick={onClose} role="presentation">
       <div
-        className="gt-modal-container animate-fade-in"
+        className={`gt-modal-container gt-modal-container--${size} animate-fade-in`}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

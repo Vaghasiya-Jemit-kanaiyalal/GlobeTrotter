@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar } from '../layout/Navbar';
 import { Card } from '../ui/Card';
 import { Button } from '../ui/Button';
-import { Calendar, MapPin, Clock, DollarSign, Compass, ArrowLeft, CheckCircle2, Plus, Share2 } from 'lucide-react';
+import { Calendar, MapPin, Clock, IndianRupee, Compass, ArrowLeft, CheckCircle2, Plus, Share2 } from 'lucide-react';
 import './ItineraryBuilderScreen.css';
 
 export const ItineraryBuilderScreen = ({ trip, currentUser, onNavigate }) => {
@@ -52,38 +52,34 @@ export const ItineraryBuilderScreen = ({ trip, currentUser, onNavigate }) => {
                   <Calendar className="gt-icon" /> {trip.dateRange}
                 </span>
                 <span className="flex items-center gap-1">
-                  <DollarSign className="gt-icon" /> {trip.totalBudget || '$2,400'} Estimated
+                  <IndianRupee className="gt-icon" /> {trip.totalBudget || '₹1,80,000'} Estimated
                 </span>
               </div>
             </div>
 
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" icon={Share2}>
-                Share Trip
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => alert(`Share link copied: ${window.location.origin}/share/trip/${trip.id}`)}
+              >
+                <Share2 className="gt-icon" /> Share Itinerary
               </Button>
-              <Button variant="primary" size="sm" icon={Plus}>
-                Add Activity
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={() => onNavigate('build-itinerary')}
+              >
+                <Plus className="gt-icon" /> Add Activity
               </Button>
             </div>
           </div>
         </Card>
 
-        {/* Day-by-Day Timeline */}
-        <div className="gt-itinerary-body">
-          <h2 className="gt-itinerary-section-title brand-serif">Day-by-Day Schedule & Activities</h2>
+        {/* Itinerary Days Timeline Grid */}
+        <div className="gt-itinerary-timeline flex-col gap-4 mt-6">
+          <h2 className="brand-serif text-xl font-bold">Scheduled Itinerary Timeline</h2>
           
-          <div className="gt-timeline flex-col gap-4">
-            {/* Day 1 */}
-            <div className="gt-timeline-day">
-              <div className="gt-timeline-day-header flex items-center gap-2">
-                <span className="gt-day-pill">Day 1</span>
-                <h3>Arrival & Exploration</h3>
-              </div>
-
-              <div className="gt-timeline-events flex-col gap-3">
-                {trip.activities && trip.activities.length > 0 ? (
-                  trip.activities.map((act, index) => (
-                    <div key={act.id || index} className="gt-event-card flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <img src={act.image} alt={act.name} className="gt-event-img" />
                         <div className="flex-col">
@@ -123,7 +119,7 @@ export const ItineraryBuilderScreen = ({ trip, currentUser, onNavigate }) => {
                     <span className="text-xs text-muted">Guided Tour • 3.5 hours</span>
                   </div>
                 </div>
-                <span className="gt-event-cost text-xs font-semibold">$45</span>
+                <span className="gt-event-cost text-xs font-semibold">₹1,500</span>
               </div>
             </div>
           </div>
