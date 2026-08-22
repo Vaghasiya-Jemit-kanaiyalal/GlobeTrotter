@@ -16,6 +16,7 @@ import { CommunityTabScreen } from './components/community/CommunityTabScreen';
 import { AdminPanelScreen } from './components/admin/AdminPanelScreen';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
+import { tripApi } from './services/tripApi';
 import './styles/global.css';
 import './App.css';
 

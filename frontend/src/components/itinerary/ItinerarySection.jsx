@@ -76,8 +76,12 @@ export const ItinerarySection = ({
           <span className="gt-section-number-pill">
             Section {sectionIndex + 1}
           </span>
-          <h2 className="gt-section-city-name brand-serif">{section.city}</h2>
-          <span className="gt-section-country-text">({section.country})</span>
+          <h2 className="gt-section-city-name brand-serif">
+            {typeof section.city === 'object' ? (section.city?.name || section.city?.city || 'Destination') : section.city}
+          </h2>
+          <span className="gt-section-country-text">
+            ({typeof section.country === 'object' ? (section.country?.name || 'India') : section.country})
+          </span>
         </div>
 
         {/* Action Controls & Three-Dot Menu */}

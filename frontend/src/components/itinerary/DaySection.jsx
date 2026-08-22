@@ -30,7 +30,7 @@ export const DaySection = ({
           <div className="gt-day-meta flex items-center gap-2 flex-wrap">
             <span className="gt-day-city font-bold text-navy-900 flex items-center gap-1">
               <MapPin className="w-3.5 h-3.5 text-amber-600" />
-              {day.city}
+              {typeof day.city === 'object' ? (day.city?.name || day.city?.city || 'City') : day.city}
             </span>
             <span className="gt-day-date text-xs text-muted flex items-center gap-1">
               <Calendar className="w-3 h-3" />

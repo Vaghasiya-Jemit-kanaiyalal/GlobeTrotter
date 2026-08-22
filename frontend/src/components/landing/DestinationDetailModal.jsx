@@ -8,10 +8,12 @@ export const DestinationDetailModal = ({ destination, isOpen, onClose, onStartTr
   if (!destination) return null;
 
   const highlights = destination.highlights || [];
-  const displayCityName = destination.city.split('&')[0].trim();
+  const rawCity = typeof destination.city === 'object' ? (destination.city?.name || destination.city?.city || 'City') : (destination.city || 'City');
+  const rawCountry = typeof destination.country === 'object' ? (destination.country?.name || 'India') : (destination.country || 'India');
+  const displayCityName = String(rawCity).split('&')[0].trim();
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`${destination.city}, ${destination.country}`} size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} title={`${rawCity}, ${rawCountry}`} size="lg">
       <div className="gt-dest-modal-content flex flex-col gap-4 text-left p-1">
         {/* Cover Photo */}
         <div className="gt-dest-modal__image-wrapper relative w-full h-[220px] rounded-xl overflow-hidden bg-subtle">
