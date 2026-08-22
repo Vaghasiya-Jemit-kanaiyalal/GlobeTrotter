@@ -1,16 +1,10 @@
 const activityService = require('../services/activity.service');
-const { sendSuccess, sendPaginated } = require('../utils/response');
+const { sendSuccess } = require('../utils/response');
 
 async function getActivities(req, res, next) {
   try {
-    const page = parseInt(req.query.page || 1, 10);
-    const limit = parseInt(req.query.limit || 20, 10);
-    const { items, total } = await activityService.searchActivities({
-      ...req.query,
-      page,
-      limit
-    });
-    return sendPaginated(res, 'Activities fetched successfully', items, page, limit, total);
+    const data = await activityService.searchActivities(req.query);
+    return sendSuccess(res, 'Activities fetched successfully', data, 200);
   } catch (error) {
     next(error);
   }
@@ -18,9 +12,30 @@ async function getActivities(req, res, next) {
 
 async function getActivityById(req, res, next) {
   try {
-    const id = parseInt(req.params.id, 10);
-    const activity = await activityService.getActivityById(id);
-    return sendSuccess(res, 'Activity details retrieved', { activity }, 200);
+    const activityId = parseInt(req.params.activityId, 10);
+    const data = await activityService.getActivityDetails(activityId);
+    return sendSuccess(res, 'Activity details retrieved', data, 200);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getRelatedActivities(req, res, next) {
+  try {
+    const activityId = parseInt(req.params.activityId, 10);
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 5;
+    const data = await activityService.getRelatedActivities(activityId, limit);
+    return sendSuccess(res, 'Related activities retrieved', data, 200);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getPopularActivities(req, res, next) {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
+    const data = await activityService.getPopularActivities(limit);
+    return sendSuccess(res, 'Popular activities retrieved', data, 200);
   } catch (error) {
     next(error);
   }
@@ -28,5 +43,7 @@ async function getActivityById(req, res, next) {
 
 module.exports = {
   getActivities,
-  getActivityById
+  getActivityById,
+  getRelatedActivities,
+  getPopularActivities
 };

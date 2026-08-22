@@ -158,15 +158,14 @@ async function addActivityToStop(stopId, userId, activityData) {
     throw error;
   }
 
-  // Validate activity belongs to stop city
-  if (activity.city_id !== stop.city_id) {
+  const actCityId = activity.city_id || (activity.city && activity.city.id);
+  if (actCityId !== stop.city_id) {
     const error = new Error(`Activity '${activity.name}' belongs to a different city than stop '${stop.city_name}'`);
     error.statusCode = 422;
     error.errorCode = 'CITY_MISMATCH';
     throw error;
   }
 
-  // Validate scheduled date falls within stop date bounds
   if (activityData.scheduledDate < stop.start_date || activityData.scheduledDate > stop.end_date) {
     const error = new Error(`Scheduled date (${activityData.scheduledDate}) must fall within stop dates (${stop.start_date} to ${stop.end_date})`);
     error.statusCode = 422;

@@ -1,16 +1,10 @@
 const cityService = require('../services/city.service');
-const { sendSuccess, sendPaginated } = require('../utils/response');
+const { sendSuccess } = require('../utils/response');
 
 async function getCities(req, res, next) {
   try {
-    const page = parseInt(req.query.page || 1, 10);
-    const limit = parseInt(req.query.limit || 20, 10);
-    const { items, total } = await cityService.searchCities({
-      ...req.query,
-      page,
-      limit
-    });
-    return sendPaginated(res, 'Cities fetched successfully', items, page, limit, total);
+    const data = await cityService.searchCities(req.query);
+    return sendSuccess(res, 'Cities fetched successfully', data, 200);
   } catch (error) {
     next(error);
   }
@@ -18,19 +12,29 @@ async function getCities(req, res, next) {
 
 async function getCityById(req, res, next) {
   try {
-    const id = parseInt(req.params.id, 10);
-    const city = await cityService.getCityById(id);
-    return sendSuccess(res, 'City details retrieved', { city }, 200);
+    const cityId = parseInt(req.params.cityId, 10);
+    const data = await cityService.getCityDetails(cityId);
+    return sendSuccess(res, 'City details retrieved', data, 200);
   } catch (error) {
     next(error);
   }
 }
 
-async function getRecommendations(req, res, next) {
+async function getCityActivities(req, res, next) {
   try {
-    const limit = parseInt(req.query.limit || 6, 10);
-    const recommendations = await cityService.getRecommendations(limit);
-    return sendSuccess(res, 'Recommended destinations retrieved', { cities: recommendations }, 200);
+    const cityId = parseInt(req.params.cityId, 10);
+    const data = await cityService.getCityActivities(cityId, req.query);
+    return sendSuccess(res, 'City activities retrieved', data, 200);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function getPopularCities(req, res, next) {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
+    const cities = await cityService.getPopularCities(limit);
+    return sendSuccess(res, 'Popular cities retrieved', { cities }, 200);
   } catch (error) {
     next(error);
   }
@@ -39,5 +43,6 @@ async function getRecommendations(req, res, next) {
 module.exports = {
   getCities,
   getCityById,
-  getRecommendations
+  getCityActivities,
+  getPopularCities
 };
