@@ -54,7 +54,7 @@ export const ActivitySuggestionCard = ({ activity, isSelected, onToggleSelect })
           {isSelected ? (
             <>
               <Check className="gt-icon" />
-              <span>✓ Added to Trip</span>
+              <span>Added to Trip</span>
             </>
           ) : (
             <>

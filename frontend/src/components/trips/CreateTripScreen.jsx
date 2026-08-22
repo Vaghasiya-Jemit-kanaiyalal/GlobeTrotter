@@ -29,10 +29,7 @@ export const CreateTripScreen = ({
 
   // Activity Suggestions State
   const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedActivities, setSelectedActivities] = useState([
-    ACTIVITIES_DATA[0], // Pre-select sample items for preview
-    ACTIVITIES_DATA[1],
-  ]);
+  const [selectedActivities, setSelectedActivities] = useState([]);
 
   // Filter activities by category & destination query, guaranteeing 6 cards for clean 3x2 grid display
   const filteredActivities = ACTIVITIES_DATA.filter((act) => {
