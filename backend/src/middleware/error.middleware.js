@@ -1,7 +1,11 @@
 const { sendError } = require('../utils/response');
 
 function errorHandler(err, req, res, next) {
-  console.error('API Error:', err);
+  if (!err.statusCode || err.statusCode >= 500) {
+    console.error('API Error (500):', err);
+  } else {
+    console.warn(`API Notice (${err.statusCode}): ${err.message}`);
+  }
 
   if (err.name === 'UnauthorizedError') {
     return sendError(res, 'Unauthorized access', 401, 'UNAUTHORIZED');

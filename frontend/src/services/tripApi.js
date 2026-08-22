@@ -117,8 +117,13 @@ export const tripApi = {
 
   // GET /api/v1/trips/:id
   async getTripById(id) {
+    const numId = parseInt(id, 10);
+    if (isNaN(numId) || numId <= 0) {
+      const fallback = INITIAL_TRIPS_DATA.find((t) => String(t.id) === String(id)) || INITIAL_TRIPS_DATA[0];
+      return { success: true, data: normalizeTrip(fallback) };
+    }
     try {
-      const res = await apiClient.get(`/trips/${id}`);
+      const res = await apiClient.get(`/trips/${numId}`);
       const tripObj = res?.trip || res;
       return {
         success: true,
@@ -186,8 +191,12 @@ export const tripApi = {
 
   // GET /api/v1/trips/:id/itinerary
   async getItinerary(tripId) {
+    const numId = parseInt(tripId, 10);
+    if (isNaN(numId) || numId <= 0) {
+      return { stops: [] };
+    }
     try {
-      const res = await apiClient.get(`/trips/${tripId}/itinerary`);
+      const res = await apiClient.get(`/trips/${numId}/itinerary`);
       return res || { stops: [] };
     } catch (err) {
       console.warn(`Get itinerary for ${tripId} failed:`, err.message);
