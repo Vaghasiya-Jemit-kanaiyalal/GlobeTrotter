@@ -152,7 +152,7 @@ export const UserProfileScreen = ({
         onLogout={() => onNavigate('landing')}
       />
 
-      <div className="gt-profile-container">
+      <div className="gt-profile-container max-w-[1080px] mx-auto px-4 py-6 flex flex-col gap-7">
         {/* 2. User Profile Information Section */}
         {profileLoading ? (
           <ProfileSkeleton />
@@ -165,8 +165,8 @@ export const UserProfileScreen = ({
             </Button>
           </div>
         ) : (
-          <div className="gt-profile-main-card flex-col gap-6 animate-fade-in">
-            <div className="gt-profile-top-row flex items-start gap-6 flex-wrap sm:flex-nowrap">
+          <div className="gt-profile-main-card flex flex-col gap-4 bg-white border border-border rounded-xl p-5 shadow-xs animate-fade-in">
+            <div className="gt-profile-top-row flex items-start gap-4 flex-wrap sm:flex-nowrap">
               {/* Profile Image */}
               <ProfileAvatar
                 avatarUrl={profile.avatarUrl}
@@ -192,7 +192,7 @@ export const UserProfileScreen = ({
               </div>
             </div>
 
-            {/* Profile Statistics Bar */}
+            {/* Profile Statistics Bar (Compact 4-Column Card) */}
             <ProfileStats
               tripsCount={tripsData.length}
               destinationsCount={12}
@@ -202,24 +202,24 @@ export const UserProfileScreen = ({
           </div>
         )}
 
-        {/* 3. Preplanned Trips Section */}
-        <section className="gt-profile-trip-section flex-col gap-4">
-          <div className="gt-trip-section-header flex justify-between items-center">
+        {/* 3. Preplanned Trips Section (Compact 2 Cards per row on desktop) */}
+        <section className="gt-profile-trip-section flex flex-col gap-3">
+          <div className="gt-trip-section-header flex justify-between items-center pb-1">
             <div>
-              <h2 className="gt-trip-section-title brand-serif">Preplanned Trips</h2>
-              <p className="text-xs text-muted">Upcoming and active travel plans</p>
+              <h2 className="gt-trip-section-title brand-serif text-xl font-bold text-navy-900 m-0">Preplanned Trips</h2>
+              <p className="text-xs text-muted m-0 mt-0.5">Upcoming and active travel plans</p>
             </div>
-            <Button variant="text" size="sm" onClick={() => onNavigate('trips')}>
+            <Button variant="text" size="sm" onClick={() => onNavigate('trips')} className="text-amber-600 font-bold hover:underline text-xs">
               View All &rarr;
             </Button>
           </div>
 
           {tripsLoading ? (
-            <div className="text-sm text-muted py-4">Loading preplanned trips...</div>
+            <div className="text-xs text-muted py-3">Loading preplanned trips...</div>
           ) : tripsError ? (
-            <div className="text-sm text-error py-2">{tripsError}</div>
+            <div className="text-xs text-error py-2">{tripsError}</div>
           ) : preplannedTrips.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {preplannedTrips.map((t) => (
                 <TripCard
                   key={t.id}
@@ -238,24 +238,24 @@ export const UserProfileScreen = ({
           )}
         </section>
 
-        {/* 4. Previous Trips Section */}
-        <section className="gt-profile-trip-section flex-col gap-4">
-          <div className="gt-trip-section-header flex justify-between items-center">
+        {/* 4. Previous Trips Section (Compact 2 Cards per row on desktop) */}
+        <section className="gt-profile-trip-section flex flex-col gap-3">
+          <div className="gt-trip-section-header flex justify-between items-center pb-1">
             <div>
-              <h2 className="gt-trip-section-title brand-serif">Previous Trips</h2>
-              <p className="text-xs text-muted">Completed journeys and past itineraries</p>
+              <h2 className="gt-trip-section-title brand-serif text-xl font-bold text-navy-900 m-0">Previous Trips</h2>
+              <p className="text-xs text-muted m-0 mt-0.5">Completed journeys and past itineraries</p>
             </div>
-            <Button variant="text" size="sm" onClick={() => onNavigate('trips')}>
+            <Button variant="text" size="sm" onClick={() => onNavigate('trips')} className="text-amber-600 font-bold hover:underline text-xs">
               View All &rarr;
             </Button>
           </div>
 
           {tripsLoading ? (
-            <div className="text-sm text-muted py-4">Loading previous trips...</div>
+            <div className="text-xs text-muted py-3">Loading previous trips...</div>
           ) : tripsError ? (
-            <div className="text-sm text-error py-2">{tripsError}</div>
+            <div className="text-xs text-error py-2">{tripsError}</div>
           ) : previousTrips.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {previousTrips.map((t) => (
                 <TripCard
                   key={t.id}

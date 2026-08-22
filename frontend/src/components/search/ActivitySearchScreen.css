@@ -6,7 +6,7 @@
 }
 
 .gt-search-container {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: var(--space-6);
   display: flex;
@@ -35,4 +35,14 @@
   padding: var(--space-8);
   max-width: 480px;
   margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+  .gt-search-container {
+    padding: var(--space-4);
+  }
+
+  .gt-search-title {
+    font-size: 1.75rem;
+  }
 }
