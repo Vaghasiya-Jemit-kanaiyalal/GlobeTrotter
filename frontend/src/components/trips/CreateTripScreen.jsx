@@ -58,7 +58,7 @@ export const CreateTripScreen = ({
     });
   };
 
-  const handleCreateTripSubmit = (e) => {
+  const handleCreateTripSubmit = async (e) => {
     if (e) e.preventDefault();
     const newErrors = {};
 

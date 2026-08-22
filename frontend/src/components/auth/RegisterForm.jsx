@@ -57,7 +57,7 @@ export const RegisterForm = ({ onSwitchToLogin, onRegisterSuccess }) => {
 
   const passwordStrength = getPasswordStrength(formData.password);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateRegisterForm(formData);
 

@@ -24,7 +24,7 @@ export const LoginForm = ({ onSwitchToRegister, onLoginSuccess, onOpenForgotPass
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateLoginForm(formData);
 
