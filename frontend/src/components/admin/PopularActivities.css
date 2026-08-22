@@ -1,0 +1,26 @@
+/* Popular Activities Styles */
+.gt-admin-act-table th {
+  background-color: var(--color-bg-app);
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-navy-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gt-admin-act-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.gt-admin-cat-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-bg-subtle);
+  color: var(--color-navy-800);
+}

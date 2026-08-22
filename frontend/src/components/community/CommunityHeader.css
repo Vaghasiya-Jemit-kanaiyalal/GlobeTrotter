@@ -1,0 +1,181 @@
+/* Community Header Styles */
+.gt-community-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+}
+
+.gt-community-header__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gt-community-header__nav {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.gt-comm-nav-link {
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-navy-700);
+  cursor: pointer;
+  padding: 0.35rem 0.5rem;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.gt-comm-nav-link:hover {
+  color: var(--color-navy-900);
+  background-color: var(--color-bg-subtle);
+}
+
+.gt-comm-nav-link--active {
+  color: var(--color-amber-700);
+  background-color: var(--color-amber-50);
+}
+
+.gt-comm-icon-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-700);
+  cursor: pointer;
+  position: relative;
+}
+
+.gt-comm-icon-btn:hover {
+  background-color: var(--color-bg-subtle);
+}
+
+.gt-comm-notif-dot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 7px;
+  height: 7px;
+  background-color: var(--color-amber-600);
+  border-radius: 50%;
+}
+
+.gt-comm-avatar-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+}
+
+.gt-comm-avatar-btn:hover {
+  background-color: var(--color-bg-subtle);
+}
+
+.gt-comm-avatar-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--color-amber-50);
+  border: 1px solid var(--color-amber-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-amber-700);
+}
+
+.gt-comm-avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gt-comm-avatar-name {
+  font-weight: 600;
+  color: var(--color-navy-800);
+}
+
+.gt-comm-user-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 210px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 0.35rem;
+  z-index: 50;
+}
+
+.gt-comm-dd-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--color-navy-800);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.gt-comm-dd-item:hover {
+  background-color: var(--color-bg-subtle);
+}
+
+.gt-comm-hamburger-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  padding: 0.35rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.gt-comm-mobile-drawer {
+  padding: 1rem 1.25rem;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gt-comm-mobile-link {
+  text-align: left;
+  background: transparent;
+  border: none;
+  padding: 0.5rem;
+  font-weight: 600;
+  color: var(--color-navy-800);
+  cursor: pointer;
+}
+
+@media (min-width: 769px) {
+  .hidden-desktop {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hidden-mobile {
+    display: none !important;
+  }
+}

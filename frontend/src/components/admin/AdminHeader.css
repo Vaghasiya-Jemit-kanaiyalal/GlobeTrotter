@@ -1,0 +1,125 @@
+/* Admin Header Styles */
+.gt-admin-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+}
+
+.gt-admin-header__inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.gt-admin-back-btn {
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-md);
+  color: var(--color-navy-700);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.gt-admin-back-btn:hover {
+  background-color: #E2E8F0;
+  color: var(--color-navy-900);
+}
+
+.gt-admin-pill {
+  padding: 0.35rem 0.85rem;
+  background-color: var(--color-amber-50);
+  border: 1px solid var(--color-amber-100);
+  border-radius: var(--radius-full);
+}
+
+.gt-admin-pill-title {
+  font-weight: 700;
+  color: var(--color-navy-900);
+  font-size: var(--font-size-sm);
+}
+
+.gt-admin-pill-badge {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: var(--color-amber-600);
+  color: #FFFFFF;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.gt-admin-avatar-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--radius-full);
+}
+
+.gt-admin-avatar-btn:hover {
+  background-color: var(--color-bg-subtle);
+}
+
+.gt-admin-avatar-circle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: var(--color-amber-50);
+  border: 1.5px solid var(--color-amber-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-amber-700);
+}
+
+.gt-admin-avatar-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gt-admin-avatar-name {
+  color: var(--color-navy-900);
+}
+
+.gt-admin-dropdown {
+  position: absolute;
+  top: 120%;
+  right: 0;
+  width: 200px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 0.35rem;
+  z-index: 50;
+}
+
+.gt-admin-dd-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--color-navy-800);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.gt-admin-dd-item:hover {
+  background-color: var(--color-bg-subtle);
+}

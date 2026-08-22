@@ -1,0 +1,12 @@
+/* Trip Activity Chart Styles */
+.gt-bar-chart-grid {
+  width: 100%;
+}
+
+.gt-bar-col {
+  height: 100%;
+}
+
+.gt-bar-fill {
+  transition: height 300ms ease, background-color var(--transition-fast);
+}
