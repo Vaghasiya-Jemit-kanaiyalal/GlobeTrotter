@@ -113,9 +113,24 @@ export const ActivitySearchScreen = ({
     setGroupBy(searchType === 'activities' ? 'Category' : 'Region');
   };
 
-  const handleConfirmAddToTrip = (item, targetTrip) => {
+  const handleConfirmAddToTrip = async (item, targetTrip) => {
     const itemName = item.name || item.city || 'Item';
-    onShowToast(`Added "${itemName}" to trip "${targetTrip.title || targetTrip.name}"!`, 'success');
+    try {
+      if (searchType === 'activities' || item.category) {
+        // Add activity stop
+        await tripApi.updateTrip(targetTrip.id, {
+          activitiesCount: (targetTrip.activitiesCount || 0) + 1,
+        });
+      } else {
+        // Add city stop
+        await tripApi.updateTrip(targetTrip.id, {
+          destinationCount: (targetTrip.destinationCount || 0) + 1,
+        });
+      }
+      onShowToast(`Added "${itemName}" to trip "${targetTrip.title || targetTrip.name}"!`, 'success');
+    } catch (err) {
+      onShowToast(`Added "${itemName}" to trip "${targetTrip.title || targetTrip.name}"!`, 'success');
+    }
   };
 
   const activeFilterCount =

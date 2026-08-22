@@ -52,63 +52,89 @@ export const searchApi = {
   // GET /api/v1/activities
   async searchActivities(params = {}) {
     try {
-      const res = await apiClient.get('/activities', params);
-      const list = Array.isArray(res) ? res : (res?.activities || res?.data || []);
-      
-      const formatted = list.map((a) => ({
+      const queryParams = {
+        query: params.query || params.search || '',
+        search: params.query || params.search || '',
+        category: params.category && params.category !== 'All' ? params.category : undefined,
+        priceTier: params.priceTier && params.priceTier !== 'All' ? params.priceTier : undefined,
+        minRating: params.minRating || undefined,
+        sortBy: params.sortBy || undefined,
+        page: params.page || 1,
+        limit: params.limit || 6,
+      };
+
+      const res = await apiClient.get('/activities', queryParams);
+      const rawList = res?.activities || res?.items || (Array.isArray(res) ? res : []);
+      const totalCount = res?.pagination?.total || rawList.length;
+      const hasMore = res?.pagination ? (res.pagination.page < res.pagination.totalPages) : false;
+
+      const formatted = rawList.map((a) => ({
         id: String(a.id),
         name: a.name,
         category: a.category || 'Sightseeing',
-        city: a.city_name || a.city || 'Goa',
-        country: a.country || 'India',
+        city: a.city?.name || a.city_name || a.city || 'Goa',
+        country: a.city?.country || a.country || 'India',
         description: a.description || '',
-        cost: typeof a.cost === 'number' ? `₹${a.cost.toLocaleString()}` : (a.cost || 'Free'),
-        costValue: parseFloat(a.cost || 0),
-        duration: a.duration || '2 hours',
+        cost: typeof a.estimated_cost === 'number' ? `₹${a.estimated_cost.toLocaleString()}` : (typeof a.cost === 'number' ? `₹${a.cost.toLocaleString()}` : (a.cost || 'Free')),
+        costValue: parseFloat(a.estimated_cost || a.cost || 0),
+        duration: a.duration_minutes ? `${a.duration_minutes} mins` : (a.duration || '2 hours'),
         rating: parseFloat(a.rating || 4.8),
         reviewsCount: parseInt(a.reviews_count || a.reviewsCount || 124, 10),
-        image: a.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+        image: a.image_url || a.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
       }));
 
       return {
         success: true,
-        count: formatted.length,
+        totalCount,
+        hasMore,
         data: formatted,
       };
     } catch (err) {
-      console.warn('Backend searchActivities error:', err.message);
-      return { success: true, count: ACTIVITIES_DATA.length, data: ACTIVITIES_DATA };
+      console.warn('Backend searchActivities error, using fallback:', err.message);
+      return { success: true, totalCount: ACTIVITIES_DATA.length, hasMore: false, data: ACTIVITIES_DATA };
     }
   },
 
   // GET /api/v1/cities
   async searchCities(params = {}) {
     try {
-      const res = await apiClient.get('/cities', params);
-      const list = Array.isArray(res) ? res : (res?.cities || res?.data || []);
+      const queryParams = {
+        query: params.query || params.search || '',
+        search: params.query || params.search || '',
+        region: params.region && params.region !== 'All' ? params.region : undefined,
+        sortBy: params.sortBy || undefined,
+        page: params.page || 1,
+        limit: params.limit || 6,
+      };
 
-      const formatted = list.map((c) => ({
+      const res = await apiClient.get('/cities', queryParams);
+      const rawList = res?.cities || res?.items || (Array.isArray(res) ? res : []);
+      const totalCount = res?.pagination?.total || rawList.length;
+      const hasMore = res?.pagination ? (res.pagination.page < res.pagination.totalPages) : false;
+
+      const formatted = rawList.map((c) => ({
         id: String(c.id),
         name: c.name,
         country: c.country,
         region: c.region || 'Asia',
         description: c.description || '',
-        image: c.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
-        popularity: parseInt(c.popularity || 90, 10),
-        activitiesCount: parseInt(c.activities_count || c.activitiesCount || 20, 10),
+        image: c.image_url || c.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+        popularity: parseInt(c.popularity_score ? c.popularity_score * 10 : (c.popularity || 90), 10),
+        activitiesCount: parseInt(c.activity_count || c.activities_count || c.activitiesCount || 20, 10),
         bestTime: c.best_time || c.bestTime || 'Nov – Feb',
-        avgCostPerDay: c.avg_daily_budget ? `₹${parseFloat(c.avg_daily_budget).toLocaleString()}` : '₹3,500',
+        avgCostPerDay: c.avg_daily_budget ? `₹${parseFloat(c.avg_daily_budget).toLocaleString()}` : (c.avgCostPerDay || '₹3,500'),
         topAttractions: Array.isArray(c.top_attractions) ? c.top_attractions : ['Top Landmarks', 'Local Market'],
       }));
 
       return {
         success: true,
-        count: formatted.length,
+        totalCount,
+        hasMore,
         data: formatted,
       };
     } catch (err) {
-      console.warn('Backend searchCities error:', err.message);
-      return { success: true, count: SAMPLE_CITIES.length, data: SAMPLE_CITIES };
+      console.warn('Backend searchCities error, using fallback:', err.message);
+      return { success: true, totalCount: SAMPLE_CITIES.length, hasMore: false, data: SAMPLE_CITIES };
     }
   },
 

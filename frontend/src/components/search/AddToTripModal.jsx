@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { MapPin, Calendar, Plus, Check } from 'lucide-react';
@@ -12,22 +12,31 @@ export const AddToTripModal = ({
   onConfirmAddToTrip,
   onCreateNewTrip,
 }) => {
-  const [selectedTripId, setSelectedTripId] = useState(userTrips[0]?.id || '');
+  const [selectedTripId, setSelectedTripId] = useState('');
   const [isAdding, setIsAdding] = useState(false);
+
+  useEffect(() => {
+    if (userTrips.length > 0) {
+      setSelectedTripId(String(userTrips[0].id));
+    }
+  }, [userTrips]);
 
   if (!isOpen || !itemToAdd) return null;
 
   const itemName = itemToAdd.name || itemToAdd.city || 'Item';
 
-  const handleAdd = () => {
+  const handleAdd = async () => {
     if (!selectedTripId) return;
     setIsAdding(true);
-    const targetTrip = userTrips.find((t) => t.id === selectedTripId) || userTrips[0];
-    setTimeout(() => {
+    const targetTrip = userTrips.find((t) => String(t.id) === String(selectedTripId)) || userTrips[0];
+    try {
+      await onConfirmAddToTrip(itemToAdd, targetTrip);
+    } catch (e) {
+      console.warn('Add to trip warning:', e);
+    } finally {
       setIsAdding(false);
-      onConfirmAddToTrip(itemToAdd, targetTrip);
       onClose();
-    }, 400);
+    }
   };
 
   return (
@@ -44,7 +53,7 @@ export const AddToTripModal = ({
               <label
                 key={trip.id}
                 className={`gt-trip-radio-card flex justify-between items-center gap-3 w-full text-left ${
-                  selectedTripId === trip.id ? 'gt-trip-radio-card--selected' : ''
+                  String(selectedTripId) === String(trip.id) ? 'gt-trip-radio-card--selected' : ''
                 }`}
               >
                 <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -52,8 +61,8 @@ export const AddToTripModal = ({
                     type="radio"
                     name="selectedTrip"
                     value={trip.id}
-                    checked={selectedTripId === trip.id}
-                    onChange={() => setSelectedTripId(trip.id)}
+                    checked={String(selectedTripId) === String(trip.id)}
+                    onChange={() => setSelectedTripId(String(trip.id))}
                     className="gt-radio-input flex-shrink-0"
                   />
                   <div className="flex flex-col gap-1 min-w-0 flex-1 text-left">
@@ -74,7 +83,7 @@ export const AddToTripModal = ({
                   </div>
                 </div>
 
-                {selectedTripId === trip.id && (
+                {String(selectedTripId) === String(trip.id) && (
                   <Check className="w-4 h-4 text-amber-600 flex-shrink-0 ml-2" />
                 )}
               </label>
