@@ -49,10 +49,21 @@ async function deleteTrip(req, res, next) {
   }
 }
 
+async function copyTrip(req, res, next) {
+  try {
+    const tripId = parseInt(req.params.tripId, 10);
+    const trip = await tripService.copyUserTrip(tripId, req.user.id);
+    return sendSuccess(res, 'Trip copied successfully', { trip }, 201);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   createTrip,
   getTrips,
   getTripById,
   updateTrip,
-  deleteTrip
+  deleteTrip,
+  copyTrip
 };

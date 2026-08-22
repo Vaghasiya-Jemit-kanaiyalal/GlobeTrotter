@@ -5,12 +5,13 @@ const { authenticate, optionalAuthenticate } = require('../middleware/auth.middl
 const { validate } = require('../middleware/validation.middleware');
 const { scheduleActivitySchema, updateScheduledActivitySchema } = require('../validators/activity.validator');
 
-// Protected endpoints for activity scheduling
+// Stop Activities
 router.post('/stops/:stopId/activities', authenticate, validate(scheduleActivitySchema), itineraryController.addActivityToStop);
+router.get('/stops/:stopId/activities', optionalAuthenticate, itineraryController.getStopActivities);
 router.put('/trip-activities/:activityId', authenticate, validate(updateScheduledActivitySchema), itineraryController.updateScheduledActivity);
 router.delete('/trip-activities/:activityId', authenticate, itineraryController.deleteScheduledActivity);
 
-// Full Itinerary & Calendar endpoints (Allows authenticated owner or public access)
+// Full Itinerary & Calendar
 router.get('/trips/:tripId/itinerary', optionalAuthenticate, itineraryController.getFullItinerary);
 router.get('/trips/:tripId/calendar', optionalAuthenticate, itineraryController.getCalendarEvents);
 

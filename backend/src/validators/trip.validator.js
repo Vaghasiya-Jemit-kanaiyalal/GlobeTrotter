@@ -5,6 +5,7 @@ const createTripSchema = z.object({
   description: z.string().optional().nullable(),
   startDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'startDate must be YYYY-MM-DD'),
   endDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'endDate must be YYYY-MM-DD'),
+  cityId: z.number().int().positive().optional().nullable(),
   coverImage: z.string().optional().nullable(),
   budgetLimit: z.number().nonnegative().optional().default(0),
   isPublic: z.boolean().optional().default(false)

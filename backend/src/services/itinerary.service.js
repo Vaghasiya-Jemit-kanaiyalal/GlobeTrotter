@@ -18,6 +18,14 @@ async function addStop(tripId, userId, stopData) {
     throw error;
   }
 
+  // Validate dates against trip date bounds
+  if (stopData.startDate < trip.start_date || stopData.endDate > trip.end_date) {
+    const error = new Error(`Stop dates (${stopData.startDate} to ${stopData.endDate}) must fall within trip date bounds (${trip.start_date} to ${trip.end_date})`);
+    error.statusCode = 422;
+    error.errorCode = 'INVALID_STOP_DATES';
+    throw error;
+  }
+
   const city = await cityRepository.findById(stopData.cityId);
   if (!city) {
     const error = new Error('City not found');
@@ -69,6 +77,16 @@ async function updateStop(stopId, userId, updateData) {
     const error = new Error('Access denied');
     error.statusCode = 403;
     error.errorCode = 'FORBIDDEN';
+    throw error;
+  }
+
+  const startDate = updateData.startDate || stop.start_date;
+  const endDate = updateData.endDate || stop.end_date;
+
+  if (startDate < trip.start_date || endDate > trip.end_date) {
+    const error = new Error(`Stop dates must fall within trip dates (${trip.start_date} to ${trip.end_date})`);
+    error.statusCode = 422;
+    error.errorCode = 'INVALID_STOP_DATES';
     throw error;
   }
 
@@ -140,10 +158,47 @@ async function addActivityToStop(stopId, userId, activityData) {
     throw error;
   }
 
+  // Validate activity belongs to stop city
+  if (activity.city_id !== stop.city_id) {
+    const error = new Error(`Activity '${activity.name}' belongs to a different city than stop '${stop.city_name}'`);
+    error.statusCode = 422;
+    error.errorCode = 'CITY_MISMATCH';
+    throw error;
+  }
+
+  // Validate scheduled date falls within stop date bounds
+  if (activityData.scheduledDate < stop.start_date || activityData.scheduledDate > stop.end_date) {
+    const error = new Error(`Scheduled date (${activityData.scheduledDate}) must fall within stop dates (${stop.start_date} to ${stop.end_date})`);
+    error.statusCode = 422;
+    error.errorCode = 'INVALID_SCHEDULED_DATE';
+    throw error;
+  }
+
   return stopRepository.addScheduledActivity({
     ...activityData,
     tripStopId: stopId
   });
+}
+
+async function getStopActivities(stopId, userId) {
+  const stop = await stopRepository.findById(stopId);
+  if (!stop) {
+    const error = new Error('Stop not found');
+    error.statusCode = 404;
+    error.errorCode = 'STOP_NOT_FOUND';
+    throw error;
+  }
+
+  const trip = await tripRepository.findById(stop.trip_id);
+  const isOwner = userId && trip.user_id === userId;
+  if (!isOwner && !trip.is_public) {
+    const error = new Error('Access denied');
+    error.statusCode = 403;
+    error.errorCode = 'FORBIDDEN';
+    throw error;
+  }
+
+  return stopRepository.findScheduledActivitiesByStopId(stopId);
 }
 
 async function updateScheduledActivity(activityId, userId, updateData) {
@@ -162,6 +217,15 @@ async function updateScheduledActivity(activityId, userId, updateData) {
     error.statusCode = 403;
     error.errorCode = 'FORBIDDEN';
     throw error;
+  }
+
+  if (updateData.scheduledDate) {
+    if (updateData.scheduledDate < stop.start_date || updateData.scheduledDate > stop.end_date) {
+      const error = new Error(`Scheduled date (${updateData.scheduledDate}) must fall within stop dates (${stop.start_date} to ${stop.end_date})`);
+      error.statusCode = 422;
+      error.errorCode = 'INVALID_SCHEDULED_DATE';
+      throw error;
+    }
   }
 
   return stopRepository.updateScheduledActivity(activityId, updateData);
@@ -207,53 +271,8 @@ async function getFullItinerary(tripId, userId) {
 
   const stops = await stopRepository.findByTripId(tripId);
 
-  const daysMap = {};
-  const startDate = new Date(trip.start_date);
-  const endDate = new Date(trip.end_date);
-
-  for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-    const dateStr = d.toISOString().split('T')[0];
-    daysMap[dateStr] = {
-      date: dateStr,
-      city: null,
-      activities: []
-    };
-  }
-
   for (const stop of stops) {
-    const activities = await stopRepository.findScheduledActivitiesByStopId(stop.id);
-
-    const stopStart = new Date(stop.start_date);
-    const stopEnd = new Date(stop.end_date);
-
-    for (let d = new Date(stopStart); d <= stopEnd; d.setDate(d.getDate() + 1)) {
-      const dateStr = d.toISOString().split('T')[0];
-      if (daysMap[dateStr]) {
-        daysMap[dateStr].city = {
-          id: stop.city_id,
-          name: stop.city_name,
-          country: stop.city_country,
-          image: stop.city_image
-        };
-      }
-    }
-
-    for (const act of activities) {
-      const dateStr = act.scheduled_date;
-      if (daysMap[dateStr]) {
-        daysMap[dateStr].activities.push({
-          id: act.id,
-          activityId: act.activity_id,
-          name: act.activity_name,
-          category: act.category,
-          time: act.scheduled_time,
-          duration: act.duration_minutes,
-          cost: parseFloat(act.estimated_cost),
-          image: act.image_url,
-          notes: act.notes
-        });
-      }
-    }
+    stop.activities = await stopRepository.findScheduledActivitiesByStopId(stop.id);
   }
 
   return {
@@ -264,7 +283,31 @@ async function getFullItinerary(tripId, userId) {
       endDate: trip.end_date,
       coverImage: trip.cover_image
     },
-    days: Object.values(daysMap)
+    stops: stops.map(s => ({
+      id: s.id,
+      city: {
+        id: s.city_id,
+        name: s.city_name,
+        country: s.city_country,
+        image: s.city_image
+      },
+      startDate: s.start_date,
+      endDate: s.end_date,
+      stopOrder: s.stop_order,
+      notes: s.notes,
+      activities: s.activities.map(a => ({
+        id: a.id,
+        activityId: a.activity_id,
+        name: a.activity_name,
+        category: a.category,
+        date: a.scheduled_date,
+        time: a.scheduled_time,
+        duration: a.duration_minutes,
+        cost: parseFloat(a.estimated_cost),
+        image: a.image_url,
+        notes: a.notes
+      }))
+    }))
   };
 }
 
@@ -272,8 +315,8 @@ async function getCalendarEvents(tripId, userId) {
   const itinerary = await getFullItinerary(tripId, userId);
   const events = [];
 
-  for (const day of itinerary.days) {
-    for (const act of day.activities) {
+  for (const stop of itinerary.stops) {
+    for (const act of stop.activities) {
       const startTime = act.time || '09:00';
       let endTime = startTime;
       if (act.duration) {
@@ -287,10 +330,10 @@ async function getCalendarEvents(tripId, userId) {
       events.push({
         id: act.id,
         title: act.name,
-        date: day.date,
+        date: act.date,
         startTime,
         endTime,
-        city: day.city ? day.city.name : 'Unknown',
+        city: stop.city ? stop.city.name : 'Unknown',
         category: act.category,
         cost: act.cost,
         duration: act.duration,
@@ -309,6 +352,7 @@ module.exports = {
   deleteStop,
   reorderStops,
   addActivityToStop,
+  getStopActivities,
   updateScheduledActivity,
   deleteScheduledActivity,
   getFullItinerary,

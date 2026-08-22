@@ -3,6 +3,7 @@ const router = express.Router();
 const { pool } = require('../config/database');
 
 const authRoutes = require('./auth.routes');
+const profileRoutes = require('./profile.routes');
 const userRoutes = require('./user.routes');
 const cityRoutes = require('./city.routes');
 const activityRoutes = require('./activity.routes');
@@ -40,6 +41,7 @@ router.get('/health', async (req, res) => {
 
 // Mount modular sub-routes
 router.use('/auth', authRoutes);
+router.use('/', profileRoutes);
 router.use('/', userRoutes);
 router.use('/', cityRoutes);
 router.use('/', activityRoutes);

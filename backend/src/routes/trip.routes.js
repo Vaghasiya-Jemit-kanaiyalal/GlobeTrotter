@@ -10,5 +10,6 @@ router.get('/trips', authenticate, tripController.getTrips);
 router.get('/trips/:tripId', authenticate, tripController.getTripById);
 router.put('/trips/:tripId', authenticate, validate(updateTripSchema), tripController.updateTrip);
 router.delete('/trips/:tripId', authenticate, tripController.deleteTrip);
+router.post('/trips/:tripId/copy', authenticate, tripController.copyTrip);
 
 module.exports = router;

@@ -11,6 +11,16 @@ async function addActivityToStop(req, res, next) {
   }
 }
 
+async function getStopActivities(req, res, next) {
+  try {
+    const stopId = parseInt(req.params.stopId, 10);
+    const activities = await itineraryService.getStopActivities(stopId, req.user.id);
+    return sendSuccess(res, 'Stop activities retrieved', { activities }, 200);
+  } catch (error) {
+    next(error);
+  }
+}
+
 async function updateScheduledActivity(req, res, next) {
   try {
     const activityId = parseInt(req.params.activityId, 10);
@@ -53,6 +63,7 @@ async function getCalendarEvents(req, res, next) {
 
 module.exports = {
   addActivityToStop,
+  getStopActivities,
   updateScheduledActivity,
   deleteScheduledActivity,
   getFullItinerary,
