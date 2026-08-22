@@ -273,23 +273,6 @@ export const UserProfileScreen = ({
             <EmptyTripState status="completed" />
           )}
         </section>
-
-        {/* 5. Secondary Account Management Section */}
-        <div className="gt-account-management-box flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="gt-icon" style={{ color: 'var(--color-navy-600)' }} />
-            <span className="text-xs font-semibold text-muted">Account Management</span>
-          </div>
-
-          <Button
-            variant="text"
-            size="sm"
-            style={{ color: 'var(--color-error)' }}
-            onClick={() => setDeleteAccountOpen(true)}
-          >
-            Delete Account
-          </Button>
-        </div>
       </div>
 
       {/* Modals */}
