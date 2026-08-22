@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Compass, Bell, User, Plus, Menu, X, LogIn, UserPlus, MapPin, Calendar, LogOut, ChevronDown } from 'lucide-react';
+import { Compass, Bell, User, Plus, Menu, X, LogIn, UserPlus, MapPin, Calendar, LogOut, ChevronDown, Search, Users, ShieldCheck } from 'lucide-react';
 import { Logo } from '../ui/Logo';
 import { Button } from '../ui/Button';
 import './Navbar.css';
@@ -26,20 +26,26 @@ export const Navbar = ({
   }, []);
 
   const navItems = [
-    { id: 'home', label: 'Home', action: () => onNavigate('landing', 'home') },
-    { id: 'destinations', label: 'Explore Destinations', action: () => onNavigate('landing', 'destinations') },
-    { id: 'trips', label: 'My Trips', action: () => onNavigate('landing', 'trips') },
+    { id: 'home', label: 'Home', action: () => onNavigate('landing') },
+    { id: 'search', label: 'Explore', action: () => onNavigate('search') },
+    { id: 'trips', label: 'My Trips', action: () => onNavigate('my-trips') },
+    { id: 'community', label: 'Community', action: () => onNavigate('community') },
+    { id: 'calendar', label: 'Calendar', action: () => onNavigate('calendar') },
   ];
+
+  if (currentUser?.role === 'admin') {
+    navItems.push({ id: 'admin', label: 'Admin Panel', action: () => onNavigate('admin') });
+  }
 
   return (
     <header className={`gt-navbar ${isScrolled ? 'gt-navbar--scrolled' : ''}`}>
       <div className="gt-navbar__inner">
         {/* Left: Brand Logo */}
-        <div className="gt-navbar__brand" onClick={() => onNavigate('landing', 'home')}>
+        <div className="gt-navbar__brand cursor-pointer" onClick={() => onNavigate('landing')}>
           <Logo size="small" showTagline={false} centered={false} />
         </div>
 
-        {/* Center: Desktop Navigation Links */}
+        {/* Center: Desktop Navigation Links (ALL Fields Included) */}
         <nav className="gt-navbar__links">
           {navItems.map((item) => (
             <button
@@ -64,7 +70,7 @@ export const Navbar = ({
             size="sm"
             icon={Plus}
             onClick={onOpenCreateTrip}
-            className="gt-navbar__plan-btn"
+            className="gt-navbar__plan-btn hidden-mobile"
           >
             Plan a Trip
           </Button>
@@ -82,10 +88,10 @@ export const Navbar = ({
           </button>
 
           {/* User Profile Avatar / Dropdown */}
-          <div className="gt-navbar__user-container">
+          <div className="gt-navbar__user-container relative">
             <button
               type="button"
-              className="gt-navbar__user-btn"
+              className="gt-navbar__user-btn flex items-center gap-1.5"
               onClick={() => setUserDropdownOpen(!userDropdownOpen)}
               aria-expanded={userDropdownOpen}
               aria-label="User menu"
@@ -107,19 +113,36 @@ export const Navbar = ({
               <div className="gt-user-dropdown animate-fade-in">
                 <div className="gt-user-dropdown__header">
                   <strong>{currentUser ? `${currentUser.firstName || currentUser.name} ${currentUser?.lastName || ''}` : 'Guest Explorer'}</strong>
-                  <span className="text-xs text-muted">{currentUser ? currentUser.email : 'Not signed in'}</span>
+                  <span className="text-xs text-muted block">{currentUser ? currentUser.email : 'Not signed in'}</span>
+                  {currentUser?.role === 'admin' && (
+                    <span className="inline-block px-1.5 py-0.5 bg-amber-100 text-amber-800 font-bold text-[10px] rounded mt-1">
+                      ADMINISTRATOR
+                    </span>
+                  )}
                 </div>
                 <div className="gt-user-dropdown__divider" />
-                
+
                 <button
                   type="button"
                   className="gt-user-dropdown__item"
                   onClick={() => {
                     setUserDropdownOpen(false);
-                    onNavigate('landing', 'trips');
+                    onNavigate('profile');
                   }}
                 >
-                  <Calendar className="gt-icon" />
+                  <User className="gt-icon" />
+                  <span>My Profile</span>
+                </button>
+
+                <button
+                  type="button"
+                  className="gt-user-dropdown__item"
+                  onClick={() => {
+                    setUserDropdownOpen(false);
+                    onNavigate('my-trips');
+                  }}
+                >
+                  <MapPin className="gt-icon" />
                   <span>My Planned Trips</span>
                 </button>
 
@@ -128,12 +151,38 @@ export const Navbar = ({
                   className="gt-user-dropdown__item"
                   onClick={() => {
                     setUserDropdownOpen(false);
-                    onOpenCreateTrip();
+                    onNavigate('calendar');
                   }}
                 >
-                  <Plus className="gt-icon" />
-                  <span>Create New Itinerary</span>
+                  <Calendar className="gt-icon" />
+                  <span>Calendar View</span>
                 </button>
+
+                <button
+                  type="button"
+                  className="gt-user-dropdown__item"
+                  onClick={() => {
+                    setUserDropdownOpen(false);
+                    onNavigate('community');
+                  }}
+                >
+                  <Users className="gt-icon" />
+                  <span>Community Tab</span>
+                </button>
+
+                {currentUser?.role === 'admin' && (
+                  <button
+                    type="button"
+                    className="gt-user-dropdown__item text-amber-700 font-semibold"
+                    onClick={() => {
+                      setUserDropdownOpen(false);
+                      onNavigate('admin');
+                    }}
+                  >
+                    <ShieldCheck className="gt-icon text-amber-600" />
+                    <span>Admin Dashboard</span>
+                  </button>
+                )}
 
                 <div className="gt-user-dropdown__divider" />
 
@@ -160,7 +209,7 @@ export const Navbar = ({
                       }}
                     >
                       <LogIn className="gt-icon" />
-                      <span>Sign In (Screen 1)</span>
+                      <span>Sign In</span>
                     </button>
                     <button
                       type="button"
@@ -171,7 +220,7 @@ export const Navbar = ({
                       }}
                     >
                       <UserPlus className="gt-icon" />
-                      <span>Register (Screen 2)</span>
+                      <span>Register</span>
                     </button>
                   </>
                 )}
@@ -194,7 +243,7 @@ export const Navbar = ({
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
         <div className="gt-navbar__mobile-drawer animate-fade-in">
-          <nav className="gt-navbar__mobile-links">
+          <nav className="gt-navbar__mobile-links flex flex-col gap-2 p-3 bg-white border-b border-border">
             {navItems.map((item) => (
               <button
                 key={item.id}
@@ -221,30 +270,32 @@ export const Navbar = ({
             >
               Plan a Trip
             </Button>
-            <div className="flex gap-2" style={{ marginTop: 'var(--space-2)' }}>
-              <Button
-                variant="outline"
-                size="sm"
-                fullWidth={true}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onSwitchToAuth('login');
-                }}
-              >
-                Sign In
-              </Button>
-              <Button
-                variant="secondary"
-                size="sm"
-                fullWidth={true}
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  onSwitchToAuth('register');
-                }}
-              >
-                Register
-              </Button>
-            </div>
+            {!currentUser && (
+              <div className="flex gap-2" style={{ marginTop: 'var(--space-2)' }}>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  fullWidth={true}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onSwitchToAuth('login');
+                  }}
+                >
+                  Sign In
+                </Button>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  fullWidth={true}
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onSwitchToAuth('register');
+                  }}
+                >
+                  Register
+                </Button>
+              </div>
+            )}
           </nav>
         </div>
       )}

@@ -1,0 +1,8 @@
+/* Admin Login Form Styles */
+.gt-admin-login-root {
+  background: radial-gradient(circle at top, #1E293B 0%, #0F172A 100%);
+}
+
+.gt-admin-login-card {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+}

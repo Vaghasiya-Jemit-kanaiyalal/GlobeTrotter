@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Logo } from '../ui/Logo';
-import { ShieldCheck, User, ChevronDown, LogOut, ArrowLeft, BarChart2 } from 'lucide-react';
+import { ShieldCheck, User, ChevronDown, LogOut, ArrowLeft, MapPin, Calendar, Users, Search, Home } from 'lucide-react';
 import './AdminHeader.css';
 
 export const AdminHeader = ({
   currentUser,
   onBack,
+  onNavigate,
   onLogout,
 }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -32,14 +33,17 @@ export const AdminHeader = ({
           </div>
         </div>
 
-        {/* Center: Admin Badge */}
-        <div className="gt-admin-header__center">
-          <div className="gt-admin-pill flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-amber-600" />
-            <span className="gt-admin-pill-title brand-serif">Admin Panel</span>
-            <span className="gt-admin-pill-badge">Screen 12</span>
-          </div>
-        </div>
+        {/* Center: Navigation Links */}
+        {onNavigate && (
+          <nav className="gt-admin-header__nav hidden-mobile flex items-center gap-3 text-sm font-semibold text-navy-700">
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('landing')}>Home</button>
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('search')}>Explore</button>
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('my-trips')}>My Trips</button>
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('community')}>Community</button>
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('calendar')}>Calendar</button>
+            <button type="button" className="text-amber-700 font-bold">Admin Dashboard</button>
+          </nav>
+        )}
 
         {/* Right: Admin Profile Avatar */}
         <div className="gt-admin-header__right flex items-center gap-2">
@@ -72,10 +76,37 @@ export const AdminHeader = ({
                   <div className="text-muted">{currentUser?.email || 'admin@globetrotter.com'}</div>
                 </div>
 
+                {onNavigate && (
+                  <div className="flex flex-col gap-1 p-1">
+                    <button
+                      type="button"
+                      className="gt-admin-dd-item text-xs"
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        onNavigate('profile');
+                      }}
+                    >
+                      <User className="w-3.5 h-3.5" />
+                      <span>My Profile</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="gt-admin-dd-item text-xs"
+                      onClick={() => {
+                        setDropdownOpen(false);
+                        onNavigate('my-trips');
+                      }}
+                    >
+                      <MapPin className="w-3.5 h-3.5" />
+                      <span>My Trips</span>
+                    </button>
+                  </div>
+                )}
+
                 {onLogout && (
                   <button
                     type="button"
-                    className="gt-admin-dd-item text-red-600"
+                    className="gt-admin-dd-item text-red-600 border-t border-border pt-2 text-xs font-semibold"
                     onClick={() => {
                       setDropdownOpen(false);
                       onLogout();

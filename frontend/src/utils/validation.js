@@ -91,6 +91,13 @@ export const validateRegisterForm = (values) => {
   const emailErr = validateEmail(values.email);
   if (emailErr) errors.email = emailErr;
 
+  const passwordErr = validatePassword(values.password);
+  if (passwordErr) errors.password = passwordErr;
+
+  if (values.password && values.confirmPassword !== values.password) {
+    errors.confirmPassword = 'Passwords do not match';
+  }
+
   const phoneErr = validatePhone(values.phone);
   if (phoneErr) errors.phone = phoneErr;
 
@@ -108,3 +115,4 @@ export const validateRegisterForm = (values) => {
 
   return errors;
 };
+

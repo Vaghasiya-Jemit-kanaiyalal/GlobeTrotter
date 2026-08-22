@@ -1,31 +1,39 @@
+/* Register Form Styles */
 .gt-register-card {
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: 2rem;
+  box-shadow: var(--shadow-xl);
 }
 
-.gt-register-title-group {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
+.gt-register-title-box {
+  background-color: var(--color-bg-app);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1.5rem;
+  text-align: center;
 }
 
 .gt-register-title {
   font-size: var(--font-size-2xl);
+  font-weight: 700;
   color: var(--color-navy-900);
+  margin-bottom: 0.35rem;
 }
 
 .gt-register-subtitle {
   font-size: var(--font-size-sm);
   color: var(--color-navy-600);
-  max-width: 520px;
-  margin: 0 auto;
+  line-height: 1.5;
+  text-align: center;
 }
 
 .gt-register-form {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
 }
 
 .gt-form-section {

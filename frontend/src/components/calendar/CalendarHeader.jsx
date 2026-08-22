@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Calendar as CalendarIcon, User, ChevronDown, Plus, Bell, LogOut } from 'lucide-react';
+import { ArrowLeft, Calendar as CalendarIcon, User, ChevronDown, Plus, Bell, LogOut, MapPin, Users, ShieldCheck, Search } from 'lucide-react';
 import { Logo } from '../ui/Logo';
 import { Button } from '../ui/Button';
 import './CalendarHeader.css';
@@ -8,6 +8,7 @@ export const CalendarHeader = ({
   currentUser,
   onBack,
   onOpenCreateTrip,
+  onNavigate,
   onLogout,
 }) => {
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
@@ -34,14 +35,19 @@ export const CalendarHeader = ({
           </div>
         </div>
 
-        {/* Center: Screen Title Badge */}
-        <div className="gt-calendar-header__center">
-          <div className="gt-cal-screen-pill flex items-center gap-1.5">
-            <CalendarIcon className="w-4 h-4 text-amber-600" />
-            <span className="gt-cal-pill-title brand-serif">Travel Calendar</span>
-            <span className="gt-cal-pill-badge">Screen 11</span>
-          </div>
-        </div>
+        {/* Center: Navigation Links */}
+        {onNavigate && (
+          <nav className="gt-calendar-header__nav hidden-mobile flex items-center gap-3 text-sm font-semibold text-navy-700">
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('landing')}>Home</button>
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('search')}>Explore</button>
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('my-trips')}>My Trips</button>
+            <button type="button" className="hover:text-amber-600" onClick={() => onNavigate('community')}>Community</button>
+            <button type="button" className="text-amber-600 font-bold">Calendar</button>
+            {currentUser?.role === 'admin' && (
+              <button type="button" className="text-amber-700 font-bold" onClick={() => onNavigate('admin')}>Admin</button>
+            )}
+          </nav>
+        )}
 
         {/* Right: User Avatar & Actions */}
         <div className="gt-calendar-header__right flex items-center gap-2">
@@ -82,17 +88,58 @@ export const CalendarHeader = ({
                   <strong>{currentUser?.name || 'Explorer'}</strong>
                   <div className="text-xs text-muted">{currentUser?.email || 'Not signed in'}</div>
                 </div>
-                <button
-                  type="button"
-                  className="gt-cal-dd-item"
-                  onClick={() => {
-                    setUserDropdownOpen(false);
-                    if (onBack) onBack();
-                  }}
-                >
-                  <CalendarIcon className="w-4 h-4" />
-                  <span>Dashboard Home</span>
-                </button>
+
+                {onNavigate && (
+                  <>
+                    <button
+                      type="button"
+                      className="gt-cal-dd-item"
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        onNavigate('profile');
+                      }}
+                    >
+                      <User className="w-4 h-4" />
+                      <span>My Profile</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="gt-cal-dd-item"
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        onNavigate('my-trips');
+                      }}
+                    >
+                      <MapPin className="w-4 h-4" />
+                      <span>My Trips</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="gt-cal-dd-item"
+                      onClick={() => {
+                        setUserDropdownOpen(false);
+                        onNavigate('community');
+                      }}
+                    >
+                      <Users className="w-4 h-4" />
+                      <span>Community Tab</span>
+                    </button>
+                    {currentUser?.role === 'admin' && (
+                      <button
+                        type="button"
+                        className="gt-cal-dd-item text-amber-700 font-semibold"
+                        onClick={() => {
+                          setUserDropdownOpen(false);
+                          onNavigate('admin');
+                        }}
+                      >
+                        <ShieldCheck className="w-4 h-4 text-amber-600" />
+                        <span>Admin Dashboard</span>
+                      </button>
+                    )}
+                  </>
+                )}
+
                 {onLogout && (
                   <button
                     type="button"

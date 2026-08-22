@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Logo } from '../ui/Logo';
 import { Button } from '../ui/Button';
-import { Users, Bell, User, Plus, Compass, Calendar as CalendarIcon, MapPin, ChevronDown, Menu, X, LogOut } from 'lucide-react';
+import { Users, Bell, User, Plus, Compass, Calendar as CalendarIcon, MapPin, ChevronDown, Menu, X, LogOut, Search, ShieldCheck } from 'lucide-react';
 import './CommunityHeader.css';
 
 export const CommunityHeader = ({
@@ -18,39 +18,32 @@ export const CommunityHeader = ({
     <header className="gt-community-header">
       <div className="gt-community-header__inner">
         {/* Left: Brand Logo */}
-        <div className="gt-community-header__brand" onClick={() => onNavigate('landing')}>
+        <div className="gt-community-header__brand cursor-pointer" onClick={() => onNavigate('landing')}>
           <Logo size="small" showTagline={false} centered={false} />
         </div>
 
-        {/* Center: Navigation Links */}
+        {/* Center: Navigation Links (ALL Fields) */}
         <nav className="gt-community-header__nav hidden-mobile">
-          <button
-            type="button"
-            className="gt-comm-nav-link"
-            onClick={() => onNavigate('landing')}
-          >
+          <button type="button" className="gt-comm-nav-link" onClick={() => onNavigate('landing')}>
             Home
           </button>
-          <button
-            type="button"
-            className="gt-comm-nav-link"
-            onClick={() => onNavigate('my-trips')}
-          >
+          <button type="button" className="gt-comm-nav-link" onClick={() => onNavigate('search')}>
+            Explore
+          </button>
+          <button type="button" className="gt-comm-nav-link" onClick={() => onNavigate('my-trips')}>
             My Trips
           </button>
-          <button
-            type="button"
-            className="gt-comm-nav-link gt-comm-nav-link--active"
-          >
+          <button type="button" className="gt-comm-nav-link gt-comm-nav-link--active">
             Community
           </button>
-          <button
-            type="button"
-            className="gt-comm-nav-link"
-            onClick={() => onNavigate('calendar')}
-          >
+          <button type="button" className="gt-comm-nav-link" onClick={() => onNavigate('calendar')}>
             Calendar
           </button>
+          {currentUser?.role === 'admin' && (
+            <button type="button" className="gt-comm-nav-link text-amber-700 font-bold" onClick={() => onNavigate('admin')}>
+              Admin
+            </button>
+          )}
         </nav>
 
         {/* Right: User Avatar & Share Action */}
@@ -103,6 +96,19 @@ export const CommunityHeader = ({
                   <strong>{currentUser?.name || 'Explorer'}</strong>
                   <div className="text-xs text-muted">{currentUser?.email || 'Guest User'}</div>
                 </div>
+
+                <button
+                  type="button"
+                  className="gt-comm-dd-item"
+                  onClick={() => {
+                    setUserDropdownOpen(false);
+                    onNavigate('profile');
+                  }}
+                >
+                  <User className="w-4 h-4" />
+                  <span>My Profile</span>
+                </button>
+
                 <button
                   type="button"
                   className="gt-comm-dd-item"
@@ -112,19 +118,35 @@ export const CommunityHeader = ({
                   }}
                 >
                   <MapPin className="w-4 h-4" />
-                  <span>My Trips (Screen 6)</span>
+                  <span>My Trips</span>
                 </button>
+
                 <button
                   type="button"
                   className="gt-comm-dd-item"
                   onClick={() => {
                     setUserDropdownOpen(false);
-                    onNavigate('itinerary');
+                    onNavigate('calendar');
                   }}
                 >
                   <CalendarIcon className="w-4 h-4" />
-                  <span>Itinerary & Budget (Screen 9)</span>
+                  <span>Calendar View</span>
                 </button>
+
+                {currentUser?.role === 'admin' && (
+                  <button
+                    type="button"
+                    className="gt-comm-dd-item text-amber-700 font-semibold"
+                    onClick={() => {
+                      setUserDropdownOpen(false);
+                      onNavigate('admin');
+                    }}
+                  >
+                    <ShieldCheck className="w-4 h-4 text-amber-600" />
+                    <span>Admin Dashboard</span>
+                  </button>
+                )}
+
                 {onLogout && (
                   <button
                     type="button"
@@ -158,6 +180,9 @@ export const CommunityHeader = ({
           <button type="button" className="gt-comm-mobile-link" onClick={() => onNavigate('landing')}>
             Home
           </button>
+          <button type="button" className="gt-comm-mobile-link" onClick={() => onNavigate('search')}>
+            Explore
+          </button>
           <button type="button" className="gt-comm-mobile-link" onClick={() => onNavigate('my-trips')}>
             My Trips
           </button>
@@ -166,6 +191,9 @@ export const CommunityHeader = ({
           </button>
           <button type="button" className="gt-comm-mobile-link" onClick={() => onNavigate('calendar')}>
             Calendar
+          </button>
+          <button type="button" className="gt-comm-mobile-link" onClick={() => onNavigate('profile')}>
+            Profile
           </button>
           <div className="pt-2">
             <Button variant="primary" size="md" fullWidth={true} icon={Plus} onClick={onOpenShareModal}>

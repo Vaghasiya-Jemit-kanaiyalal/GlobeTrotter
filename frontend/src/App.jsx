@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { authService } from './services/authService';
 import { MainLandingPage } from './components/landing/MainLandingPage';
 import { CreateTripScreen } from './components/trips/CreateTripScreen';
 import { BuildItineraryWorkspace } from './components/itinerary/BuildItineraryWorkspace';
@@ -7,6 +8,7 @@ import { UserProfileScreen } from './components/profile/UserProfileScreen';
 import { ActivitySearchScreen } from './components/search/ActivitySearchScreen';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
+import { AdminLoginForm } from './components/auth/AdminLoginForm';
 import { ForgotPasswordModal } from './components/auth/ForgotPasswordModal';
 import { ItineraryViewPage } from './components/itinerary/ItineraryViewPage';
 import { CalendarViewPage } from './components/calendar/CalendarViewPage';
@@ -14,19 +16,23 @@ import { CommunityTabScreen } from './components/community/CommunityTabScreen';
 import { AdminPanelScreen } from './components/admin/AdminPanelScreen';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
-import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin, User, Search, Users, ShieldCheck } from 'lucide-react';
 import './styles/global.css';
 import './App.css';
 
+// Protected User Routes (Require authentication)
+const PROTECTED_USER_ROUTES = ['my-trips', 'create-trip', 'itinerary-builder', 'itinerary', 'calendar', 'profile'];
+
+// Admin Protected Routes (Require role === 'admin')
+const ADMIN_ROUTES = ['admin'];
+
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'search' | 'profile' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'community' | 'admin' | 'login' | 'register'
-  const [currentUser, setCurrentUser] = useState({
-    name: 'Alex Morgan',
-    firstName: 'Alex',
-    lastName: 'Morgan',
-    email: 'alex.morgan@example.com',
-    role: 'admin',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
+  // Restore current user session from persistent authService
+  const [currentUser, setCurrentUser] = useState(() => authService.getCurrentUser());
+
+  // URL Hash-based Route State (e.g. #/my-trips -> 'my-trips')
+  const [currentRoute, setCurrentRoute] = useState(() => {
+    const hash = window.location.hash.replace('#/', '').replace('#', '');
+    return hash || 'landing';
   });
 
   const [trips, setTrips] = useState(INITIAL_TRIPS_DATA);
@@ -38,10 +44,97 @@ export default function App() {
     setToast({ message, type });
   };
 
+  // Sync route with browser location hash and enforce route protection guards
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace('#/', '').replace('#', '') || 'landing';
+      
+      // Guard 1: User Protected Route Check
+      if (PROTECTED_USER_ROUTES.includes(hash) && !authService.isAuthenticated()) {
+        window.location.hash = '#/login';
+        setCurrentRoute('login');
+        showToast('Please sign in to access your trips and workspace.', 'info');
+        return;
+      }
+
+      // Guard 2: Admin Protected Route Check
+      if (ADMIN_ROUTES.includes(hash) && !authService.isAdmin()) {
+        window.location.hash = '#/admin/login';
+        setCurrentRoute('admin/login');
+        showToast('Administrator authentication required for access.', 'warning');
+        return;
+      }
+
+      setCurrentRoute(hash);
+    };
+
+    // Initial check on mount
+    handleHashChange();
+
+    window.addEventListener('hashchange', handleHashChange);
+    return () => window.removeEventListener('hashchange', handleHashChange);
+  }, []);
+
+  // Central Navigation Handler
+  const navigateTo = (targetRoute) => {
+    let cleanRoute = targetRoute;
+    if (targetRoute === 'explore') cleanRoute = 'search';
+    if (targetRoute === 'trips') cleanRoute = 'my-trips';
+
+    // Route Protection Checks before navigating
+    if (PROTECTED_USER_ROUTES.includes(cleanRoute) && !authService.isAuthenticated()) {
+      window.location.hash = '#/login';
+      showToast('Please sign in to continue.', 'info');
+      return;
+    }
+
+    if (ADMIN_ROUTES.includes(cleanRoute) && !authService.isAdmin()) {
+      window.location.hash = '#/admin/login';
+      showToast('Administrator authentication required.', 'warning');
+      return;
+    }
+
+    window.location.hash = `#/${cleanRoute}`;
+  };
+
+  // Auth Handlers
+  const handleLoginSuccess = async (user) => {
+    const session = await authService.login(user.email, 'password');
+    setCurrentUser(session.user);
+    if (session.user.role === 'admin') {
+      navigateTo('admin');
+      showToast(`Welcome Administrator, ${session.user.name}!`);
+    } else {
+      navigateTo('my-trips');
+      showToast(`Welcome back, ${session.user.firstName || session.user.name}!`);
+    }
+  };
+
+  const handleAdminLoginSuccess = async (email, password) => {
+    const session = await authService.loginAdmin(email, password);
+    setCurrentUser(session.user);
+    navigateTo('admin');
+    showToast(`Administrator authenticated successfully. Welcome, ${session.user.name}!`);
+  };
+
+  const handleRegisterSuccess = async (user) => {
+    const session = await authService.register(user);
+    setCurrentUser(session.user);
+    navigateTo('my-trips');
+    showToast(`Account created! Welcome to GlobeTrotter, ${session.user.firstName}.`);
+  };
+
+  const handleLogout = () => {
+    authService.logout();
+    setCurrentUser(null);
+    navigateTo('landing');
+    showToast('Signed out of GlobeTrotter', 'info');
+  };
+
   const handleCreateTripSuccess = (newTrip) => {
     setTrips((prev) => [newTrip, ...prev]);
     setActiveTrip(newTrip);
-    setCurrentView('itinerary-builder');
+    navigateTo('itinerary-builder');
     showToast(`Trip "${newTrip.title || newTrip.name}" created successfully!`, 'success');
   };
 
@@ -49,283 +142,124 @@ export default function App() {
     setTrips((prev) => [newTrip, ...prev]);
   };
 
-  const handleLoginSuccess = (user) => {
-    setCurrentUser(user);
-    setCurrentView('landing');
-    showToast(`Welcome back, ${user.name || 'Traveler'}!`);
-  };
-
-  const handleRegisterSuccess = (user) => {
-    setCurrentUser(user);
-    setCurrentView('landing');
-    showToast(`Account created successfully! Welcome to GlobeTrotter, ${user.firstName}.`);
-  };
-
-  const handleLogout = () => {
-    setCurrentUser(null);
-    showToast('Signed out of GlobeTrotter', 'info');
-  };
-
   return (
     <div className="gt-app-root">
-      {/* Top QA / Screen Navigation Switcher Bar */}
-      <div className="gt-screen-switcher-bar flex justify-between items-center">
-        <div className="flex items-center gap-2">
-          <Compass className="gt-switcher-icon" />
-          <span className="gt-switcher-brand brand-serif">GlobeTrotter Prototype</span>
-          <span className="gt-switcher-badge">Screen Navigator</span>
-        </div>
-
-        <div className="gt-switcher-buttons flex gap-2 flex-wrap">
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'landing' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('landing')}
-          >
-            <Home className="gt-icon" />
-            <span>Screen 3: Landing</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'search' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('search')}
-          >
-            <Search className="gt-icon" />
-            <span>Screen 8: Search</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'profile' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('profile')}
-          >
-            <User className="gt-icon" />
-            <span>Screen 7: User Profile</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'my-trips' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('my-trips')}
-          >
-            <MapPin className="gt-icon" />
-            <span>Screen 6: My Trips</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'create-trip' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('create-trip')}
-          >
-            <PlusCircle className="gt-icon" />
-            <span>Screen 4: Create Trip</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'itinerary-builder' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('itinerary-builder')}
-          >
-            <CalendarIcon className="gt-icon" />
-            <span>Screen 5: Build Itinerary</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'itinerary' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('itinerary')}
-          >
-            <MapPin className="gt-icon text-amber-500" />
-            <span>Screen 9: Itinerary View</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'community' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('community')}
-          >
-            <Users className="gt-icon text-amber-500" />
-            <span>Screen 10: Community</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'calendar' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('calendar')}
-          >
-            <CalendarIcon className="gt-icon text-amber-500" />
-            <span>Screen 11: Calendar</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'admin' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('admin')}
-          >
-            <ShieldCheck className="gt-icon text-amber-500" />
-            <span>Screen 12: Admin</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'login' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('login')}
-          >
-            <LogIn className="gt-icon" />
-            <span>Screen 1: Login</span>
-          </button>
-
-          <button
-            type="button"
-            className={`gt-switcher-btn ${currentView === 'register' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('register')}
-          >
-            <UserPlus className="gt-icon" />
-            <span>Screen 2: Register</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Screen Views */}
-      {currentView === 'landing' && (
+      {/* Route Views */}
+      {(currentRoute === 'landing' || currentRoute === '') && (
         <MainLandingPage
           currentUser={currentUser}
           trips={trips}
           onAddTrip={handleAddTrip}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else if (view === 'profile') setCurrentView('profile');
-            else if (view === 'explore') setCurrentView('search');
-            else if (view === 'community') setCurrentView('community');
-            else if (view === 'admin') setCurrentView('admin');
-            else setCurrentView(view);
-          }}
+          onNavigate={navigateTo}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'search' && (
+      {currentRoute === 'search' && (
         <ActivitySearchScreen
           currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else if (view === 'profile') setCurrentView('profile');
-            else setCurrentView(view);
-          }}
-          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onNavigate={navigateTo}
+          onOpenCreateTrip={() => navigateTo('create-trip')}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'profile' && (
-        <UserProfileScreen
+      {currentRoute === 'community' && (
+        <CommunityTabScreen
           currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else if (view === 'profile') setCurrentView('profile');
-            else setCurrentView(view);
-          }}
-          onOpenCreateTrip={() => setCurrentView('create-trip')}
-          onViewTripDetails={(t) => {
-            setActiveTrip(t);
-            setCurrentView('itinerary-builder');
-          }}
+          onNavigate={navigateTo}
+          onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'my-trips' && (
+      {currentRoute === 'my-trips' && (
         <UserTripListingScreen
           currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else if (view === 'profile') setCurrentView('profile');
-            else setCurrentView(view);
-          }}
-          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onNavigate={navigateTo}
+          onOpenCreateTrip={() => navigateTo('create-trip')}
           onViewTripDetails={(t) => {
             setActiveTrip(t);
-            setCurrentView('itinerary-builder');
+            navigateTo('itinerary-builder');
           }}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'create-trip' && (
+      {currentRoute === 'profile' && (
+        <UserProfileScreen
+          currentUser={currentUser}
+          onNavigate={navigateTo}
+          onOpenCreateTrip={() => navigateTo('create-trip')}
+          onViewTripDetails={(t) => {
+            setActiveTrip(t);
+            navigateTo('itinerary-builder');
+          }}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentRoute === 'create-trip' && (
         <CreateTripScreen
           currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else if (view === 'profile') setCurrentView('profile');
-            else setCurrentView(view);
-          }}
+          onNavigate={navigateTo}
           onCreateTripSuccess={handleCreateTripSuccess}
         />
       )}
 
-      {currentView === 'itinerary-builder' && (
+      {currentRoute === 'itinerary-builder' && (
         <BuildItineraryWorkspace
           trip={activeTrip}
           currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else if (view === 'profile') setCurrentView('profile');
-            else setCurrentView(view);
-          }}
+          onNavigate={navigateTo}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'itinerary' && (
+      {currentRoute === 'itinerary' && (
         <ItineraryViewPage
           currentUser={currentUser}
-          onBack={() => setCurrentView('landing')}
-          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onBack={() => navigateTo('my-trips')}
+          onOpenCreateTrip={() => navigateTo('create-trip')}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'community' && (
-        <CommunityTabScreen
-          currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else setCurrentView(view);
-          }}
-          onLogout={handleLogout}
-          onShowToast={showToast}
-        />
-      )}
-
-      {currentView === 'calendar' && (
+      {currentRoute === 'calendar' && (
         <CalendarViewPage
           currentUser={currentUser}
-          onBack={() => setCurrentView('landing')}
-          onOpenCreateTrip={() => setCurrentView('create-trip')}
-          onNavigateToItinerary={() => setCurrentView('itinerary')}
+          onBack={() => navigateTo('my-trips')}
+          onOpenCreateTrip={() => navigateTo('create-trip')}
+          onNavigateToItinerary={() => navigateTo('itinerary')}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'admin' && (
+      {currentRoute === 'admin' && (
         <AdminPanelScreen
           currentUser={currentUser}
-          onBack={() => setCurrentView('landing')}
-          onNavigateToUserTrips={() => setCurrentView('my-trips')}
+          onBack={() => navigateTo('landing')}
+          onNavigateToUserTrips={() => navigateTo('my-trips')}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
 
-      {currentView === 'login' && (
+      {currentRoute === 'admin/login' && (
+        <AdminLoginForm
+          onAdminLoginSuccess={handleAdminLoginSuccess}
+          onBackToApp={() => navigateTo('landing')}
+        />
+      )}
+
+      {currentRoute === 'login' && (
         <div className="app-container">
           <div className="gt-auth-wrapper w-full">
             <LoginForm
-              onSwitchToRegister={() => setCurrentView('register')}
+              onSwitchToRegister={() => navigateTo('register')}
               onLoginSuccess={handleLoginSuccess}
               onOpenForgotPassword={() => setForgotPasswordOpen(true)}
             />
@@ -333,11 +267,11 @@ export default function App() {
         </div>
       )}
 
-      {currentView === 'register' && (
+      {currentRoute === 'register' && (
         <div className="app-container">
           <div className="gt-auth-wrapper w-full">
             <RegisterForm
-              onSwitchToLogin={() => setCurrentView('login')}
+              onSwitchToLogin={() => navigateTo('login')}
               onRegisterSuccess={handleRegisterSuccess}
             />
           </div>

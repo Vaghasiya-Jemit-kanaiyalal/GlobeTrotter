@@ -18,6 +18,7 @@ import './AdminPanelScreen.css';
 export const AdminPanelScreen = ({
   currentUser,
   onBack,
+  onNavigate,
   onNavigateToUserTrips,
   onLogout,
   onShowToast,
@@ -152,6 +153,7 @@ export const AdminPanelScreen = ({
       <AdminHeader
         currentUser={currentUser}
         onBack={onBack}
+        onNavigate={onNavigate}
         onLogout={onLogout}
       />
 
