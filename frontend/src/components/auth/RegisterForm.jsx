@@ -69,20 +69,23 @@ export const RegisterForm = ({ onSwitchToLogin, onRegisterSuccess }) => {
     setErrors({});
     setLoading(true);
 
-    // Simulate Registration API
-    setTimeout(() => {
-      setLoading(false);
-      onRegisterSuccess({
+    try {
+      await onRegisterSuccess({
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
+        password: formData.password,
         phone: formData.phone,
         city: formData.city,
         country: formData.country,
         avatarUrl: formData.avatarUrl,
         additionalInfo: formData.additionalInfo,
       });
-    }, 1200);
+    } catch (err) {
+      setErrors({ email: err.message || 'Registration failed. Email may already be registered.' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

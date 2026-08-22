@@ -1,34 +1,9 @@
 /**
  * GlobeTrotter Auth Service
- * Manages persistent user authentication, roles ('user' | 'admin'), and session tokens in localStorage.
+ * Connects frontend directly to Express Backend (/api/v1/auth) with JWT Bearer session persistence.
  */
 
-const STORAGE_KEY_USER = 'globetrotter_user';
-const STORAGE_KEY_TOKEN = 'globetrotter_token';
-
-// Default mock admin and regular user accounts for testing
-const MOCK_ACCOUNTS = [
-  {
-    id: 'usr-admin-1',
-    name: 'Alex Morgan',
-    firstName: 'Alex',
-    lastName: 'Morgan',
-    email: 'admin@globetrotter.com',
-    role: 'admin',
-    avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
-    joinedDate: '2025-11-20',
-  },
-  {
-    id: 'usr-regular-1',
-    name: 'Jay Sohaliya',
-    firstName: 'Jay',
-    lastName: 'Sohaliya',
-    email: 'jay@example.com',
-    role: 'user',
-    avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=250&q=80',
-    joinedDate: '2026-01-15',
-  },
-];
+import { apiClient, STORAGE_KEY_TOKEN, STORAGE_KEY_USER } from './apiClient';
 
 export const authService = {
   /**
@@ -43,7 +18,7 @@ export const authService = {
     } catch (e) {
       console.error('Error reading user session:', e);
     }
-    return null; // Null means unauthenticated guest
+    return null;
   },
 
   /**
@@ -57,7 +32,7 @@ export const authService = {
    * Check if current user is logged in
    */
   isAuthenticated() {
-    return Boolean(this.getCurrentUser());
+    return Boolean(this.getCurrentUser() && this.getToken());
   },
 
   /**
@@ -65,91 +40,96 @@ export const authService = {
    */
   isAdmin() {
     const user = this.getCurrentUser();
-    return Boolean(user && user.role === 'admin');
+    return Boolean(user && user.role === 'admin' && this.getToken());
+  },
+
+  /**
+   * Verify session token with backend endpoint GET /api/v1/auth/me
+   */
+  async verifySession() {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const res = await apiClient.get('/auth/me');
+      if (res && res.user) {
+        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(res.user));
+        return res.user;
+      }
+    } catch (err) {
+      console.warn('Session token verification failed, clearing auth:', err.message);
+      this.logout();
+    }
+    return null;
   },
 
   /**
    * User login (Standard traveler login)
    */
   async login(email, password) {
-    await new Promise((r) => setTimeout(r, 300));
-    
-    // Find matching account or fallback to standard user
-    let account = MOCK_ACCOUNTS.find((a) => a.email.toLowerCase() === email.toLowerCase());
-    if (!account) {
-      account = {
-        id: `usr-${Date.now()}`,
-        name: email.split('@')[0],
-        firstName: email.split('@')[0],
-        lastName: '',
-        email: email,
-        role: email.toLowerCase().includes('admin') ? 'admin' : 'user',
-        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
-        joinedDate: new Date().toISOString().split('T')[0],
-      };
+    try {
+      const data = await apiClient.post('/auth/login', { email, password });
+      if (data && data.user && data.token) {
+        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data.user));
+        localStorage.setItem(STORAGE_KEY_TOKEN, data.token);
+        return data;
+      }
+      throw new Error('Invalid login response from server');
+    } catch (err) {
+      throw err;
     }
-
-    const token = `gt_jwt_token_${Date.now()}`;
-    localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(account));
-    localStorage.setItem(STORAGE_KEY_TOKEN, token);
-
-    return { user: account, token };
   },
 
   /**
-   * Dedicated Admin Login
+   * Dedicated Admin Login with server-side role verification
    */
   async loginAdmin(email, password) {
-    await new Promise((r) => setTimeout(r, 400));
+    try {
+      const data = await apiClient.post('/auth/login', { email, password });
+      if (!data || !data.user || !data.token) {
+        throw new Error('Invalid server response');
+      }
 
-    // Admin validation logic
-    if (email.toLowerCase().includes('admin') || password === 'admin123' || email.toLowerCase() === 'admin@globetrotter.com') {
-      const adminAccount = {
-        id: 'usr-admin-1',
-        name: 'Alex Morgan',
-        firstName: 'Alex',
-        lastName: 'Morgan',
-        email: email || 'admin@globetrotter.com',
-        role: 'admin',
-        avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
-        joinedDate: '2025-11-20',
-      };
+      if (data.user.role !== 'admin') {
+        throw new Error('Access denied: User account does not have administrator privileges.');
+      }
 
-      const token = `gt_admin_jwt_${Date.now()}`;
-      localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(adminAccount));
-      localStorage.setItem(STORAGE_KEY_TOKEN, token);
-
-      return { user: adminAccount, token };
-    } else {
-      throw new Error('Invalid administrator credentials or role unauthorized.');
+      localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data.user));
+      localStorage.setItem(STORAGE_KEY_TOKEN, data.token);
+      return data;
+    } catch (err) {
+      throw err;
     }
   },
 
   /**
-   * User registration
+   * User registration (POST /api/v1/auth/register)
    */
   async register(userData) {
-    await new Promise((r) => setTimeout(r, 300));
-    const newUser = {
-      id: `usr-${Date.now()}`,
-      name: `${userData.firstName} ${userData.lastName}`.trim(),
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      role: 'user',
-      avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
-      joinedDate: new Date().toISOString().split('T')[0],
-    };
+    try {
+      const payload = {
+        email: userData.email,
+        password: userData.password || 'password123',
+        name: `${userData.firstName || ''} ${userData.lastName || ''}`.trim() || userData.name || 'Traveler',
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        phone: userData.phone || '',
+      };
 
-    const token = `gt_jwt_token_${Date.now()}`;
-    localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(newUser));
-    localStorage.setItem(STORAGE_KEY_TOKEN, token);
-
-    return { user: newUser, token };
+      const data = await apiClient.post('/auth/register', payload);
+      if (data && data.user && data.token) {
+        localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(data.user));
+        localStorage.setItem(STORAGE_KEY_TOKEN, data.token);
+        return data;
+      }
+      throw new Error('Invalid registration response from server');
+    } catch (err) {
+      throw err;
+    }
   },
 
   /**
-   * Logout user and clear stored auth tokens
+   * Logout user and clear stored session
    */
   logout() {
     localStorage.removeItem(STORAGE_KEY_USER);

@@ -8,6 +8,7 @@ import { Button } from '../ui/Button';
 import { DestinationAutocomplete } from './DestinationAutocomplete';
 import { ActivitySuggestionCard } from './ActivitySuggestionCard';
 import { ACTIVITIES_DATA } from '../../data/activitiesData';
+import { tripApi } from '../../services/tripApi';
 import './CreateTripScreen.css';
 
 export const CreateTripScreen = ({
@@ -109,10 +110,24 @@ export const CreateTripScreen = ({
       totalBudget: '₹18,500',
     };
 
-    setTimeout(() => {
+    try {
+      const res = await tripApi.createTrip({
+        name: tripName,
+        title: tripName,
+        startDate,
+        endDate,
+        summary: description,
+        destinations: [destination],
+        coverImage: newTrip.coverImage,
+        totalBudget: 18500,
+      });
+      setLoading(false);
+      onCreateTripSuccess(res.data || newTrip);
+    } catch (err) {
+      console.warn('Backend trip creation fallback:', err);
       setLoading(false);
       onCreateTripSuccess(newTrip);
-    }, 800);
+    }
   };
 
   return (

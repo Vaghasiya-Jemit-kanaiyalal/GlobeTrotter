@@ -44,6 +44,35 @@ export default function App() {
     setToast({ message, type });
   };
 
+  // Verify backend session token on mount
+  useEffect(() => {
+    async function initSession() {
+      const verifiedUser = await authService.verifySession();
+      if (verifiedUser) {
+        setCurrentUser(verifiedUser);
+      }
+    }
+    initSession();
+  }, []);
+
+  // Fetch live trips when user is logged in
+  useEffect(() => {
+    async function loadUserTrips() {
+      if (currentUser) {
+        try {
+          const res = await tripApi.getTrips();
+          if (res.data && res.data.length > 0) {
+            setTrips(res.data);
+            setActiveTrip(res.data[0]);
+          }
+        } catch (e) {
+          console.warn('Trips fetch warning:', e);
+        }
+      }
+    }
+    loadUserTrips();
+  }, [currentUser]);
+
   // Sync route with browser location hash and enforce route protection guards
   useEffect(() => {
     const handleHashChange = () => {
@@ -99,7 +128,7 @@ export default function App() {
 
   // Auth Handlers
   const handleLoginSuccess = async (user) => {
-    const session = await authService.login(user.email, 'password');
+    const session = await authService.login(user.email, user.password || 'password123');
     setCurrentUser(session.user);
     if (session.user.role === 'admin') {
       navigateTo('admin');
@@ -121,7 +150,7 @@ export default function App() {
     const session = await authService.register(user);
     setCurrentUser(session.user);
     navigateTo('my-trips');
-    showToast(`Account created! Welcome to GlobeTrotter, ${session.user.firstName}.`);
+    showToast(`Account created! Welcome to GlobeTrotter, ${session.user.firstName || session.user.name}.`);
   };
 
   const handleLogout = () => {

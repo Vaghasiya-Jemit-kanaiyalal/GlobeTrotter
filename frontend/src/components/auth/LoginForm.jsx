@@ -36,16 +36,17 @@ export const LoginForm = ({ onSwitchToRegister, onLoginSuccess, onOpenForgotPass
     setErrors({});
     setLoading(true);
 
-    // Simulate API authentication call
-    setTimeout(() => {
-      setLoading(false);
-      onLoginSuccess({
+    // Live REST API authentication call via authService
+    try {
+      await onLoginSuccess({
         email: formData.identifier,
-        name: formData.identifier.includes('@')
-          ? formData.identifier.split('@')[0]
-          : formData.identifier,
+        password: formData.password,
       });
-    }, 1000);
+    } catch (err) {
+      setErrors({ identifier: err.message || 'Login failed. Please check your credentials.' });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

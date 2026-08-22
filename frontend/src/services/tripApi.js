@@ -1,11 +1,10 @@
 /**
  * REST API Service Layer for GlobeTrotter Trips Management
+ * Connected live to Express Backend (/api/v1/trips) and MySQL DB
  */
 
+import { apiClient } from './apiClient';
 import { INITIAL_TRIPS_DATA } from '../data/tripsData';
-
-// Simulated API latency
-const delay = (ms = 300) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Helper: Calculate dynamic status based on dates
 export const calculateTripStatus = (startDateStr, endDateStr) => {
@@ -28,7 +27,6 @@ export const calculateTripStatus = (startDateStr, endDateStr) => {
   }
 };
 
-// Helper: Calculate days remaining or progress
 export const calculateTripProgress = (startDateStr, endDateStr) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -54,170 +52,143 @@ export const calculateDaysUntilStart = (startDateStr) => {
   return Math.max(0, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
 };
 
-// Simulated Trips Data Store
-let tripsStore = [
-  {
-    id: 'trip-ongoing-1',
-    title: 'Goa Coastal Exploration',
-    primaryLocation: 'Goa, India',
-    coverImage: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
-    startDate: '2026-08-20',
-    endDate: '2026-08-28',
-    dateRange: '20 Aug – 28 Aug 2026',
-    destinationCount: 3,
-    destinations: ['Panaji', 'Calangute', 'Palolem'],
-    activitiesCount: 8,
-    totalBudget: '₹35,000',
-    summary: 'Active 8-day beach and heritage tour covering Sinquerim fort and spice plantations.',
-  },
-  {
-    id: 'trip-upcoming-1',
-    title: 'Parisian Classical Capitals',
-    primaryLocation: 'Paris, France',
-    coverImage: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
-    startDate: '2026-10-15',
-    endDate: '2026-10-22',
-    dateRange: '15 Oct – 22 Oct 2026',
-    destinationCount: 1,
-    destinations: ['Paris'],
-    activitiesCount: 6,
-    totalBudget: '₹85,000',
-    summary: 'Autumn getaway to Paris featuring Louvre museum tickets and Versailles day trip.',
-  },
-  {
-    id: 'trip-completed-1',
-    title: 'Rajasthan Heritage Road Trip',
-    primaryLocation: 'Rajasthan, India',
-    coverImage: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
-    startDate: '2026-03-12',
-    endDate: '2026-03-20',
-    dateRange: '12 Mar – 20 Mar 2026',
-    destinationCount: 4,
-    destinations: ['Jaipur', 'Jodhpur', 'Udaipur', 'Jaisalmer'],
-    activitiesCount: 12,
-    totalBudget: '₹42,000',
-    summary: 'Completed 8-day desert fort safari and palace hotel tour across Rajasthan.',
-  },
-  {
-    id: 'trip-completed-2',
-    title: 'Kyoto & Tokyo Discovery',
-    primaryLocation: 'Kyoto, Japan',
-    coverImage: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
-    startDate: '2025-11-05',
-    endDate: '2025-11-17',
-    dateRange: '05 Nov – 17 Nov 2025',
-    destinationCount: 3,
-    destinations: ['Tokyo', 'Hakone', 'Kyoto'],
-    activitiesCount: 14,
-    totalBudget: '¥380,000',
-    summary: 'Autumn foliage tour spanning Tokyo neon districts, Mount Fuji onsen, and Kyoto shrines.',
-  },
-];
+function normalizeTrip(t) {
+  const startDate = t.start_date || t.startDate || '2026-10-01';
+  const endDate = t.end_date || t.endDate || '2026-10-08';
+  const title = t.name || t.title || 'Untitled Trip';
+  const budgetVal = t.budget_limit !== undefined ? t.budget_limit : (t.budgetLimit !== undefined ? t.budgetLimit : t.totalBudget || 25000);
+  const numericBudget = typeof budgetVal === 'number' ? budgetVal : (parseFloat(String(budgetVal).replace(/[^0-9.]/g, '')) || 0);
+
+  return {
+    ...t,
+    id: String(t.id),
+    title,
+    name: title,
+    primaryLocation: t.primaryLocation || t.primary_location || t.city_name || (Array.isArray(t.destinations) ? t.destinations[0] : null) || 'Goa, India',
+    coverImage: t.cover_image || t.coverImage || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+    startDate,
+    endDate,
+    dateRange: t.dateRange || `${startDate} – ${endDate}`,
+    destinationCount: parseInt(t.stop_count || t.destinationCount || 1, 10),
+    destinations: Array.isArray(t.destinations) ? t.destinations : [t.city_name || 'Destination'],
+    activitiesCount: parseInt(t.activity_count || t.activitiesCount || 0, 10),
+    totalBudget: `₹${numericBudget.toLocaleString()}`,
+    budgetLimit: numericBudget,
+    summary: t.description || t.summary || 'Custom itinerary trip.',
+    calculatedStatus: calculateTripStatus(startDate, endDate),
+    progress: calculateTripProgress(startDate, endDate),
+    daysUntilStart: calculateDaysUntilStart(startDate),
+  };
+}
 
 export const tripApi = {
   // GET /api/v1/trips
   async getTrips({ status = 'All', search = '', sortBy = 'Newest' } = {}) {
-    await delay(250);
+    try {
+      const res = await apiClient.get('/trips', { search, sortBy });
+      const rawList = Array.isArray(res) ? res : (res?.trips || []);
+      let result = rawList.map(normalizeTrip);
 
-    let result = tripsStore.map((t) => ({
-      ...t,
-      calculatedStatus: calculateTripStatus(t.startDate, t.endDate),
-      progress: calculateTripProgress(t.startDate, t.endDate),
-      daysUntilStart: calculateDaysUntilStart(t.startDate),
-    }));
+      if (status !== 'All') {
+        result = result.filter((t) => t.calculatedStatus.toLowerCase() === status.toLowerCase());
+      }
 
-    // Filter by search query
-    if (search.trim()) {
-      const q = search.toLowerCase().trim();
-      result = result.filter(
-        (t) =>
-          t.title.toLowerCase().includes(q) ||
-          t.primaryLocation.toLowerCase().includes(q) ||
-          t.destinations.some((d) => d.toLowerCase().includes(q))
-      );
+      return {
+        success: true,
+        totalCount: result.length,
+        ongoingCount: result.filter((t) => t.calculatedStatus === 'Ongoing').length,
+        upcomingCount: result.filter((t) => t.calculatedStatus === 'Upcoming').length,
+        completedCount: result.filter((t) => t.calculatedStatus === 'Completed').length,
+        data: result,
+      };
+    } catch (err) {
+      console.warn('Backend trip fetch failed, returning fallback data:', err.message);
+      let result = INITIAL_TRIPS_DATA.map(normalizeTrip);
+      return {
+        success: true,
+        totalCount: result.length,
+        ongoingCount: result.filter((t) => t.calculatedStatus === 'Ongoing').length,
+        upcomingCount: result.filter((t) => t.calculatedStatus === 'Upcoming').length,
+        completedCount: result.filter((t) => t.calculatedStatus === 'Completed').length,
+        data: result,
+      };
     }
-
-    // Filter by status
-    if (status !== 'All') {
-      result = result.filter((t) => t.calculatedStatus.toLowerCase() === status.toLowerCase());
-    }
-
-    // Sort
-    result.sort((a, b) => {
-      if (sortBy === 'Newest') return new Date(b.startDate) - new Date(a.startDate);
-      if (sortBy === 'Oldest') return new Date(a.startDate) - new Date(b.startDate);
-      if (sortBy === 'Start Date') return new Date(a.startDate) - new Date(b.startDate);
-      if (sortBy === 'End Date') return new Date(a.endDate) - new Date(b.endDate);
-      if (sortBy === 'Trip Name') return a.title.localeCompare(b.title);
-      return 0;
-    });
-
-    return {
-      success: true,
-      totalCount: result.length,
-      ongoingCount: result.filter((t) => t.calculatedStatus === 'Ongoing').length,
-      upcomingCount: result.filter((t) => t.calculatedStatus === 'Upcoming').length,
-      completedCount: result.filter((t) => t.calculatedStatus === 'Completed').length,
-      data: result,
-    };
   },
 
   // GET /api/v1/trips/:id
   async getTripById(id) {
-    await delay(150);
-    const trip = tripsStore.find((t) => t.id === id);
-    if (!trip) throw new Error('Trip not found');
-    return {
-      success: true,
-      data: {
-        ...trip,
-        calculatedStatus: calculateTripStatus(trip.startDate, trip.endDate),
-        progress: calculateTripProgress(trip.startDate, trip.endDate),
-      },
-    };
+    try {
+      const res = await apiClient.get(`/trips/${id}`);
+      const tripObj = res?.trip || res;
+      return {
+        success: true,
+        data: normalizeTrip(tripObj),
+      };
+    } catch (err) {
+      console.warn(`Backend getTripById(${id}) failed:`, err.message);
+      const fallback = INITIAL_TRIPS_DATA.find((t) => String(t.id) === String(id)) || INITIAL_TRIPS_DATA[0];
+      return { success: true, data: normalizeTrip(fallback) };
+    }
   },
 
   // POST /api/v1/trips
   async createTrip(data) {
-    await delay(300);
-    const newTrip = {
-      id: `trip-${Date.now()}`,
-      title: data.title,
-      primaryLocation: data.primaryLocation || data.destinations?.[0] || 'Custom Destination',
-      coverImage: data.coverImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80',
-      startDate: data.startDate || '2026-10-01',
-      endDate: data.endDate || '2026-10-08',
-      dateRange: data.dateRange || '01 Oct – 08 Oct 2026',
-      destinationCount: data.destinations?.length || 1,
-      destinations: data.destinations || ['Custom Destination'],
-      activitiesCount: data.activitiesCount || 4,
-      totalBudget: data.totalBudget || '₹25,000',
-      summary: data.summary || 'Custom itinerary plan.',
-    };
-    tripsStore = [newTrip, ...tripsStore];
-    return { success: true, data: newTrip };
+    try {
+      const payload = {
+        name: data.title || data.name || 'New Travel Plan',
+        description: data.summary || data.description || '',
+        startDate: data.startDate || '2026-10-01',
+        endDate: data.endDate || '2026-10-08',
+        budgetLimit: typeof data.totalBudget === 'number' ? data.totalBudget : (parseFloat(String(data.totalBudget).replace(/[^0-9.]/g, '')) || 25000),
+        coverImage: data.coverImage || 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=800&q=80',
+        cityId: data.cityId || null,
+        isPublic: data.isPublic || false,
+      };
+
+      const res = await apiClient.post('/trips', payload);
+      const createdTrip = res?.trip || res;
+      return { success: true, data: normalizeTrip(createdTrip) };
+    } catch (err) {
+      console.error('Trip creation failed on backend:', err.message);
+      throw err;
+    }
   },
 
   // PUT /api/v1/trips/:id
   async updateTrip(id, updatedData) {
-    await delay(300);
-    tripsStore = tripsStore.map((t) => (t.id === id ? { ...t, ...updatedData } : t));
-    return { success: true, message: 'Trip updated successfully' };
+    try {
+      const payload = {
+        name: updatedData.title || updatedData.name,
+        description: updatedData.summary || updatedData.description,
+        startDate: updatedData.startDate,
+        endDate: updatedData.endDate,
+        budgetLimit: updatedData.budgetLimit || updatedData.totalBudget,
+        coverImage: updatedData.coverImage,
+      };
+      await apiClient.put(`/trips/${id}`, payload);
+      return { success: true, message: 'Trip updated successfully' };
+    } catch (err) {
+      console.error(`Update trip ${id} failed:`, err.message);
+      throw err;
+    }
   },
 
   // DELETE /api/v1/trips/:id
   async deleteTrip(id) {
-    await delay(300);
-    tripsStore = tripsStore.filter((t) => t.id !== id);
-    return { success: true, message: 'Trip deleted successfully' };
+    try {
+      await apiClient.del(`/trips/${id}`);
+      return { success: true, message: 'Trip deleted successfully' };
+    } catch (err) {
+      console.error(`Delete trip ${id} failed:`, err.message);
+      throw err;
+    }
   },
 
   // POST /api/v1/trips/:id/share
   async shareTrip(id) {
-    await delay(150);
     return {
       success: true,
-      shareUrl: `http://localhost:5173/share/trip/${id}`,
+      shareUrl: `${window.location.origin}/#/itinerary?tripId=${id}`,
     };
   },
 };

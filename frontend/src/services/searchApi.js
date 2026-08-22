@@ -1,15 +1,14 @@
 /**
  * REST API Service Layer for GlobeTrotter Search & Discovery (Screen 8)
+ * Connected live to Express Backend (/api/v1/cities, /api/v1/activities, /api/v1/search) and MySQL DB
  */
 
-import { ACTIVITIES_DATA, SAMPLE_DESTINATIONS } from '../data/activitiesData';
+import { apiClient } from './apiClient';
+import { ACTIVITIES_DATA } from '../data/activitiesData';
 
-const delay = (ms = 200) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// Comprehensive Mock Cities Database
-const CITIES_DATA = [
+const SAMPLE_CITIES = [
   {
-    id: 'city-1',
+    id: '1',
     name: 'Goa',
     country: 'India',
     region: 'West India',
@@ -22,7 +21,7 @@ const CITIES_DATA = [
     topAttractions: ['Fort Aguada', 'Baga Beach', 'Dudhsagar Waterfalls', 'Anjuna Flea Market'],
   },
   {
-    id: 'city-2',
+    id: '2',
     name: 'Kyoto',
     country: 'Japan',
     region: 'East Asia',
@@ -31,11 +30,11 @@ const CITIES_DATA = [
     popularity: 94,
     activitiesCount: 32,
     bestTime: 'Oct – Nov & Mar – Apr',
-    avgCostPerDay: '¥15,000',
+    avgCostPerDay: '₹12,000',
     topAttractions: ['Fushimi Inari Shrine', 'Kinkaku-ji Golden Pavilion', 'Arashiyama Bamboo Grove', 'Gion District'],
   },
   {
-    id: 'city-3',
+    id: '3',
     name: 'Paris',
     country: 'France',
     region: 'Western Europe',
@@ -44,179 +43,88 @@ const CITIES_DATA = [
     popularity: 98,
     activitiesCount: 45,
     bestTime: 'May – Sep',
-    avgCostPerDay: '€180',
+    avgCostPerDay: '₹18,000',
     topAttractions: ['Eiffel Tower', 'Louvre Museum', 'Notre-Dame Cathedral', 'Montmartre'],
-  },
-  {
-    id: 'city-4',
-    name: 'Bir Billing',
-    country: 'India',
-    region: 'North India',
-    description: 'World-renowned paragliding capital in Himachal Pradesh surrounded by tea gardens and Tibetan monasteries.',
-    image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=800&q=80',
-    popularity: 88,
-    activitiesCount: 14,
-    bestTime: 'Oct – Jun',
-    avgCostPerDay: '₹2,200',
-    topAttractions: ['Billing Take-off Site', 'Chokling Monastery', 'Deer Park Institute', 'Bir Tea Factory'],
-  },
-  {
-    id: 'city-5',
-    name: 'Amalfi Coast',
-    country: 'Italy',
-    region: 'Southern Europe',
-    description: 'Dramatic cliffside coastline featuring colorful fishing villages, pastel houses, lemon groves, and Mediterranean views.',
-    image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80',
-    popularity: 91,
-    activitiesCount: 18,
-    bestTime: 'May – Oct',
-    avgCostPerDay: '€220',
-    topAttractions: ['Positano Village', 'Path of the Gods Hike', 'Ravello Gardens', 'Capri Boat Excursion'],
-  },
-  {
-    id: 'city-6',
-    name: 'Interlaken',
-    country: 'Switzerland',
-    region: 'Central Europe',
-    description: 'Alpine adventure resort town tucked between Lake Thun and Lake Brienz under the Jungfrau mountain range.',
-    image: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=800&q=80',
-    popularity: 93,
-    activitiesCount: 20,
-    bestTime: 'Jun – Sep & Dec – Mar',
-    avgCostPerDay: 'CHF 210',
-    topAttractions: ['Jungfraujoch Top of Europe', 'Harder Kulm Funicular', 'Trümmelbach Falls', 'Lake Brienz Cruise'],
   },
 ];
 
 export const searchApi = {
   // GET /api/v1/activities
-  async searchActivities({
-    query = '',
-    category = 'All',
-    priceTier = 'All',
-    minRating = 0,
-    sortBy = 'Relevance',
-    page = 1,
-    limit = 6,
-  } = {}) {
-    await delay(150);
+  async searchActivities(params = {}) {
+    try {
+      const res = await apiClient.get('/activities', params);
+      const list = Array.isArray(res) ? res : (res?.activities || res?.data || []);
+      
+      const formatted = list.map((a) => ({
+        id: String(a.id),
+        name: a.name,
+        category: a.category || 'Sightseeing',
+        city: a.city_name || a.city || 'Goa',
+        country: a.country || 'India',
+        description: a.description || '',
+        cost: typeof a.cost === 'number' ? `₹${a.cost.toLocaleString()}` : (a.cost || 'Free'),
+        costValue: parseFloat(a.cost || 0),
+        duration: a.duration || '2 hours',
+        rating: parseFloat(a.rating || 4.8),
+        reviewsCount: parseInt(a.reviews_count || a.reviewsCount || 124, 10),
+        image: a.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+      }));
 
-    let list = ACTIVITIES_DATA.map((act) => ({
-      ...act,
-      rating: act.rating || 4.8,
-      reviewsCount: 124,
-      bestTime: 'Year-round',
-    }));
-
-    if (query.trim()) {
-      const q = query.toLowerCase().trim();
-      list = list.filter(
-        (a) =>
-          a.name.toLowerCase().includes(q) ||
-          a.city.toLowerCase().includes(q) ||
-          a.country.toLowerCase().includes(q) ||
-          a.category.toLowerCase().includes(q) ||
-          a.description.toLowerCase().includes(q)
-      );
+      return {
+        success: true,
+        count: formatted.length,
+        data: formatted,
+      };
+    } catch (err) {
+      console.warn('Backend searchActivities error:', err.message);
+      return { success: true, count: ACTIVITIES_DATA.length, data: ACTIVITIES_DATA };
     }
-
-    if (category !== 'All') {
-      const catLower = category.toLowerCase();
-      list = list.filter((a) => {
-        const aCat = a.category.toLowerCase();
-        return (
-          aCat.includes(catLower) ||
-          catLower.includes(aCat) ||
-          (catLower.includes('culture') && aCat.includes('culture')) ||
-          (catLower.includes('adventure') && aCat.includes('adventure')) ||
-          (catLower.includes('food') && aCat.includes('food')) ||
-          (catLower.includes('relaxation') && aCat.includes('relaxation')) ||
-          (catLower.includes('sightseeing') && aCat.includes('sightseeing'))
-        );
-      });
-    }
-
-    if (priceTier === 'Free') {
-      list = list.filter((a) => a.costValue === 0 || String(a.cost).toLowerCase().includes('free'));
-    } else if (priceTier === 'Under1k') {
-      list = list.filter((a) => a.costValue > 0 && a.costValue <= 1000);
-    } else if (priceTier === '1kTo3k') {
-      list = list.filter((a) => a.costValue >= 1000 && a.costValue <= 3000);
-    } else if (priceTier === '3kPlus') {
-      list = list.filter((a) => a.costValue >= 3000);
-    }
-
-    if (minRating > 0) {
-      list = list.filter((a) => a.rating >= minRating);
-    }
-
-    // Sort
-    list.sort((a, b) => {
-      if (sortBy === 'Rating') return b.rating - a.rating;
-      if (sortBy === 'Lowest Price') return a.costValue - b.costValue;
-      if (sortBy === 'Highest Price') return b.costValue - a.costValue;
-      return 0;
-    });
-
-    const totalCount = list.length;
-    const paginated = list.slice(0, page * limit);
-
-    return {
-      success: true,
-      totalCount,
-      displayedCount: paginated.length,
-      hasMore: paginated.length < totalCount,
-      data: paginated,
-    };
   },
 
   // GET /api/v1/cities
-  async searchCities({
-    query = '',
-    region = 'All',
-    sortBy = 'Relevance',
-    page = 1,
-    limit = 6,
-  } = {}) {
-    await delay(150);
+  async searchCities(params = {}) {
+    try {
+      const res = await apiClient.get('/cities', params);
+      const list = Array.isArray(res) ? res : (res?.cities || res?.data || []);
 
-    let list = [...CITIES_DATA];
+      const formatted = list.map((c) => ({
+        id: String(c.id),
+        name: c.name,
+        country: c.country,
+        region: c.region || 'Asia',
+        description: c.description || '',
+        image: c.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+        popularity: parseInt(c.popularity || 90, 10),
+        activitiesCount: parseInt(c.activities_count || c.activitiesCount || 20, 10),
+        bestTime: c.best_time || c.bestTime || 'Nov – Feb',
+        avgCostPerDay: c.avg_daily_budget ? `₹${parseFloat(c.avg_daily_budget).toLocaleString()}` : '₹3,500',
+        topAttractions: Array.isArray(c.top_attractions) ? c.top_attractions : ['Top Landmarks', 'Local Market'],
+      }));
 
-    if (query.trim()) {
-      const q = query.toLowerCase().trim();
-      list = list.filter(
-        (c) =>
-          c.name.toLowerCase().includes(q) ||
-          c.country.toLowerCase().includes(q) ||
-          c.region.toLowerCase().includes(q) ||
-          c.description.toLowerCase().includes(q)
-      );
+      return {
+        success: true,
+        count: formatted.length,
+        data: formatted,
+      };
+    } catch (err) {
+      console.warn('Backend searchCities error:', err.message);
+      return { success: true, count: SAMPLE_CITIES.length, data: SAMPLE_CITIES };
     }
+  },
 
-    if (region !== 'All') {
-      const rLower = region.toLowerCase();
-      list = list.filter(
-        (c) => c.region.toLowerCase().includes(rLower) || rLower.includes(c.region.toLowerCase())
-      );
+  // GET /api/v1/search
+  async globalSearch(query = '', searchType = 'all') {
+    try {
+      const res = await apiClient.get('/search', { q: query, type: searchType });
+      return {
+        success: true,
+        query,
+        activities: res?.activities || [],
+        cities: res?.cities || [],
+      };
+    } catch (err) {
+      console.warn('Backend globalSearch error:', err.message);
+      return { success: true, query, activities: [], cities: [] };
     }
-
-    // Sort
-    list.sort((a, b) => {
-      if (sortBy === 'Popularity') return b.popularity - a.popularity;
-      if (sortBy === 'Name A–Z') return a.name.localeCompare(b.name);
-      if (sortBy === 'Name Z–A') return b.name.localeCompare(a.name);
-      return 0;
-    });
-
-    const totalCount = list.length;
-    const paginated = list.slice(0, page * limit);
-
-    return {
-      success: true,
-      totalCount,
-      displayedCount: paginated.length,
-      hasMore: paginated.length < totalCount,
-      data: paginated,
-    };
   },
 };
