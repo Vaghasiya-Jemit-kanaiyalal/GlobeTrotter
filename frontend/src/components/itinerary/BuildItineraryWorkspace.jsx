@@ -155,29 +155,58 @@ export const BuildItineraryWorkspace = ({
 
   // Fetch live trip itinerary from Express backend (/api/v1/trips/:id/itinerary)
   useEffect(() => {
-    if (trip && trip.id) {
-      tripApi.getItinerary(trip.id).then((res) => {
-        if (res && Array.isArray(res.stops) && res.stops.length > 0) {
-          const mappedSections = res.stops.map((stop, idx) => ({
-            id: String(stop.id || `sec-${idx + 1}`),
-            city: stop.city_name || stop.city || 'Goa',
-            country: stop.country || 'India',
-            startDate: stop.start_date || trip?.startDate || '2026-10-01',
-            endDate: stop.end_date || trip?.endDate || '2026-10-08',
-            days: 3,
-            budget: 12000,
-            activities: Array.isArray(stop.activities) ? stop.activities.map((a, aIdx) => ({
-              id: String(a.id || `a-${idx + 1}-${aIdx + 1}`),
-              name: a.activity_name || a.name || 'Activity',
-              time: a.scheduled_time ? String(a.scheduled_time).substr(0, 5) : '10:00 AM',
-              category: a.category || 'Sightseeing',
-              cost: typeof a.estimated_cost === 'number' ? `₹${a.estimated_cost.toLocaleString()}` : (a.cost || '₹500'),
-              duration: a.duration_minutes ? `${a.duration_minutes} mins` : '2 hrs',
-            })) : [],
-          }));
-          setSections(mappedSections);
-        }
-      });
+    if (trip) {
+      const initialCity = trip.primaryLocation || (Array.isArray(trip.destinations) ? trip.destinations[0] : 'Goa');
+      const initialActivities = Array.isArray(trip.activities) && trip.activities.length > 0
+        ? trip.activities.map((a, idx) => ({
+            id: String(a.id || `a-${idx + 1}`),
+            name: a.name || 'Planned Activity',
+            time: '10:00 AM',
+            category: a.category || 'Sightseeing',
+            cost: typeof a.cost === 'number' ? `₹${a.cost.toLocaleString()}` : (a.cost || '₹500'),
+            duration: a.duration || '2 hrs',
+          }))
+        : [
+            { id: 'a-1', name: 'City Exploration & Heritage Stroll', time: '09:30 AM', category: 'Sightseeing', cost: '₹200', duration: '2 hrs' },
+          ];
+
+      const initialSection = {
+        id: 'sec-1',
+        city: initialCity.split(',')[0],
+        country: initialCity.includes(',') ? initialCity.split(',')[1].trim() : 'India',
+        startDate: trip.startDate || '2026-09-01',
+        endDate: trip.endDate || '2026-09-07',
+        days: 5,
+        budget: typeof trip.totalBudget === 'number' ? trip.totalBudget : 18500,
+        activities: initialActivities,
+      };
+
+      setSections([initialSection]);
+
+      if (trip.id) {
+        tripApi.getItinerary(trip.id).then((res) => {
+          if (res && Array.isArray(res.stops) && res.stops.length > 0) {
+            const mappedSections = res.stops.map((stop, idx) => ({
+              id: String(stop.id || `sec-${idx + 1}`),
+              city: stop.city_name || stop.city || initialCity,
+              country: stop.country || 'India',
+              startDate: stop.start_date || trip?.startDate || '2026-10-01',
+              endDate: stop.end_date || trip?.endDate || '2026-10-08',
+              days: 3,
+              budget: 12000,
+              activities: Array.isArray(stop.activities) && stop.activities.length > 0 ? stop.activities.map((a, aIdx) => ({
+                id: String(a.id || `a-${idx + 1}-${aIdx + 1}`),
+                name: a.activity_name || a.name || 'Activity',
+                time: a.scheduled_time ? String(a.scheduled_time).substr(0, 5) : '10:00 AM',
+                category: a.category || 'Sightseeing',
+                cost: typeof a.estimated_cost === 'number' ? `₹${a.estimated_cost.toLocaleString()}` : (a.cost || '₹500'),
+                duration: a.duration_minutes ? `${a.duration_minutes} mins` : '2 hrs',
+              })) : initialActivities,
+            }));
+            setSections(mappedSections);
+          }
+        });
+      }
     }
   }, [trip]);
 
