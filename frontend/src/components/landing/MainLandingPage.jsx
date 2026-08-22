@@ -69,8 +69,7 @@ export const MainLandingPage = ({
   };
 
   const handleOpenCreateTrip = (initialCity = '') => {
-    setCreateTripCity(typeof initialCity === 'string' ? initialCity : '');
-    setCreateTripOpen(true);
+    onNavigate('create-trip');
   };
 
   const handleCreateTripSubmit = (newTrip) => {

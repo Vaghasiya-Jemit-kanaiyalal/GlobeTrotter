@@ -89,15 +89,7 @@ export const ItineraryHeader = ({
             </Button>
           )}
 
-          <button
-            type="button"
-            className="gt-header-icon-btn"
-            onClick={() => setHasNotification(!hasNotification)}
-            title="Notifications"
-          >
-            <Bell className="w-4 h-4" />
-            {hasNotification && <span className="gt-notif-dot" />}
-          </button>
+
 
           <div className="relative">
             <button

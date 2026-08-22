@@ -75,17 +75,7 @@ export const Navbar = ({
             Plan a Trip
           </Button>
 
-          {/* Notifications Bell */}
-          <button
-            type="button"
-            className="gt-navbar__icon-btn"
-            title="Notifications"
-            aria-label="Notifications"
-            onClick={() => setHasNotification(!hasNotification)}
-          >
-            <Bell className="gt-icon" />
-            {hasNotification && <span className="gt-navbar__notif-badge" />}
-          </button>
+
 
           {/* User Profile Avatar / Dropdown */}
           <div className="gt-navbar__user-container relative">

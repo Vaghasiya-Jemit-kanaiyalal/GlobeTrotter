@@ -1,7 +1,8 @@
+/* Premium GlobeTrotter Hero Banner */
 .gt-hero {
   position: relative;
   width: 100%;
-  padding: 4.5rem var(--space-6) 4rem;
+  padding: 5rem var(--space-6) 4.5rem;
   background-color: var(--color-navy-900);
   color: #FFFFFF;
   overflow: hidden;
@@ -11,20 +12,27 @@
 .gt-hero__background {
   position: absolute;
   inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1920&q=80');
   background-size: cover;
-  background-position: center;
+  background-position: center right;
   z-index: 0;
+  transform: scale(1.02);
+  transition: transform 10s ease-out;
 }
 
+.gt-hero:hover .gt-hero__background {
+  transform: scale(1.05);
+}
+
+/* Subtle dark gradient on the left for text readability while revealing cinematic photo on right */
 .gt-hero__overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    135deg,
-    rgba(15, 23, 42, 0.92) 0%,
-    rgba(15, 23, 42, 0.85) 50%,
-    rgba(30, 41, 59, 0.78) 100%
+    90deg,
+    rgba(15, 23, 42, 0.94) 0%,
+    rgba(15, 23, 42, 0.85) 38%,
+    rgba(15, 23, 42, 0.55) 70%,
+    rgba(15, 23, 42, 0.25) 100%
   );
 }
 
@@ -36,7 +44,7 @@
 }
 
 .gt-hero__content {
-  max-width: 680px;
+  max-width: 650px;
   display: flex;
   flex-direction: column;
   gap: var(--space-4);
@@ -46,16 +54,17 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  padding: 0.35rem 0.85rem;
+  padding: 0.4rem 0.95rem;
   border-radius: var(--radius-full);
-  background-color: rgba(217, 119, 6, 0.15);
-  border: 1px solid rgba(217, 119, 6, 0.4);
+  background-color: rgba(217, 119, 6, 0.2);
+  border: 1px solid rgba(217, 119, 6, 0.5);
   color: #FBBF24;
   font-size: var(--font-size-xs);
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   align-self: flex-start;
+  backdrop-filter: blur(8px);
 }
 
 .gt-hero__badge .gt-icon {
@@ -64,22 +73,26 @@
 }
 
 .gt-hero__title {
-  font-size: 2.75rem;
-  font-weight: 700;
-  line-height: 1.15;
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 1.12;
   color: #FFFFFF;
   letter-spacing: -0.02em;
 }
 
 .gt-hero__title-accent {
-  color: #FBBF24;
+  color: var(--color-amber-500);
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .gt-hero__description {
   font-size: var(--font-size-lg);
   line-height: 1.6;
   color: #CBD5E1;
-  max-width: 580px;
+  max-width: 560px;
+  font-weight: 400;
 }
 
 .gt-hero__actions {
@@ -91,26 +104,36 @@
 }
 
 .gt-hero__primary-btn {
-  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.4);
+  background-color: var(--color-amber-600) !important;
+  border-color: var(--color-amber-600) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.45);
+  font-weight: 700;
+}
+
+.gt-hero__primary-btn:hover:not(:disabled) {
+  background-color: var(--color-amber-700) !important;
+  border-color: var(--color-amber-700) !important;
 }
 
 .gt-hero__secondary-btn {
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.35);
-  background-color: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(4px);
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px);
+  font-weight: 600;
 }
 
 .gt-hero__secondary-btn:hover:not(:disabled) {
-  background-color: rgba(255, 255, 255, 0.18);
-  border-color: #FFFFFF;
-  color: #FFFFFF;
+  background-color: rgba(255, 255, 255, 0.22) !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
 }
 
 .gt-hero__stats {
   display: flex;
   align-items: center;
-  gap: var(--space-5);
+  gap: var(--space-6);
   margin-top: var(--space-6);
   padding-top: var(--space-5);
   border-top: 1px solid rgba(255, 255, 255, 0.15);
@@ -125,7 +148,7 @@
 .gt-hero__stat-item strong {
   font-size: var(--font-size-xl);
   color: #FFFFFF;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .gt-hero__stat-item span {
@@ -142,11 +165,11 @@
 
 @media (max-width: 768px) {
   .gt-hero {
-    padding: 3rem var(--space-4) 2.5rem;
+    padding: 3.5rem var(--space-4) 3rem;
   }
 
   .gt-hero__title {
-    font-size: 2rem;
+    font-size: 2.25rem;
   }
 
   .gt-hero__description {
@@ -155,5 +178,13 @@
 
   .gt-hero__stat-divider {
     display: none;
+  }
+
+  .gt-hero__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.95) 0%,
+      rgba(15, 23, 42, 0.82) 100%
+    );
   }
 }

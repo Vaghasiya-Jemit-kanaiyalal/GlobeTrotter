@@ -60,15 +60,7 @@ export const CommunityHeader = ({
             </Button>
           )}
 
-          <button
-            type="button"
-            className="gt-comm-icon-btn"
-            onClick={() => setHasNotif(!hasNotif)}
-            title="Notifications"
-          >
-            <Bell className="w-4 h-4" />
-            {hasNotif && <span className="gt-comm-notif-dot" />}
-          </button>
+
 
           {/* User Profile Avatar */}
           <div className="relative">

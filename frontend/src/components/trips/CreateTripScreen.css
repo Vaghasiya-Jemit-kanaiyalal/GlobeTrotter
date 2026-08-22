@@ -2,7 +2,7 @@
   width: 100%;
   min-height: 100vh;
   background-color: var(--color-bg-app);
-  padding-bottom: 100px;
+  padding-bottom: 3rem;
 }
 
 .gt-create-screen__container {
@@ -89,31 +89,18 @@
   gap: var(--space-5);
 }
 
-/* Category Pills */
-.gt-category-pills {
-  margin-top: var(--space-2);
+/* Category Dropdown Filter */
+.gt-category-dropdown-container {
+  margin-top: 0;
 }
 
-.gt-category-pill {
-  font-size: var(--font-size-xs);
-  font-weight: 600;
-  color: var(--color-navy-700);
-  background-color: #FFFFFF;
-  border: 1px solid var(--color-border);
-  padding: 0.35rem 0.85rem;
-  border-radius: var(--radius-full);
-  cursor: pointer;
+.gt-category-select-dropdown {
+  min-width: 160px;
   transition: all var(--transition-fast);
 }
 
-.gt-category-pill:hover {
-  border-color: var(--color-navy-600);
-}
-
-.gt-category-pill--active {
-  background-color: var(--color-navy-900);
-  color: #FFFFFF;
-  border-color: var(--color-navy-900);
+.gt-category-select-dropdown:hover {
+  border-color: var(--color-amber-600);
 }
 
 /* Activity Grid */

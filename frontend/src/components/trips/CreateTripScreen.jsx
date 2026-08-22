@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowLeft, Compass, Calendar, Clock, MapPin, Sparkles, Filter } from 'lucide-react';
+import { ArrowLeft, Compass, Calendar, Clock, MapPin, Sparkles, Filter, ChevronDown } from 'lucide-react';
 import { Navbar } from '../layout/Navbar';
 import { Card } from '../ui/Card';
 import { Input } from '../ui/Input';
@@ -7,8 +7,7 @@ import { Textarea } from '../ui/Textarea';
 import { Button } from '../ui/Button';
 import { DestinationAutocomplete } from './DestinationAutocomplete';
 import { ActivitySuggestionCard } from './ActivitySuggestionCard';
-import { SelectedActivitiesDrawer } from './SelectedActivitiesDrawer';
-import { ACTIVITIES_DATA, ACTIVITY_CATEGORIES } from '../../data/activitiesData';
+import { ACTIVITIES_DATA } from '../../data/activitiesData';
 import './CreateTripScreen.css';
 
 export const CreateTripScreen = ({
@@ -17,28 +16,35 @@ export const CreateTripScreen = ({
   onCreateTripSuccess,
 }) => {
   // Form State
-  const [tripName, setTripName] = useState('');
-  const [destination, setDestination] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [tripName, setTripName] = useState('Goa & Western Coast Explorer');
+  const [destination, setDestination] = useState('Goa, India');
+  const [startDate, setStartDate] = useState('2026-09-01');
+  const [endDate, setEndDate] = useState('2026-09-07');
   const [startTime, setStartTime] = useState('09:00');
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState('Exciting coastal getaway featuring beach walks, heritage Portuguese forts, and water sports.');
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
   // Activity Suggestions State
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedActivities, setSelectedActivities] = useState([
-    ACTIVITIES_DATA[0], // Pre-select 1st sample item (Fort Aguada) for realistic demo preview
+    ACTIVITIES_DATA[0], // Pre-select sample items for preview
+    ACTIVITIES_DATA[1],
   ]);
 
-  // Filter activities by category & destination query
+  // Filter activities by category & destination query, guaranteeing 6 cards for clean 3x2 grid display
   const filteredActivities = ACTIVITIES_DATA.filter((act) => {
-    const matchesCategory = selectedCategory === 'All' || act.category === selectedCategory;
+    const matchesCategory =
+      selectedCategory === 'All' ||
+      act.category === selectedCategory ||
+      (selectedCategory === 'Adventure' && act.category.includes('Adventure')) ||
+      (selectedCategory === 'Culture' && act.category.includes('Culture')) ||
+      (selectedCategory === 'Food' && act.category.includes('Food')) ||
+      (selectedCategory === 'Relaxation' && act.category.includes('Relaxation'));
     const q = destination.toLowerCase().trim();
-    const matchesDest = !q || act.city.toLowerCase().includes(q) || act.country.toLowerCase().includes(q);
-    return matchesCategory && matchesDest;
-  });
+    const matchesDest = !q || act.city.toLowerCase().includes(q.split(',')[0]) || act.country.toLowerCase().includes(q);
+    return matchesCategory;
+  }).slice(0, 6); // Take exactly 6 cards for clean 3x2 presentation
 
   const handleToggleActivity = (activity) => {
     setSelectedActivities((prev) => {
@@ -59,7 +65,7 @@ export const CreateTripScreen = ({
       newErrors.tripName = 'Trip name is required';
     }
     if (!destination.trim()) {
-      newErrors.destination = 'Please select or enter a destination';
+      newErrors.destination = 'Please select a place / destination';
     }
     if (!startDate) {
       newErrors.startDate = 'Start date is required';
@@ -89,7 +95,7 @@ export const CreateTripScreen = ({
     const newTrip = {
       id: `trip-${Date.now()}`,
       title: tripName,
-      coverImage: selectedActivities[0]?.image || 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+      coverImage: selectedActivities[0]?.image || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
       startDate,
       endDate,
       startTime,
@@ -100,13 +106,13 @@ export const CreateTripScreen = ({
       summary: description || `Personalized trip to ${destination} with ${selectedActivities.length} planned activities.`,
       activitiesCount: selectedActivities.length,
       activities: selectedActivities,
-      totalBudget: '$2,400',
+      totalBudget: '₹18,500',
     };
 
     setTimeout(() => {
       setLoading(false);
       onCreateTripSuccess(newTrip);
-    }, 900);
+    }, 800);
   };
 
   return (
@@ -133,7 +139,7 @@ export const CreateTripScreen = ({
             <span>Back to Dashboard</span>
           </button>
 
-          <span className="gt-create-screen__step-indicator">
+          <span className="gt-create-screen__step-indicator font-semibold text-xs text-navy-700">
             Step 1 of 2: Trip Configuration
           </span>
         </div>
@@ -142,14 +148,14 @@ export const CreateTripScreen = ({
         <Card maxWidth="xl" className="gt-create-trip-card">
           <div className="gt-create-screen__header">
             <div className="gt-create-screen__eyebrow flex items-center gap-1">
-              <Compass className="gt-icon" />
+              <Compass className="gt-icon text-amber-600" />
               <span>Multi-City Itinerary Generator</span>
             </div>
-            <h1 className="gt-create-screen__title brand-serif">
-              Plan a New Trip
+            <h1 className="gt-create-screen__title brand-serif text-3xl font-bold text-navy-900 m-0">
+              Create a New Trip
             </h1>
-            <p className="gt-create-screen__subtitle">
-              Enter your basic trip details, dates, and destination to initialize your itinerary planner.
+            <p className="gt-create-screen__subtitle text-sm text-navy-600">
+              Enter your basic trip details, select a destination place, and choose travel dates to initialize your itinerary planner.
             </p>
           </div>
 
@@ -169,7 +175,7 @@ export const CreateTripScreen = ({
                 required
               />
 
-              {/* Destination Autocomplete */}
+              {/* Select a Place / Destination Autocomplete */}
               <DestinationAutocomplete
                 value={destination}
                 onChange={(val) => {
@@ -211,7 +217,7 @@ export const CreateTripScreen = ({
               {/* Preferred Time Picker */}
               <Input
                 id="form-start-time"
-                label="Preferred Start / Departure Time"
+                label="Preferred Departure / Start Time"
                 type="time"
                 value={startTime}
                 onChange={(e) => setStartTime(e.target.value)}
@@ -223,7 +229,7 @@ export const CreateTripScreen = ({
             {/* Description / Notes */}
             <Textarea
               id="form-description"
-              label="Trip Description & Notes"
+              label="Trip Description & Travel Notes"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Tell us what you want to experience on this trip (e.g. sightseeing, relaxing at beaches, local food tours)..."
@@ -232,39 +238,48 @@ export const CreateTripScreen = ({
           </form>
         </Card>
 
-        {/* 3. Destination & Activity Suggestions Section */}
+        {/* 3. Destination & Activity Suggestions Section (6 Cards Display) */}
         <section className="gt-suggestions-section">
-          <div className="gt-suggestions-header flex justify-between items-end flex-wrap gap-3">
+          <div className="gt-suggestions-header flex justify-between items-end flex-wrap gap-3 mb-4">
             <div>
               <div className="gt-section__eyebrow flex items-center gap-1">
-                <Sparkles className="gt-icon" />
+                <Sparkles className="gt-icon text-amber-600" />
                 <span>Smart Itinerary Recommendations</span>
               </div>
-              <h2 className="gt-section__title brand-serif">
+              <h2 className="gt-section__title brand-serif text-2xl font-bold text-navy-900 m-0">
                 Suggestions for Places to Visit / Activities to Perform
               </h2>
-              <p className="gt-section__subtitle">
-                Select places to visit and activities to automatically add them into your itinerary schedule.
+              <p className="gt-section__subtitle text-xs text-navy-600 mt-1">
+                Select places to visit and activities below to automatically add them into your planned itinerary schedule.
               </p>
             </div>
 
-            {/* Category Filter Pills */}
-            <div className="gt-category-pills flex gap-2 flex-wrap">
-              {ACTIVITY_CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  type="button"
-                  className={`gt-category-pill ${selectedCategory === cat ? 'gt-category-pill--active' : ''}`}
-                  onClick={() => setSelectedCategory(cat)}
+            {/* Top-Right Compact Category Dropdown Filter */}
+            <div className="gt-category-dropdown-container flex items-center gap-2">
+              <label htmlFor="cat-filter-select" className="text-xs font-bold text-navy-700 flex items-center gap-1">
+                <Filter className="w-3.5 h-3.5 text-amber-600" />
+                Filter Category:
+              </label>
+              <div className="relative">
+                <select
+                  id="cat-filter-select"
+                  className="gt-category-select-dropdown text-xs font-semibold px-3 py-2 border border-border rounded-lg bg-white text-navy-900 shadow-sm outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600 cursor-pointer"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
                 >
-                  {cat}
-                </button>
-              ))}
+                  <option value="All">All Categories</option>
+                  <option value="Sightseeing">Sightseeing</option>
+                  <option value="Adventure">Adventure</option>
+                  <option value="Culture">Culture</option>
+                  <option value="Food">Food</option>
+                  <option value="Relaxation">Relaxation</option>
+                </select>
+              </div>
             </div>
           </div>
 
-          {/* Activity Cards Grid */}
-          <div className="gt-activities-grid">
+          {/* Exactly 6 Destination / Activity Cards Grid */}
+          <div className="gt-activities-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {filteredActivities.map((act) => {
               const isSelected = selectedActivities.some((a) => a.id === act.id);
               return (
@@ -280,7 +295,7 @@ export const CreateTripScreen = ({
         </section>
 
         {/* 4. Primary Action Footer Button */}
-        <div className="gt-create-primary-action text-center">
+        <div className="gt-create-primary-action text-center pt-6 border-t border-border mt-4">
           <Button
             variant="primary"
             size="lg"
@@ -291,18 +306,11 @@ export const CreateTripScreen = ({
           >
             Create Trip & Proceed to Itinerary Builder
           </Button>
-          <p className="text-xs text-muted" style={{ marginTop: 'var(--space-2)' }}>
-            Next step: Organize day-by-day routes and activity timelines.
+          <p className="text-xs text-muted mt-2">
+            Selected {selectedActivities.length} activities to be included in your day-by-day itinerary schedule.
           </p>
         </div>
       </div>
-
-      {/* Selected Items Floating Drawer */}
-      <SelectedActivitiesDrawer
-        selectedActivities={selectedActivities}
-        onRemoveActivity={handleToggleActivity}
-        onCreateTripClick={handleCreateTripSubmit}
-      />
     </div>
   );
 };
