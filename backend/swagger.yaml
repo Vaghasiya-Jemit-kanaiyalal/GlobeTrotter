@@ -1,0 +1,282 @@
+openapi: 3.0.3
+info:
+  title: GlobeTrotter Backend REST API
+  description: Official production-ready API specification for GlobeTrotter Personalized Travel Planning Platform.
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local Development Server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    StandardResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        additionalInfo:
+          type: string
+        profileImage:
+          type: string
+        language:
+          type: string
+        role:
+          type: string
+
+    Trip:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        startDate:
+          type: string
+          format: date
+        endDate:
+          type: string
+          format: date
+        coverImage:
+          type: string
+        budgetLimit:
+          type: number
+        isPublic:
+          type: boolean
+        publicSlug:
+          type: string
+
+paths:
+  /health:
+    get:
+      summary: API Health Check
+      responses:
+        '200':
+          description: API running cleanly and DB connected.
+
+  /auth/register:
+    post:
+      summary: User Registration
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [firstName, lastName, email, password]
+              properties:
+                firstName: { type: string }
+                lastName: { type: string }
+                email: { type: string }
+                password: { type: string }
+                phone: { type: string }
+                city: { type: string }
+                country: { type: string }
+      responses:
+        '201':
+          description: User registered successfully.
+
+  /auth/login:
+    post:
+      summary: User Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email: { type: string }
+                password: { type: string }
+      responses:
+        '200':
+          description: Authentication successful with JWT.
+
+  /auth/me:
+    get:
+      summary: Get Current User Profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User details.
+
+  /dashboard:
+    get:
+      summary: Single Dashboard Aggregation API
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Upcoming trips, popular cities, budget highlights.
+
+  /cities:
+    get:
+      summary: Destination / City Search & Filter
+      parameters:
+        - in: query
+          name: search
+          schema: { type: string }
+        - in: query
+          name: country
+          schema: { type: string }
+        - in: query
+          name: page
+          schema: { type: integer, default: 1 }
+        - in: query
+          name: limit
+          schema: { type: integer, default: 20 }
+      responses:
+        '200':
+          description: Paginated city list.
+
+  /activities:
+    get:
+      summary: Activity Catalog Search
+      parameters:
+        - in: query
+          name: cityId
+          schema: { type: integer }
+        - in: query
+          name: category
+          schema: { type: string }
+        - in: query
+          name: maxCost
+          schema: { type: number }
+      responses:
+        '200':
+          description: Paginated activity list.
+
+  /trips:
+    get:
+      summary: Get User Trips
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User trips list.
+    post:
+      summary: Create New Trip
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Trip'
+      responses:
+        '201':
+          description: Trip created.
+
+  /trips/{tripId}/itinerary:
+    get:
+      summary: Get Day-Wise Grouped Complete Itinerary
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Day wise grouped itinerary.
+
+  /trips/{tripId}/calendar:
+    get:
+      summary: Get Calendar/Timeline Friendly Events
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: List of scheduled events.
+
+  /trips/{tripId}/budget:
+    get:
+      summary: Get Budget Breakdown & Over-Budget Analysis
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema: { type: integer }
+      responses:
+        '200':
+          description: Category expense breakdown & over-budget calculation.
+
+  /public/trips/{slug}:
+    get:
+      summary: Public Read-Only Trip View
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: Read-only public itinerary data.
+
+  /public/trips/{slug}/copy:
+    post:
+      summary: Copy Public Itinerary to User Account
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: slug
+          required: true
+          schema: { type: string }
+      responses:
+        '201':
+          description: Duplicated trip details.
