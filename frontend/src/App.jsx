@@ -165,7 +165,7 @@ export default function App() {
   const handleCreateTripSuccess = (newTrip) => {
     setTrips((prev) => [newTrip, ...prev]);
     setActiveTrip(newTrip);
-    navigateTo('itinerary-builder');
+    navigateTo('my-trips');
     showToast(`Trip "${newTrip.title || newTrip.name}" created successfully!`, 'success');
   };
 

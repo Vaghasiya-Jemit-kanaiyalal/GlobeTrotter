@@ -323,7 +323,7 @@ export const CreateTripScreen = ({
             onClick={handleCreateTripSubmit}
             className="gt-create-final-btn"
           >
-            Create Trip & Proceed to Itinerary Builder
+            Create Trip & Proceed to My Trips
           </Button>
           <p className="text-xs text-muted mt-2">
             Selected {selectedActivities.length} activities to be included in your day-by-day itinerary schedule.

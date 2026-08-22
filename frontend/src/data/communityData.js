@@ -97,31 +97,6 @@ export const INITIAL_COMMUNITY_POSTS = [
       { id: 'c6', author: 'Elena Rostova', text: 'Taking Eurail train between Paris and Barcelona was such a scenic choice!', time: '5 days ago' },
     ],
   },
-  {
-    id: 'post-4',
-    type: 'tip',
-    title: 'Top 5 Heritage Walks & Street Food Spots in Jaipur Pink City',
-    destination: 'Jaipur, Rajasthan',
-    city: 'Jaipur',
-    country: 'India',
-    description: 'Avoid tourist traps! Here are secret artisan alleys in Johari Bazaar, best sunrise viewpoints at Nahargarh Fort, and classic pyaaz kachori food stalls.',
-    category: 'Culture & Food',
-    cost: 'Free Travel Tip',
-    tripId: 'trip-jaipur',
-    image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=800&q=80',
-    author: {
-      id: 'usr-104',
-      name: 'Kabir Sharma',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=250&q=80',
-      location: 'Delhi, India',
-    },
-    createdAt: '1 week ago',
-    likes: 35,
-    isLiked: false,
-    commentsCount: 6,
-    views: 215,
-    comments: [],
-  },
 ];
 
 export const POPULAR_COMMUNITY_DESTINATIONS = [

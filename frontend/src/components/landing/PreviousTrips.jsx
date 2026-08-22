@@ -11,7 +11,7 @@ export const PreviousTrips = ({
 }) => {
   const [showEmptyStatePreview, setShowEmptyStatePreview] = useState(false);
 
-  const displayedTrips = showEmptyStatePreview ? [] : trips;
+  const displayedTrips = (showEmptyStatePreview ? [] : trips).slice(0, 3);
 
   return (
     <section id="previous-trips" className="gt-section gt-trips-section">

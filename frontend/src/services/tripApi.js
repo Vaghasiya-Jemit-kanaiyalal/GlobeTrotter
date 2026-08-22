@@ -59,13 +59,29 @@ function normalizeTrip(t) {
   const budgetVal = t.budget_limit !== undefined ? t.budget_limit : (t.budgetLimit !== undefined ? t.budgetLimit : t.totalBudget || 25000);
   const numericBudget = typeof budgetVal === 'number' ? budgetVal : (parseFloat(String(budgetVal).replace(/[^0-9.]/g, '')) || 0);
 
+  let coverImage = t.cover_image || t.coverImage;
+  const titleLower = title.toLowerCase();
+  if (!coverImage || (coverImage.includes('photo-1512343879784') && !titleLower.includes('goa'))) {
+    if (titleLower.includes('manali') || titleLower.includes('himalay')) {
+      coverImage = 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=800&q=80';
+    } else if (titleLower.includes('paris') || titleLower.includes('capital')) {
+      coverImage = 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80';
+    } else if (titleLower.includes('rajasthan') || titleLower.includes('jaipur')) {
+      coverImage = 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80';
+    } else if (titleLower.includes('surat')) {
+      coverImage = 'https://images.unsplash.com/photo-1606298855672-3efb63017be8?auto=format&fit=crop&w=800&q=80';
+    } else {
+      coverImage = coverImage || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80';
+    }
+  }
+
   return {
     ...t,
     id: String(t.id),
     title,
     name: title,
     primaryLocation: t.primaryLocation || t.primary_location || t.city_name || (Array.isArray(t.destinations) ? t.destinations[0] : null) || 'Goa, India',
-    coverImage: t.cover_image || t.coverImage || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+    coverImage,
     startDate,
     endDate,
     dateRange: t.dateRange || `${startDate} – ${endDate}`,
