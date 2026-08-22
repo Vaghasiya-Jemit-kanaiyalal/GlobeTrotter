@@ -128,7 +128,7 @@ Interactive Swagger documentation is available when the backend server is runnin
 
 ## 🧪 Testing
 
-To run backend automated API integration tests:
+To Run backend automated API integration tests:
 ```bash
 cd GlobeTrotter/backend
 npm test
