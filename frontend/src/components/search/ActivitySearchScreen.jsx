@@ -21,6 +21,7 @@ export const ActivitySearchScreen = ({
   onNavigate,
   onOpenCreateTrip,
   onShowToast,
+  onLogout,
 }) => {
   // Mode & Query State
   const [searchType, setSearchType] = useState('activities'); // 'activities' | 'cities'
@@ -147,8 +148,7 @@ export const ActivitySearchScreen = ({
         activeTab="explore"
         onNavigate={onNavigate}
         onOpenCreateTrip={onOpenCreateTrip}
-        onSwitchToAuth={onNavigate}
-        onLogout={() => onNavigate('landing')}
+        onLogout={onLogout}
       />
 
       <div className="gt-search-container">

@@ -18,6 +18,7 @@ export const UserTripListingScreen = ({
   onOpenCreateTrip,
   onViewTripDetails,
   onShowToast,
+  onLogout,
 }) => {
   // State
   const [tripsData, setTripsData] = useState([]);
@@ -112,8 +113,7 @@ export const UserTripListingScreen = ({
         activeTab="trips"
         onNavigate={onNavigate}
         onOpenCreateTrip={onOpenCreateTrip}
-        onSwitchToAuth={onNavigate}
-        onLogout={() => onNavigate('landing')}
+        onLogout={onLogout}
       />
 
       <div className="gt-my-trips-container">

@@ -15,6 +15,7 @@ export const BuildItineraryWorkspace = ({
   currentUser,
   onNavigate,
   onShowToast,
+  onLogout,
 }) => {
   // Master Dynamic Itinerary State (N Stops / Cities)
   const [sections, setSections] = useState([
@@ -166,6 +167,8 @@ export const BuildItineraryWorkspace = ({
         tripTitle={trip?.title || 'Goa & Western Coast Expedition'}
         currentUser={currentUser}
         onBackToDashboard={() => onNavigate('landing')}
+        onNavigate={onNavigate}
+        onLogout={onLogout}
         onShareItinerary={() => onShowToast('Shareable itinerary link copied to clipboard!', 'success')}
       />
 

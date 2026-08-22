@@ -190,6 +190,7 @@ export default function App() {
           currentUser={currentUser}
           onNavigate={navigateTo}
           onOpenCreateTrip={() => navigateTo('create-trip')}
+          onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
@@ -212,6 +213,7 @@ export default function App() {
             setActiveTrip(t);
             navigateTo('itinerary-builder');
           }}
+          onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
@@ -225,6 +227,7 @@ export default function App() {
             setActiveTrip(t);
             navigateTo('itinerary-builder');
           }}
+          onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}
@@ -234,6 +237,7 @@ export default function App() {
           currentUser={currentUser}
           onNavigate={navigateTo}
           onCreateTripSuccess={handleCreateTripSuccess}
+          onLogout={handleLogout}
         />
       )}
 
@@ -242,6 +246,7 @@ export default function App() {
           trip={activeTrip}
           currentUser={currentUser}
           onNavigate={navigateTo}
+          onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}

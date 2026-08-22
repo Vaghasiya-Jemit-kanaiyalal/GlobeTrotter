@@ -15,6 +15,7 @@ export const CreateTripScreen = ({
   currentUser,
   onNavigate,
   onCreateTripSuccess,
+  onLogout,
 }) => {
   // Form State
   const [tripName, setTripName] = useState('Goa & Western Coast Explorer');
@@ -138,8 +139,7 @@ export const CreateTripScreen = ({
         activeTab="create-trip"
         onNavigate={onNavigate}
         onOpenCreateTrip={() => {}}
-        onSwitchToAuth={onNavigate}
-        onLogout={() => onNavigate('landing')}
+        onLogout={onLogout}
       />
 
       <div className="gt-create-screen__container">

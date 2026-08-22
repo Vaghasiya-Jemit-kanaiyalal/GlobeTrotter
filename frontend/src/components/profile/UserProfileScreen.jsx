@@ -23,6 +23,7 @@ export const UserProfileScreen = ({
   onOpenCreateTrip,
   onViewTripDetails,
   onShowToast,
+  onLogout,
 }) => {
   // Profile State
   const [profile, setProfile] = useState(null);
@@ -161,8 +162,7 @@ export const UserProfileScreen = ({
         activeTab="profile"
         onNavigate={onNavigate}
         onOpenCreateTrip={onOpenCreateTrip}
-        onSwitchToAuth={onNavigate}
-        onLogout={() => onNavigate('landing')}
+        onLogout={onLogout}
       />
 
       <div className="gt-profile-container max-w-[1080px] mx-auto px-4 py-6 flex flex-col gap-7">
