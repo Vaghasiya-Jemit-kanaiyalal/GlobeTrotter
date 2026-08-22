@@ -32,7 +32,7 @@ export default function App() {
   // URL Hash-based Route State (e.g. #/my-trips -> 'my-trips')
   const [currentRoute, setCurrentRoute] = useState(() => {
     const hash = window.location.hash.replace('#/', '').replace('#', '');
-    return hash || 'landing';
+    return hash.split('?')[0] || 'landing';
   });
 
   const [trips, setTrips] = useState(INITIAL_TRIPS_DATA);
@@ -76,10 +76,11 @@ export default function App() {
   // Sync route with browser location hash and enforce route protection guards
   useEffect(() => {
     const handleHashChange = () => {
-      const hash = window.location.hash.replace('#/', '').replace('#', '') || 'landing';
+      const fullHash = window.location.hash.replace('#/', '').replace('#', '') || 'landing';
+      const route = fullHash.split('?')[0];
       
       // Guard 1: User Protected Route Check
-      if (PROTECTED_USER_ROUTES.includes(hash) && !authService.isAuthenticated()) {
+      if (PROTECTED_USER_ROUTES.includes(route) && !authService.isAuthenticated()) {
         window.location.hash = '#/login';
         setCurrentRoute('login');
         showToast('Please sign in to access your trips and workspace.', 'info');
@@ -87,14 +88,14 @@ export default function App() {
       }
 
       // Guard 2: Admin Protected Route Check
-      if (ADMIN_ROUTES.includes(hash) && !authService.isAdmin()) {
+      if (ADMIN_ROUTES.includes(route) && !authService.isAdmin()) {
         window.location.hash = '#/admin/login';
         setCurrentRoute('admin/login');
         showToast('Administrator authentication required for access.', 'warning');
         return;
       }
 
-      setCurrentRoute(hash);
+      setCurrentRoute(route);
     };
 
     // Initial check on mount
@@ -243,7 +244,7 @@ export default function App() {
 
       {currentRoute === 'itinerary-builder' && (
         <BuildItineraryWorkspace
-          trip={activeTrip}
+          trip={activeTrip || trips[0]}
           currentUser={currentUser}
           onNavigate={navigateTo}
           onLogout={handleLogout}
