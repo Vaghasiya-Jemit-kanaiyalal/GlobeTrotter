@@ -185,7 +185,7 @@ export const UserTripListingScreen = ({
                 </div>
 
                 {ongoingTrips.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="gt-trips-cards-grid">
                     {ongoingTrips.map((t) => (
                       <TripCard
                         key={t.id}
@@ -216,7 +216,7 @@ export const UserTripListingScreen = ({
                 </div>
 
                 {upcomingTrips.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="gt-trips-cards-grid">
                     {upcomingTrips.map((t) => (
                       <TripCard
                         key={t.id}
@@ -247,7 +247,7 @@ export const UserTripListingScreen = ({
                 </div>
 
                 {completedTrips.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  <div className="gt-trips-cards-grid">
                     {completedTrips.map((t) => (
                       <TripCard
                         key={t.id}

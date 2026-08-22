@@ -1,5 +1,6 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MOCK_ITINERARY_DATA } from '../../data/itineraryData';
+import { tripApi } from '../../services/tripApi';
 import { ItineraryHeader } from './ItineraryHeader';
 import { TripSummary } from './TripSummary';
 import { SearchControls } from './SearchControls';
@@ -41,6 +42,76 @@ export const ItineraryViewPage = ({
     activity: null,
     targetDayNumber: 1,
   });
+
+  // Fetch live trip itinerary from Express Backend (/api/v1/trips/:id/itinerary)
+  useEffect(() => {
+    const hash = window.location.hash || '';
+    const match = hash.match(/tripId=([^&]+)/);
+    const activeId = match ? match[1] : 1;
+
+    const loadLiveItinerary = async () => {
+      setIsLoading(true);
+      try {
+        const [tripRes, itinRes] = await Promise.all([
+          tripApi.getTripById(activeId),
+          tripApi.getItinerary(activeId),
+        ]);
+
+        if (tripRes && tripRes.data) {
+          const tripData = tripRes.data;
+          const stops = itinRes?.stops || [];
+
+          const mappedDays = stops.map((stop, sIdx) => ({
+            dayNumber: stop.stop_order || sIdx + 1,
+            date: stop.start_date || tripData.startDate,
+            city: stop.city_name || tripData.primaryLocation,
+            country: stop.country || 'India',
+            summary: stop.notes || `Day ${sIdx + 1} in ${stop.city_name || 'Goa'}`,
+            activities: Array.isArray(stop.activities) ? stop.activities.map((a, aIdx) => ({
+              id: String(a.id || `a-${sIdx + 1}-${aIdx + 1}`),
+              dayNumber: stop.stop_order || sIdx + 1,
+              time: a.scheduled_time ? String(a.scheduled_time).substr(0, 5) : '10:00 AM',
+              name: a.activity_name || a.name || 'Activity',
+              category: a.category || 'Sightseeing',
+              cost: typeof a.estimated_cost === 'number' ? a.estimated_cost : (parseFloat(a.cost) || 500),
+              duration: a.duration_minutes ? `${a.duration_minutes} mins` : '2 hrs',
+              description: a.notes || a.description || '',
+              rating: a.rating || 4.8,
+              image: a.image_url || 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80',
+            })) : [],
+          }));
+
+          if (mappedDays.length > 0) {
+            setItineraryData((prev) => ({
+              ...prev,
+              [selectedTripId]: {
+                ...prev[selectedTripId],
+                trip: {
+                  ...prev[selectedTripId]?.trip,
+                  id: tripData.id,
+                  name: tripData.title || tripData.name,
+                  primaryLocation: tripData.primaryLocation,
+                  startDate: tripData.startDate,
+                  endDate: tripData.endDate,
+                  dateRange: tripData.dateRange,
+                  status: tripData.calculatedStatus,
+                  summary: tripData.summary,
+                  coverImage: tripData.coverImage,
+                },
+                days: mappedDays,
+              },
+            }));
+          }
+        }
+      } catch (err) {
+        console.warn('Load live itinerary warning:', err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadLiveItinerary();
+  }, [selectedTripId]);
 
   const currentTripData = itineraryData[selectedTripId] || MOCK_ITINERARY_DATA['trip-goa'];
   const { trip, days, budget } = currentTripData;

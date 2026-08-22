@@ -232,7 +232,7 @@ export const UserProfileScreen = ({
           ) : tripsError ? (
             <div className="text-xs text-error py-2">{tripsError}</div>
           ) : preplannedTrips.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="gt-trips-cards-grid">
               {preplannedTrips.map((t) => (
                 <TripCard
                   key={t.id}

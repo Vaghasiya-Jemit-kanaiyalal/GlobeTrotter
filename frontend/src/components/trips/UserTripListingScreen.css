@@ -81,6 +81,20 @@
 .gt-dot--upcoming { background-color: #0284C7; }
 .gt-dot--completed { background-color: var(--color-success); }
 
+.gt-trips-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 24px !important;
+  margin-top: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .gt-trips-cards-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px !important;
+  }
+}
+
 .gt-trips-error-box,
 .gt-trips-no-results {
   background-color: #FFFFFF;
