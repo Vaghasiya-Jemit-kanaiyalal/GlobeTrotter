@@ -86,7 +86,7 @@ async function findAllPosts({ search, postType, destination, sort = 'newest', pa
   const conditions = ["cp.visibility = 'public'"];
   const params = [];
 
-  if (postType) {
+  if (postType && postType !== 'All' && postType !== 'all') {
     conditions.push('cp.post_type = ?');
     params.push(postType);
   }
@@ -97,7 +97,7 @@ async function findAllPosts({ search, postType, destination, sort = 'newest', pa
     params.push(searchPattern, searchPattern, searchPattern);
   }
 
-  if (destination) {
+  if (destination && destination !== 'All' && destination !== 'all') {
     conditions.push(`EXISTS (
       SELECT 1 FROM trip_stops ts JOIN cities c ON ts.city_id = c.id
       WHERE ts.trip_id = cp.trip_id AND (LOWER(c.name) = LOWER(?) OR LOWER(c.country) = LOWER(?))

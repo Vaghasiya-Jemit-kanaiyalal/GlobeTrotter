@@ -48,8 +48,8 @@ export const CommunityTabScreen = ({
         communityApi.getTrendingDestinations(),
       ]);
 
-      setPosts(postsRes);
-      setPopularDestinations(destsRes);
+      setPosts(Array.isArray(postsRes) ? postsRes : []);
+      setPopularDestinations(Array.isArray(destsRes) ? destsRes : []);
     } catch (err) {
       setHasError(true);
     } finally {
@@ -60,7 +60,7 @@ export const CommunityTabScreen = ({
   // Available destinations for filter dropdown
   const availableDestinations = useMemo(() => {
     const set = new Set();
-    posts.forEach((p) => {
+    (Array.isArray(posts) ? posts : []).forEach((p) => {
       if (p.destination) set.add(p.destination.split(',')[0]);
     });
     return Array.from(set);
@@ -69,9 +69,11 @@ export const CommunityTabScreen = ({
   // Handlers
   const handleLikePost = async (postId) => {
     const updatedPost = await communityApi.toggleLikePost(postId);
-    setPosts((prev) => prev.map((p) => (p.id === postId ? updatedPost : p)));
-    if (onShowToast) {
-      onShowToast(updatedPost.isLiked ? 'Added to your saved community favorites' : 'Removed from favorites', 'info');
+    if (updatedPost) {
+      setPosts((prev) => prev.map((p) => (p.id === postId ? updatedPost : p)));
+      if (onShowToast) {
+        onShowToast(updatedPost.isLiked ? 'Added to your saved community favorites' : 'Removed from favorites', 'info');
+      }
     }
   };
 
