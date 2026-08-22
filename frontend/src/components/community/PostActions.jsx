@@ -1,6 +1,5 @@
 import React from 'react';
-import { Heart, MessageSquare, Share2, Compass, Eye } from 'lucide-react';
-import { Button } from '../ui/Button';
+import { Heart, MessageSquare, Share2 } from 'lucide-react';
 import './PostActions.css';
 
 export const PostActions = ({
@@ -8,7 +7,6 @@ export const PostActions = ({
   onLike,
   onToggleComments,
   onShare,
-  onViewTrip,
   commentsOpen = false,
 }) => {
   return (
@@ -48,16 +46,6 @@ export const PostActions = ({
           <span className="font-semibold text-xs hidden-mobile">Share</span>
         </button>
       </div>
-
-      {/* Primary Action CTA */}
-      <Button
-        variant="primary"
-        size="sm"
-        icon={Compass}
-        onClick={() => onViewTrip(post.tripId || 'trip-goa')}
-      >
-        View Trip (Screen 9)
-      </Button>
     </div>
   );
 };

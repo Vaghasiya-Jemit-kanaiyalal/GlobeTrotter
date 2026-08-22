@@ -19,7 +19,6 @@ export const CommunityTabScreen = ({
   // Posts & Sidebar Data State
   const [posts, setPosts] = useState([]);
   const [popularDestinations, setPopularDestinations] = useState([]);
-  const [trendingExperiences, setTrendingExperiences] = useState([]);
 
   // Search & Filter Controls State
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,15 +43,13 @@ export const CommunityTabScreen = ({
     setIsLoading(true);
     setHasError(false);
     try {
-      const [postsRes, destsRes, expRes] = await Promise.all([
+      const [postsRes, destsRes] = await Promise.all([
         communityApi.getPosts({ search: searchQuery, type: filterType, destination: filterDestination, sortBy }),
         communityApi.getTrendingDestinations(),
-        communityApi.getTrendingExperiences(),
       ]);
 
       setPosts(postsRes);
       setPopularDestinations(destsRes);
-      setTrendingExperiences(expRes);
     } catch (err) {
       setHasError(true);
     } finally {
@@ -175,7 +172,6 @@ export const CommunityTabScreen = ({
                   onLike={handleLikePost}
                   onAddComment={handleAddComment}
                   onShare={handleSharePost}
-                  onViewTrip={(tripId) => onNavigate('itinerary')}
                 />
               )}
             </section>
@@ -184,9 +180,7 @@ export const CommunityTabScreen = ({
             <section className="gt-community-sidebar-column">
               <CommunitySidebar
                 destinations={popularDestinations}
-                experiences={trendingExperiences}
                 onSelectDestination={(destName) => setFilterDestination(destName)}
-                onSelectExperience={(exp) => setSearchQuery(exp.title)}
               />
             </section>
           </div>

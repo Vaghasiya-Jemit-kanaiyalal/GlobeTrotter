@@ -7,7 +7,6 @@ export const CommunityFeed = ({
   onLike,
   onAddComment,
   onShare,
-  onViewTrip,
 }) => {
   return (
     <div className="gt-community-feed-list">
@@ -18,7 +17,6 @@ export const CommunityFeed = ({
           onLike={onLike}
           onAddComment={onAddComment}
           onShare={onShare}
-          onViewTrip={onViewTrip}
         />
       ))}
     </div>
