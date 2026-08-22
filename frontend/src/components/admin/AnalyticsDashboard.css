@@ -1,0 +1,5 @@
+/* Analytics Dashboard Styles */
+.gt-analytics-dashboard {
+  display: flex;
+  flex-direction: column;
+}

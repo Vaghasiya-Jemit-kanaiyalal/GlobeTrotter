@@ -1,0 +1,78 @@
+/* Post Image Component Styles */
+.gt-post-image-wrapper {
+  width: 100%;
+  max-height: 320px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 0.75rem 0;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+}
+
+.gt-post-img {
+  width: 100%;
+  height: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  transition: transform 300ms ease;
+}
+
+.gt-post-image-wrapper:hover .gt-post-img {
+  transform: scale(1.02);
+}
+
+.gt-img-expand-btn {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  background: rgba(15, 23, 42, 0.7);
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.gt-lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.gt-lightbox-content {
+  max-width: 900px;
+  max-height: 90vh;
+}
+
+.gt-lightbox-img {
+  max-width: 100%;
+  max-height: 85vh;
+  border-radius: var(--radius-lg);
+  object-fit: contain;
+}
+
+.gt-lightbox-close {
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  background: #FFFFFF;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-900);
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+}

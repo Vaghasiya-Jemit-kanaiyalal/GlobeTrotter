@@ -1,0 +1,5 @@
+/* Community Feed Styles */
+.gt-community-feed-list {
+  display: flex;
+  flex-direction: column;
+}

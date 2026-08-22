@@ -1,0 +1,36 @@
+/* Admin Tabs Styles */
+.gt-admin-tabs-nav {
+  background-color: var(--color-bg-app);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.35rem;
+  overflow-x: auto;
+}
+
+.gt-admin-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-navy-700);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+
+.gt-admin-tab-btn:hover {
+  color: var(--color-navy-900);
+  background-color: #FFFFFF;
+}
+
+.gt-admin-tab-btn--active {
+  background-color: #FFFFFF !important;
+  color: var(--color-navy-900) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: var(--shadow-sm);
+}

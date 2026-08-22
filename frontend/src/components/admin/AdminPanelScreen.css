@@ -1,0 +1,49 @@
+/* Admin Panel Screen Page Styles */
+.gt-admin-panel-root {
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  color: var(--color-navy-800);
+}
+
+.gt-admin-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 3rem 1.25rem;
+}
+
+/* Two-column responsive desktop layout */
+.gt-admin-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.gt-admin-main-column {
+  min-width: 0;
+}
+
+.gt-admin-sidebar-column {
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .gt-admin-layout-grid {
+    grid-template-columns: 1fr 280px;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 840px) {
+  .gt-admin-layout-grid {
+    grid-template-columns: 1fr; /* Stack vertically on mobile and small tablets */
+  }
+
+  .gt-admin-sidebar-column {
+    order: 2;
+  }
+
+  .gt-admin-main-column {
+    order: 1;
+  }
+}

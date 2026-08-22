@@ -8,19 +8,22 @@ import { RegisterForm } from './components/auth/RegisterForm';
 import { ForgotPasswordModal } from './components/auth/ForgotPasswordModal';
 import { ItineraryViewPage } from './components/itinerary/ItineraryViewPage';
 import { CalendarViewPage } from './components/calendar/CalendarViewPage';
+import { CommunityTabScreen } from './components/community/CommunityTabScreen';
+import { AdminPanelScreen } from './components/admin/AdminPanelScreen';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
-import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin } from 'lucide-react';
+import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin, Users, ShieldCheck } from 'lucide-react';
 import './styles/global.css';
 import './App.css';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'login' | 'register'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'community' | 'admin' | 'login' | 'register'
   const [currentUser, setCurrentUser] = useState({
     name: 'Alex Morgan',
     firstName: 'Alex',
     lastName: 'Morgan',
     email: 'alex.morgan@example.com',
+    role: 'admin',
     avatarUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=250&q=80',
   });
 
@@ -79,6 +82,24 @@ export default function App() {
           >
             <Home className="gt-icon" />
             <span>Screen 3: Landing</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'admin' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('admin')}
+          >
+            <ShieldCheck className="gt-icon text-amber-500" />
+            <span>Screen 12: Admin Panel</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'community' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('community')}
+          >
+            <Users className="gt-icon text-amber-500" />
+            <span>Screen 10: Community Tab</span>
           </button>
 
           <button
@@ -161,6 +182,29 @@ export default function App() {
         />
       )}
 
+      {currentView === 'admin' && (
+        <AdminPanelScreen
+          currentUser={currentUser}
+          onBack={() => setCurrentView('landing')}
+          onNavigateToUserTrips={() => setCurrentView('my-trips')}
+          onLogout={handleLogout}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'community' && (
+        <CommunityTabScreen
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else setCurrentView(view);
+          }}
+          onLogout={handleLogout}
+          onShowToast={showToast}
+        />
+      )}
+
+
       {currentView === 'my-trips' && (
         <UserTripListingScreen
           currentUser={currentUser}
@@ -176,6 +220,7 @@ export default function App() {
           onShowToast={showToast}
         />
       )}
+
 
       {currentView === 'create-trip' && (
         <CreateTripScreen
