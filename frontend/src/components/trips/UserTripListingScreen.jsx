@@ -117,7 +117,7 @@ export const UserTripListingScreen = ({
       />
 
       <div className="gt-my-trips-container">
-        {/* 2. Page Title & Summary Stats */}
+        {/* 2. Page Title */}
         <div className="gt-my-trips-header flex justify-between items-end flex-wrap gap-4">
           <div>
             <div className="gt-section__eyebrow flex items-center gap-1">
@@ -128,21 +128,6 @@ export const UserTripListingScreen = ({
             <p className="gt-my-trips-subtitle">
               Manage and revisit all your travel plans in one place.
             </p>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span className="gt-trips-stat-pill">
-              <strong>{stats.total}</strong> Total Trips
-            </span>
-            <span className="gt-trips-stat-pill gt-trips-stat-pill--ongoing">
-              <strong>{stats.ongoing}</strong> Ongoing
-            </span>
-            <span className="gt-trips-stat-pill gt-trips-stat-pill--upcoming">
-              <strong>{stats.upcoming}</strong> Upcoming
-            </span>
-            <span className="gt-trips-stat-pill gt-trips-stat-pill--completed">
-              <strong>{stats.completed}</strong> Completed
-            </span>
           </div>
         </div>
 
