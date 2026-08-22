@@ -1,0 +1,21 @@
+.gt-search-empty-box {
+  background-color: #FFFFFF;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8) var(--space-6);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.gt-search-empty-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background-color: var(--color-bg-subtle);
+  color: var(--color-navy-600);
+}
+
+.gt-search-empty-icon .gt-icon {
+  width: 24px;
+  height: 24px;
+}

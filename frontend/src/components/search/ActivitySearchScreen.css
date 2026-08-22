@@ -1,0 +1,38 @@
+.gt-search-screen {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  padding-bottom: 80px;
+}
+
+.gt-search-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.gt-search-title {
+  font-size: 2.25rem;
+  color: var(--color-navy-900);
+}
+
+.gt-results-count-pill {
+  font-size: var(--font-size-xs);
+  color: var(--color-navy-800);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.gt-search-error-box {
+  background-color: #FFFFFF;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  max-width: 480px;
+  margin: 0 auto;
+}

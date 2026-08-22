@@ -3,6 +3,8 @@ import { MainLandingPage } from './components/landing/MainLandingPage';
 import { CreateTripScreen } from './components/trips/CreateTripScreen';
 import { BuildItineraryWorkspace } from './components/itinerary/BuildItineraryWorkspace';
 import { UserTripListingScreen } from './components/trips/UserTripListingScreen';
+import { UserProfileScreen } from './components/profile/UserProfileScreen';
+import { ActivitySearchScreen } from './components/search/ActivitySearchScreen';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { ForgotPasswordModal } from './components/auth/ForgotPasswordModal';
@@ -12,12 +14,12 @@ import { CommunityTabScreen } from './components/community/CommunityTabScreen';
 import { AdminPanelScreen } from './components/admin/AdminPanelScreen';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
-import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin, Users, ShieldCheck } from 'lucide-react';
+import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin, User, Search, Users, ShieldCheck } from 'lucide-react';
 import './styles/global.css';
 import './App.css';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'community' | 'admin' | 'login' | 'register'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'search' | 'profile' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'community' | 'admin' | 'login' | 'register'
   const [currentUser, setCurrentUser] = useState({
     name: 'Alex Morgan',
     firstName: 'Alex',
@@ -86,20 +88,20 @@ export default function App() {
 
           <button
             type="button"
-            className={`gt-switcher-btn ${currentView === 'admin' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('admin')}
+            className={`gt-switcher-btn ${currentView === 'search' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('search')}
           >
-            <ShieldCheck className="gt-icon text-amber-500" />
-            <span>Screen 12: Admin Panel</span>
+            <Search className="gt-icon" />
+            <span>Screen 8: Search</span>
           </button>
 
           <button
             type="button"
-            className={`gt-switcher-btn ${currentView === 'community' ? 'gt-switcher-btn--active' : ''}`}
-            onClick={() => setCurrentView('community')}
+            className={`gt-switcher-btn ${currentView === 'profile' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('profile')}
           >
-            <Users className="gt-icon text-amber-500" />
-            <span>Screen 10: Community Tab</span>
+            <User className="gt-icon" />
+            <span>Screen 7: User Profile</span>
           </button>
 
           <button
@@ -135,7 +137,16 @@ export default function App() {
             onClick={() => setCurrentView('itinerary')}
           >
             <MapPin className="gt-icon text-amber-500" />
-            <span>Screen 9: Itinerary & Budget</span>
+            <span>Screen 9: Itinerary View</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'community' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('community')}
+          >
+            <Users className="gt-icon text-amber-500" />
+            <span>Screen 10: Community</span>
           </button>
 
           <button
@@ -144,7 +155,16 @@ export default function App() {
             onClick={() => setCurrentView('calendar')}
           >
             <CalendarIcon className="gt-icon text-amber-500" />
-            <span>Screen 11: Calendar View</span>
+            <span>Screen 11: Calendar</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'admin' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('admin')}
+          >
+            <ShieldCheck className="gt-icon text-amber-500" />
+            <span>Screen 12: Admin</span>
           </button>
 
           <button
@@ -175,6 +195,10 @@ export default function App() {
           onAddTrip={handleAddTrip}
           onNavigate={(view) => {
             if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else if (view === 'explore') setCurrentView('search');
+            else if (view === 'community') setCurrentView('community');
+            else if (view === 'admin') setCurrentView('admin');
             else setCurrentView(view);
           }}
           onLogout={handleLogout}
@@ -182,11 +206,83 @@ export default function App() {
         />
       )}
 
-      {currentView === 'admin' && (
-        <AdminPanelScreen
+      {currentView === 'search' && (
+        <ActivitySearchScreen
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else setCurrentView(view);
+          }}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'profile' && (
+        <UserProfileScreen
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else setCurrentView(view);
+          }}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onViewTripDetails={(t) => {
+            setActiveTrip(t);
+            setCurrentView('itinerary-builder');
+          }}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'my-trips' && (
+        <UserTripListingScreen
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else setCurrentView(view);
+          }}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onViewTripDetails={(t) => {
+            setActiveTrip(t);
+            setCurrentView('itinerary-builder');
+          }}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'create-trip' && (
+        <CreateTripScreen
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else setCurrentView(view);
+          }}
+          onCreateTripSuccess={handleCreateTripSuccess}
+        />
+      )}
+
+      {currentView === 'itinerary-builder' && (
+        <BuildItineraryWorkspace
+          trip={activeTrip}
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else setCurrentView(view);
+          }}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'itinerary' && (
+        <ItineraryViewPage
           currentUser={currentUser}
           onBack={() => setCurrentView('landing')}
-          onNavigateToUserTrips={() => setCurrentView('my-trips')}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
@@ -204,63 +300,22 @@ export default function App() {
         />
       )}
 
-
-      {currentView === 'my-trips' && (
-        <UserTripListingScreen
-          currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else setCurrentView(view);
-          }}
-          onOpenCreateTrip={() => setCurrentView('create-trip')}
-          onViewTripDetails={(t) => {
-            setActiveTrip(t);
-            setCurrentView('itinerary-builder');
-          }}
-          onShowToast={showToast}
-        />
-      )}
-
-
-      {currentView === 'create-trip' && (
-        <CreateTripScreen
-          currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else setCurrentView(view);
-          }}
-          onCreateTripSuccess={handleCreateTripSuccess}
-        />
-      )}
-
-      {currentView === 'itinerary-builder' && (
-        <BuildItineraryWorkspace
-          trip={activeTrip}
-          currentUser={currentUser}
-          onNavigate={(view) => {
-            if (view === 'trips') setCurrentView('my-trips');
-            else setCurrentView(view);
-          }}
-          onShowToast={showToast}
-        />
-      )}
-
-      {currentView === 'itinerary' && (
-        <ItineraryViewPage
-          currentUser={currentUser}
-          onBack={() => setCurrentView('landing')}
-          onOpenCreateTrip={() => setCurrentView('create-trip')}
-          onLogout={handleLogout}
-          onShowToast={showToast}
-        />
-      )}
-
       {currentView === 'calendar' && (
         <CalendarViewPage
           currentUser={currentUser}
           onBack={() => setCurrentView('landing')}
           onOpenCreateTrip={() => setCurrentView('create-trip')}
           onNavigateToItinerary={() => setCurrentView('itinerary')}
+          onLogout={handleLogout}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'admin' && (
+        <AdminPanelScreen
+          currentUser={currentUser}
+          onBack={() => setCurrentView('landing')}
+          onNavigateToUserTrips={() => setCurrentView('my-trips')}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
