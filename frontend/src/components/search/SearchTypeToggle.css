@@ -1,0 +1,30 @@
+.gt-search-type-toggle {
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 3px;
+  border-radius: var(--radius-lg);
+  display: inline-flex;
+}
+
+.gt-toggle-tab {
+  padding: 0.45rem 1.25rem;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  border: none;
+  background: transparent;
+  color: var(--color-navy-700);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.gt-toggle-tab:hover {
+  color: var(--color-navy-900);
+}
+
+.gt-toggle-tab--active {
+  background-color: #FFFFFF;
+  color: var(--color-navy-900);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--color-border);
+}

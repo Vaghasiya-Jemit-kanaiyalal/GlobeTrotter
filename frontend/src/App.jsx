@@ -3,6 +3,8 @@ import { MainLandingPage } from './components/landing/MainLandingPage';
 import { CreateTripScreen } from './components/trips/CreateTripScreen';
 import { BuildItineraryWorkspace } from './components/itinerary/BuildItineraryWorkspace';
 import { UserTripListingScreen } from './components/trips/UserTripListingScreen';
+import { UserProfileScreen } from './components/profile/UserProfileScreen';
+import { ActivitySearchScreen } from './components/search/ActivitySearchScreen';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { ForgotPasswordModal } from './components/auth/ForgotPasswordModal';
@@ -10,12 +12,12 @@ import { ItineraryViewPage } from './components/itinerary/ItineraryViewPage';
 import { CalendarViewPage } from './components/calendar/CalendarViewPage';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
-import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin } from 'lucide-react';
+import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin, User, Search } from 'lucide-react';
 import './styles/global.css';
 import './App.css';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'login' | 'register'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'search' | 'profile' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'login' | 'register'
   const [currentUser, setCurrentUser] = useState({
     name: 'Alex Morgan',
     firstName: 'Alex',
@@ -83,6 +85,24 @@ export default function App() {
 
           <button
             type="button"
+            className={`gt-switcher-btn ${currentView === 'search' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('search')}
+          >
+            <Search className="gt-icon" />
+            <span>Screen 8: Search</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'profile' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('profile')}
+          >
+            <User className="gt-icon" />
+            <span>Screen 7: User Profile</span>
+          </button>
+
+          <button
+            type="button"
             className={`gt-switcher-btn ${currentView === 'my-trips' ? 'gt-switcher-btn--active' : ''}`}
             onClick={() => setCurrentView('my-trips')}
           >
@@ -114,7 +134,7 @@ export default function App() {
             onClick={() => setCurrentView('itinerary')}
           >
             <MapPin className="gt-icon text-amber-500" />
-            <span>Screen 9: Itinerary & Budget</span>
+            <span>Screen 9: Itinerary View</span>
           </button>
 
           <button
@@ -154,9 +174,41 @@ export default function App() {
           onAddTrip={handleAddTrip}
           onNavigate={(view) => {
             if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else if (view === 'explore') setCurrentView('search');
             else setCurrentView(view);
           }}
           onLogout={handleLogout}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'search' && (
+        <ActivitySearchScreen
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else setCurrentView(view);
+          }}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'profile' && (
+        <UserProfileScreen
+          currentUser={currentUser}
+          onNavigate={(view) => {
+            if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
+            else setCurrentView(view);
+          }}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onViewTripDetails={(t) => {
+            setActiveTrip(t);
+            setCurrentView('itinerary-builder');
+          }}
           onShowToast={showToast}
         />
       )}
@@ -166,6 +218,7 @@ export default function App() {
           currentUser={currentUser}
           onNavigate={(view) => {
             if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
             else setCurrentView(view);
           }}
           onOpenCreateTrip={() => setCurrentView('create-trip')}
@@ -182,6 +235,7 @@ export default function App() {
           currentUser={currentUser}
           onNavigate={(view) => {
             if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
             else setCurrentView(view);
           }}
           onCreateTripSuccess={handleCreateTripSuccess}
@@ -194,6 +248,7 @@ export default function App() {
           currentUser={currentUser}
           onNavigate={(view) => {
             if (view === 'trips') setCurrentView('my-trips');
+            else if (view === 'profile') setCurrentView('profile');
             else setCurrentView(view);
           }}
           onShowToast={showToast}

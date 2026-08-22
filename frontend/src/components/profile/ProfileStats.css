@@ -1,0 +1,34 @@
+.gt-profile-stats-bar {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-4) var(--space-6);
+  box-shadow: var(--shadow-sm);
+}
+
+.gt-stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.gt-stat-number {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--color-navy-900);
+}
+
+.gt-stat-label {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-navy-600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gt-stat-label .gt-icon {
+  width: 13px;
+  height: 13px;
+  color: var(--color-amber-600);
+}
