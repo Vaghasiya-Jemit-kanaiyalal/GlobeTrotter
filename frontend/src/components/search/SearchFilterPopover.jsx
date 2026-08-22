@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import { ACTIVITY_CATEGORIES } from '../../data/activitiesData';
@@ -17,6 +17,16 @@ export const SearchFilterPopover = ({
   const [priceTier, setPriceTier] = useState(currentFilters.priceTier || 'All');
   const [minRating, setMinRating] = useState(currentFilters.minRating || 0);
   const [region, setRegion] = useState(currentFilters.region || 'All');
+
+  // Keep local filter state synced with parent whenever modal opens or props update
+  useEffect(() => {
+    if (isOpen) {
+      setCategory(currentFilters.category || 'All');
+      setPriceTier(currentFilters.priceTier || 'All');
+      setMinRating(currentFilters.minRating || 0);
+      setRegion(currentFilters.region || 'All');
+    }
+  }, [isOpen, currentFilters]);
 
   if (!isOpen) return null;
 
@@ -87,6 +97,13 @@ export const SearchFilterPopover = ({
                   onClick={() => setPriceTier('1kTo3k')}
                 >
                   ₹1,000 – ₹3,000
+                </button>
+                <button
+                  type="button"
+                  className={`gt-filter-pill ${priceTier === '3kPlus' ? 'gt-filter-pill--active' : ''}`}
+                  onClick={() => setPriceTier('3kPlus')}
+                >
+                  ₹3,000+
                 </button>
               </div>
             </div>

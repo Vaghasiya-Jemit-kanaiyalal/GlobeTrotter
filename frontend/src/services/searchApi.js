@@ -4,7 +4,7 @@
 
 import { ACTIVITIES_DATA, SAMPLE_DESTINATIONS } from '../data/activitiesData';
 
-const delay = (ms = 250) => new Promise((resolve) => setTimeout(resolve, ms));
+const delay = (ms = 200) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Comprehensive Mock Cities Database
 const CITIES_DATA = [
@@ -99,7 +99,7 @@ export const searchApi = {
     page = 1,
     limit = 6,
   } = {}) {
-    await delay(300);
+    await delay(150);
 
     let list = ACTIVITIES_DATA.map((act) => ({
       ...act,
@@ -121,15 +121,29 @@ export const searchApi = {
     }
 
     if (category !== 'All') {
-      list = list.filter((a) => a.category.toLowerCase().includes(category.toLowerCase()));
+      const catLower = category.toLowerCase();
+      list = list.filter((a) => {
+        const aCat = a.category.toLowerCase();
+        return (
+          aCat.includes(catLower) ||
+          catLower.includes(aCat) ||
+          (catLower.includes('culture') && aCat.includes('culture')) ||
+          (catLower.includes('adventure') && aCat.includes('adventure')) ||
+          (catLower.includes('food') && aCat.includes('food')) ||
+          (catLower.includes('relaxation') && aCat.includes('relaxation')) ||
+          (catLower.includes('sightseeing') && aCat.includes('sightseeing'))
+        );
+      });
     }
 
     if (priceTier === 'Free') {
-      list = list.filter((a) => a.costValue === 0 || a.cost.toLowerCase().includes('free'));
+      list = list.filter((a) => a.costValue === 0 || String(a.cost).toLowerCase().includes('free'));
     } else if (priceTier === 'Under1k') {
-      list = list.filter((a) => a.costValue <= 1000);
+      list = list.filter((a) => a.costValue > 0 && a.costValue <= 1000);
     } else if (priceTier === '1kTo3k') {
       list = list.filter((a) => a.costValue >= 1000 && a.costValue <= 3000);
+    } else if (priceTier === '3kPlus') {
+      list = list.filter((a) => a.costValue >= 3000);
     }
 
     if (minRating > 0) {
@@ -145,8 +159,7 @@ export const searchApi = {
     });
 
     const totalCount = list.length;
-    const startIndex = 0;
-    const paginated = list.slice(startIndex, page * limit);
+    const paginated = list.slice(0, page * limit);
 
     return {
       success: true,
@@ -165,7 +178,7 @@ export const searchApi = {
     page = 1,
     limit = 6,
   } = {}) {
-    await delay(300);
+    await delay(150);
 
     let list = [...CITIES_DATA];
 
@@ -181,7 +194,10 @@ export const searchApi = {
     }
 
     if (region !== 'All') {
-      list = list.filter((c) => c.region.toLowerCase().includes(region.toLowerCase()));
+      const rLower = region.toLowerCase();
+      list = list.filter(
+        (c) => c.region.toLowerCase().includes(rLower) || rLower.includes(c.region.toLowerCase())
+      );
     }
 
     // Sort
