@@ -1,35 +1,70 @@
+const adminRepository = require('../repositories/admin.repository');
 const userRepository = require('../repositories/user.repository');
-const tripRepository = require('../repositories/trip.repository');
-const cityRepository = require('../repositories/city.repository');
-const activityRepository = require('../repositories/activity.repository');
 
-async function getAdminDashboardStats() {
-  const totalUsers = await userRepository.countAllUsers();
-  const totalTrips = await tripRepository.countAllTrips();
-  const publicTrips = await tripRepository.countPublicTrips();
-  const totalCities = await cityRepository.countAllCities();
-  const popularCities = await cityRepository.getPopularCities(5);
-  const popularActivities = await activityRepository.getPopularActivities(5);
-
-  return {
-    totalUsers,
-    totalTrips,
-    publicTrips,
-    privateTrips: totalTrips - publicTrips,
-    totalCities,
-    popularCities,
-    popularActivities
-  };
+async function getDashboardOverview() {
+  return adminRepository.getDashboardOverview();
 }
 
-async function getAllUsers(page = 1, limit = 20) {
-  const offset = (page - 1) * limit;
-  const users = await userRepository.findAllUsers(limit, offset);
-  const total = await userRepository.countAllUsers();
-  return { users, total, page, limit };
+async function getUsers(queryParams) {
+  return adminRepository.getUsers(queryParams);
+}
+
+async function getUserDetails(userId) {
+  const details = await adminRepository.getUserDetails(userId);
+  if (!details) {
+    const error = new Error('User not found');
+    error.statusCode = 404;
+    error.errorCode = 'USER_NOT_FOUND';
+    throw error;
+  }
+  return details;
+}
+
+async function updateUserStatus(userId, status) {
+  const user = await userRepository.findById(userId);
+  if (!user) {
+    const error = new Error('User not found');
+    error.statusCode = 404;
+    error.errorCode = 'USER_NOT_FOUND';
+    throw error;
+  }
+
+  return adminRepository.updateUserStatus(userId, status);
+}
+
+async function getPopularCities(queryParams) {
+  return adminRepository.getPopularCities(queryParams);
+}
+
+async function getPopularActivities(queryParams) {
+  return adminRepository.getPopularActivities(queryParams);
+}
+
+async function getUserAnalytics(range) {
+  return adminRepository.getUserAnalytics(range);
+}
+
+async function getTripAnalytics(range) {
+  return adminRepository.getTripAnalytics(range);
+}
+
+async function getCommunityAnalytics() {
+  return adminRepository.getCommunityAnalytics();
+}
+
+async function getOverviewAnalytics() {
+  return adminRepository.getOverviewAnalytics();
 }
 
 module.exports = {
-  getAdminDashboardStats,
-  getAllUsers
+  getDashboardOverview,
+  getUsers,
+  getUserDetails,
+  updateUserStatus,
+  getPopularCities,
+  getPopularActivities,
+  getUserAnalytics,
+  getTripAnalytics,
+  getCommunityAnalytics,
+  getOverviewAnalytics
 };
