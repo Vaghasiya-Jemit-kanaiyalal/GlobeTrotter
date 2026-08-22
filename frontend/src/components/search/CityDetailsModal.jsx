@@ -8,60 +8,57 @@ export const CityDetailsModal = ({ city, isOpen, onClose, onAddToTrip, onViewAct
   if (!isOpen || !city) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`${city.name}, ${city.country}`} size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} title={`${city.name}, ${city.country}`} size="md">
       <div className="gt-city-modal-content flex flex-col gap-4">
-        {/* Responsive 2-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
-          {/* Left Column: Image & Attractions */}
-          <div className="flex flex-col gap-3">
-            <div className="gt-city-modal-img-box">
-              <img src={city.image} alt={city.name} className="gt-city-modal-img" />
-              <span className="gt-city-modal-badge">{city.region || 'Asia'}</span>
-            </div>
+        {/* 1. Cover Image Banner */}
+        <div className="gt-city-modal-img-box">
+          <img src={city.image} alt={city.name} className="gt-city-modal-img" />
+          <span className="gt-city-modal-badge">{city.region || 'Asia'}</span>
+        </div>
 
-            {/* Top Attractions List */}
-            {city.topAttractions && (
-              <div className="gt-city-modal-attractions p-3 bg-subtle rounded-lg border border-border">
-                <h4 className="text-xs font-bold uppercase text-muted mb-2">Popular Attractions</h4>
-                <div className="flex flex-wrap gap-1.5">
-                  {city.topAttractions.map((att) => (
-                    <span key={att} className="gt-city-attraction-tag flex items-center gap-1 text-xs">
-                      <MapPin className="w-3 h-3 text-amber-600" />
-                      <span>{att}</span>
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
+        {/* 2. Header & Overview Description */}
+        <div className="flex flex-col gap-1 text-left">
+          <h3 className="text-xl font-bold brand-serif text-navy-900 m-0 leading-tight">
+            {city.name}, {city.country}
+          </h3>
+          <p className="text-xs sm:text-sm text-navy-800 m-0 leading-relaxed mt-1">
+            {city.description}
+          </p>
+        </div>
+
+        {/* 3. Center-Aligned Responsive 3-Column Stats Grid */}
+        <div className="gt-city-modal-specs grid grid-cols-3 gap-2 text-center p-3 bg-subtle border border-border rounded-xl">
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-xs text-muted font-medium">Best Season</span>
+            <strong className="text-navy-900 font-bold text-xs sm:text-sm mt-0.5">{city.bestTime || 'Nov – Feb'}</strong>
           </div>
-
-          {/* Right Column: Title, Specs & Description */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <h3 className="text-xl font-bold brand-serif text-navy-900 m-0">{city.name}, {city.country}</h3>
-              <p className="text-xs text-muted mt-1 leading-relaxed">{city.description}</p>
-            </div>
-
-            {/* Specs Grid */}
-            <div className="gt-city-modal-specs grid grid-cols-3 gap-2 text-center py-2.5 px-3">
-              <div className="flex flex-col">
-                <span className="text-xs text-muted">Best Season</span>
-                <strong className="text-navy-900 text-xs font-semibold">{city.bestTime || 'Nov – Feb'}</strong>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs text-muted">Daily Budget</span>
-                <strong className="text-amber-700 font-bold text-sm">{city.avgCostPerDay || '₹3,500'}</strong>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs text-muted">Activities</span>
-                <strong className="text-navy-900 text-xs font-semibold">{city.activitiesCount || 24} Popular</strong>
-              </div>
-            </div>
+          <div className="flex flex-col items-center justify-center border-x border-border/60 px-1">
+            <span className="text-xs text-muted font-medium">Daily Budget</span>
+            <strong className="text-amber-700 font-extrabold text-sm sm:text-base mt-0.5">{city.avgCostPerDay || '₹3,500'}</strong>
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-xs text-muted font-medium">Activities</span>
+            <strong className="text-navy-900 font-bold text-xs sm:text-sm mt-0.5">{city.activitiesCount || 24} Popular</strong>
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="gt-city-modal-footer flex justify-between items-center pt-3 border-t border-border mt-1">
+        {/* 4. Left-Aligned Popular Attractions Section */}
+        {city.topAttractions && (
+          <div className="gt-city-modal-attractions text-left">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-muted m-0 mb-2">Popular Attractions</h4>
+            <div className="flex flex-wrap gap-2">
+              {city.topAttractions.map((att) => (
+                <span key={att} className="gt-city-attraction-tag flex items-center gap-1.5 text-xs px-2.5 py-1 bg-subtle border border-border rounded-md text-navy-800 font-medium">
+                  <MapPin className="w-3 h-3 text-amber-600 flex-shrink-0" />
+                  <span>{att}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 5. Footer Buttons - Aligned Horizontal Line at Bottom */}
+        <div className="gt-city-modal-footer flex justify-between items-center pt-3 border-t border-border mt-2">
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>

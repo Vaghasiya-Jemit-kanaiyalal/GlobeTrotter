@@ -8,71 +8,76 @@ export const ActivityDetailsModal = ({ activity, isOpen, onClose, onAddToTrip })
   if (!isOpen || !activity) return null;
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={activity.name} size="lg">
+    <Modal isOpen={isOpen} onClose={onClose} title={activity.name} size="md">
       <div className="gt-act-modal-content flex flex-col gap-4">
-        {/* Responsive 2-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
-          {/* Left Column: Image & Highlights */}
-          <div className="flex flex-col gap-3">
-            <div className="gt-act-modal-img-box">
-              <img src={activity.image} alt={activity.name} className="gt-act-modal-img" />
-              <span className="gt-act-modal-badge">{activity.category}</span>
-            </div>
+        {/* 1. Cover Image Banner */}
+        <div className="gt-act-modal-img-box">
+          <img src={activity.image} alt={activity.name} className="gt-act-modal-img" />
+          <span className="gt-act-modal-badge">{activity.category}</span>
+        </div>
 
-            {/* Key Highlights List */}
-            <div className="gt-act-modal-highlights p-3 bg-subtle rounded-lg border border-border">
-              <h4 className="text-xs font-bold uppercase text-muted" style={{ marginBottom: 6 }}>Key Highlights</h4>
-              <ul className="flex flex-col gap-1.5 text-xs text-navy-800">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" /> Professional guided experience</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" /> Safety equipment included</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" /> Flexible cancellation policy</li>
-              </ul>
+        {/* 2. Location, Title & Rating Header */}
+        <div className="flex justify-between items-start gap-3 flex-wrap text-left">
+          <div className="flex flex-col gap-1 text-left flex-1">
+            <div className="gt-act-modal-location flex items-center gap-1.5 text-xs text-navy-600 font-semibold">
+              <MapPin className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+              <span>{activity.city}, {activity.country}</span>
             </div>
+            <h3 className="text-xl font-bold brand-serif text-navy-900 m-0 leading-tight">
+              {activity.name}
+            </h3>
           </div>
 
-          {/* Right Column: Title, Rating, Specs & Description */}
-          <div className="flex flex-col gap-3">
-            <div>
-              <div className="gt-act-modal-location flex items-center gap-1 text-xs mb-1">
-                <MapPin className="gt-icon" />
-                <span>{activity.city}, {activity.country}</span>
-              </div>
-              <h3 className="text-xl font-bold brand-serif text-navy-900 m-0">{activity.name}</h3>
-              
-              <div className="mt-2 flex items-center gap-2">
-                <span className="gt-act-modal-rating flex items-center gap-1">
-                  <Star className="gt-icon fill-amber-500 text-amber-500" style={{ width: 14, height: 14 }} />
-                  <strong>{activity.rating || 4.8} / 5.0</strong> ({activity.reviewsCount || 124} reviews)
-                </span>
-              </div>
-            </div>
-
-            {/* Specs Bar */}
-            <div className="gt-act-modal-specs-bar grid grid-cols-3 gap-2 text-center py-2.5 px-3">
-              <div className="flex flex-col">
-                <span className="text-xs text-muted">Estimated Cost</span>
-                <strong className="text-amber-700 font-bold text-sm">{activity.cost}</strong>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs text-muted">Duration</span>
-                <strong className="text-navy-900 text-xs font-semibold">{activity.duration}</strong>
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xs text-muted">Best Time</span>
-                <strong className="text-navy-900 text-xs font-semibold">{activity.bestTime || 'Year-round'}</strong>
-              </div>
-            </div>
-
-            {/* About Activity Description */}
-            <div className="gt-act-modal-desc-box p-3">
-              <h4 className="text-xs font-bold uppercase text-muted mb-1">About Activity</h4>
-              <p className="text-xs leading-relaxed text-navy-800 m-0">{activity.description}</p>
-            </div>
+          <div className="gt-act-modal-rating flex items-center gap-1.5 px-3 py-1 bg-subtle border border-border rounded-full text-xs text-navy-800 flex-shrink-0">
+            <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500 flex-shrink-0" />
+            <span><strong>{activity.rating || 4.8}</strong> / 5.0</span>
+            <span className="text-muted ml-0.5">({activity.reviewsCount || 124} reviews)</span>
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="gt-act-modal-footer flex justify-between items-center pt-3 border-t border-border mt-1">
+        {/* 3. Center-Aligned Responsive 3-Column Stats Grid */}
+        <div className="gt-act-modal-specs-bar grid grid-cols-3 gap-2 text-center p-3 bg-subtle border border-border rounded-xl">
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-xs text-muted font-medium">Estimated Cost</span>
+            <strong className="text-amber-700 font-extrabold text-sm sm:text-base mt-0.5">{activity.cost}</strong>
+          </div>
+          <div className="flex flex-col items-center justify-center border-x border-border/60 px-1">
+            <span className="text-xs text-muted font-medium">Duration</span>
+            <strong className="text-navy-900 font-bold text-xs sm:text-sm mt-0.5">{activity.duration}</strong>
+          </div>
+          <div className="flex flex-col items-center justify-center">
+            <span className="text-xs text-muted font-medium">Best Time</span>
+            <strong className="text-navy-900 font-bold text-xs sm:text-sm mt-0.5">{activity.bestTime || 'Year-round'}</strong>
+          </div>
+        </div>
+
+        {/* 4. Left-Aligned About Activity Box */}
+        <div className="gt-act-modal-desc-box p-3.5 bg-subtle border border-border rounded-xl text-left">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-muted m-0 mb-1">About Activity</h4>
+          <p className="text-xs sm:text-sm leading-relaxed text-navy-800 m-0">{activity.description}</p>
+        </div>
+
+        {/* 5. Left-Aligned Key Highlights Section */}
+        <div className="gt-act-modal-highlights text-left">
+          <h4 className="text-xs font-bold uppercase tracking-wider text-muted m-0 mb-2">Key Highlights</h4>
+          <ul className="flex flex-col gap-2 text-xs text-navy-800 p-0 m-0 list-none">
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
+              <span>Professional guided experience</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
+              <span>Safety equipment included</span>
+            </li>
+            <li className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
+              <span>Flexible cancellation policy</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* 6. Footer Buttons - Aligned Horizontal Line at Bottom */}
+        <div className="gt-act-modal-footer flex justify-between items-center pt-3 border-t border-border mt-2">
           <Button variant="outline" onClick={onClose}>
             Close
           </Button>
