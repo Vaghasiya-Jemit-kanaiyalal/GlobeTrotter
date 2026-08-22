@@ -119,8 +119,15 @@ export const CreateTripScreen = ({
         coverImage: newTrip.coverImage,
         totalBudget: 18500,
       });
+      const createdTripObj = {
+        ...newTrip,
+        ...(res?.data || {}),
+        id: res?.data?.id || newTrip.id,
+        title: res?.data?.title || newTrip.title,
+        name: res?.data?.name || newTrip.name,
+      };
       setLoading(false);
-      onCreateTripSuccess(res.data || newTrip);
+      onCreateTripSuccess(createdTripObj);
     } catch (err) {
       console.warn('Backend trip creation fallback:', err);
       setLoading(false);
