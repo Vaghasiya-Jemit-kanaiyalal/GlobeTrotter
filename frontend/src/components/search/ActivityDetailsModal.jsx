@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { MapPin, Clock, DollarSign, Star, Plus, CheckCircle2 } from 'lucide-react';
+import { MapPin, Clock, IndianRupee, Star, Plus, CheckCircle2 } from 'lucide-react';
 import './ActivityDetailsModal.css';
 
 export const ActivityDetailsModal = ({ activity, isOpen, onClose, onAddToTrip }) => {

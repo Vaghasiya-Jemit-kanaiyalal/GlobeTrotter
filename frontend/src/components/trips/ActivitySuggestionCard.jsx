@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapPin, Clock, DollarSign, Check, Plus, Tag } from 'lucide-react';
+import { MapPin, Clock, IndianRupee, Check, Plus, Tag } from 'lucide-react';
 import './ActivitySuggestionCard.css';
 
 export const ActivitySuggestionCard = ({ activity, isSelected, onToggleSelect }) => {

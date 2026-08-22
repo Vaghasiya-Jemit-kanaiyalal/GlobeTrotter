@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { Calendar, Clock, MapPin, DollarSign, Compass, Tag, Plane, Home } from 'lucide-react';
+import { Calendar, Clock, MapPin, IndianRupee, Compass, Tag, Plane, Home } from 'lucide-react';
 import './EventPopover.css';
 
 export const EventPopover = ({

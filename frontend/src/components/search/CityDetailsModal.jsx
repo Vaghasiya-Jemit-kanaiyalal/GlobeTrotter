@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { MapPin, Compass, DollarSign, Calendar, Plus, CheckCircle2, Eye } from 'lucide-react';
+import { MapPin, Compass, IndianRupee, Calendar, Plus, CheckCircle2, Eye } from 'lucide-react';
 import './CityDetailsModal.css';
 
 export const CityDetailsModal = ({ city, isOpen, onClose, onAddToTrip, onViewActivities }) => {

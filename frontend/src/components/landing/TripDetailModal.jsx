@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, MapPin, DollarSign, CheckCircle2, Clock, X, Compass } from 'lucide-react';
+import { Calendar, MapPin, IndianRupee, CheckCircle2, Clock, X, Compass } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
 import './TripDetailModal.css';
@@ -27,10 +27,10 @@ export const TripDetailModal = ({ trip, isOpen, onClose }) => {
           </div>
 
           <div className="gt-trip-modal__meta-item">
-            <DollarSign className="gt-icon" />
+            <IndianRupee className="gt-icon" />
             <div>
               <span className="text-xs text-muted">Estimated Budget</span>
-              <strong>{trip.totalBudget || '$3,000'}</strong>
+              <strong>{trip.totalBudget || '₹2,50,000'}</strong>
             </div>
           </div>
         </div>

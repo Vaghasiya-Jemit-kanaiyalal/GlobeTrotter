@@ -3,7 +3,7 @@ import { PostAuthor } from './PostAuthor';
 import { PostImage } from './PostImage';
 import { PostActions } from './PostActions';
 import { CommentSection } from './CommentSection';
-import { MapPin, Compass, Calendar, Tag, DollarSign, Eye } from 'lucide-react';
+import { MapPin, Compass, Calendar, Tag, IndianRupee, Eye } from 'lucide-react';
 import './CommunityPostCard.css';
 
 export const CommunityPostCard = ({

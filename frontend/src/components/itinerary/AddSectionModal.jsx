@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, Calendar, DollarSign, Plus } from 'lucide-react';
+import { MapPin, Calendar, IndianRupee, Plus } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
@@ -85,11 +85,11 @@ export const AddSectionModal = ({ isOpen, onClose, onAddSection, nextSectionInde
 
         <Input
           id="new-sec-budget"
-          label="Estimated Section Budget (₹ / $)"
+          label="Estimated Section Budget (₹)"
           type="number"
           value={budget}
           onChange={(e) => setBudget(e.target.value)}
-          icon={DollarSign}
+          icon={IndianRupee}
         />
 
         <div className="gt-add-section__footer flex justify-between items-center">

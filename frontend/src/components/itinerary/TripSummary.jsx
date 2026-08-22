@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, MapPin, DollarSign, Wallet, Compass, ChevronDown } from 'lucide-react';
+import { Calendar, MapPin, IndianRupee, Wallet, Compass, ChevronDown } from 'lucide-react';
 import './TripSummary.css';
 
 export const TripSummary = ({
@@ -118,7 +118,7 @@ export const TripSummary = ({
         <div className="gt-summary-divider" />
 
         <div className="gt-summary-spec flex items-center gap-2">
-          <DollarSign className="gt-summary-spec__icon" />
+          <IndianRupee className="gt-summary-spec__icon" />
           <div className="flex-col">
             <span className="gt-summary-spec__label">Estimated Budget</span>
             <strong className="gt-summary-spec__value gt-summary-spec__value--accent">{totalBudget}</strong>
