@@ -7,9 +7,16 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-5);
+  margin-bottom: 1.25rem;
+  transition: border-color var(--transition-fast);
 }
 
-.gt-trip-summary__eyebrow {
+.gt-trip-summary-card:hover {
+  border-color: var(--color-border-hover);
+}
+
+.gt-trip-summary__eyebrow,
+.gt-trip-summary-label {
   font-size: var(--font-size-xs);
   font-weight: 700;
   text-transform: uppercase;
@@ -23,9 +30,19 @@
   height: 14px;
 }
 
-.gt-trip-summary__title {
-  font-size: 2.25rem;
+.gt-trip-summary__title,
+.gt-trip-summary-title {
+  font-size: clamp(1.35rem, 3vw, 2.25rem);
+  font-weight: 700;
   color: var(--color-navy-900);
+  margin: 0;
+}
+
+.gt-trip-summary-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-navy-600);
+  margin-top: 0.25rem;
+  margin-bottom: 0;
 }
 
 .gt-trip-summary__bar {
@@ -68,6 +85,68 @@
   width: 1px;
   height: 32px;
   background-color: var(--color-border);
+}
+
+.gt-trip-switcher-wrapper {
+  position: relative;
+}
+
+.gt-trip-select-input {
+  appearance: none;
+  background-color: var(--color-bg-app);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.45rem 2.25rem 0.45rem 0.85rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-navy-800);
+  cursor: pointer;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.gt-trip-select-input:hover {
+  border-color: var(--color-amber-600);
+  background-color: #FFFFFF;
+}
+
+.gt-trip-select-chevron {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-navy-600);
+  pointer-events: none;
+}
+
+.gt-trip-summary-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.gt-summary-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  color: var(--color-navy-800);
+  font-weight: 500;
+}
+
+.gt-summary-chip--highlight {
+  background-color: #FEF3C7;
+  border-color: #FDE68A;
+  color: #92400E;
 }
 
 @media (max-width: 860px) {

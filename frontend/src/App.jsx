@@ -6,14 +6,16 @@ import { UserTripListingScreen } from './components/trips/UserTripListingScreen'
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { ForgotPasswordModal } from './components/auth/ForgotPasswordModal';
+import { ItineraryViewPage } from './components/itinerary/ItineraryViewPage';
+import { CalendarViewPage } from './components/calendar/CalendarViewPage';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
-import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar, MapPin } from 'lucide-react';
+import { Home, PlusCircle, LogIn, UserPlus, Compass, Calendar as CalendarIcon, MapPin } from 'lucide-react';
 import './styles/global.css';
 import './App.css';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'login' | 'register'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'create-trip' | 'itinerary-builder' | 'my-trips' | 'itinerary' | 'calendar' | 'login' | 'register'
   const [currentUser, setCurrentUser] = useState({
     name: 'Alex Morgan',
     firstName: 'Alex',
@@ -35,7 +37,11 @@ export default function App() {
     setTrips((prev) => [newTrip, ...prev]);
     setActiveTrip(newTrip);
     setCurrentView('itinerary-builder');
-    showToast(`Trip "${newTrip.title}" created successfully!`, 'success');
+    showToast(`Trip "${newTrip.title || newTrip.name}" created successfully!`, 'success');
+  };
+
+  const handleAddTrip = (newTrip) => {
+    setTrips((prev) => [newTrip, ...prev]);
   };
 
   const handleLoginSuccess = (user) => {
@@ -57,7 +63,7 @@ export default function App() {
 
   return (
     <div className="gt-app-root">
-      {/* Top Prototype Navigation Bar */}
+      {/* Top QA / Screen Navigation Switcher Bar */}
       <div className="gt-screen-switcher-bar flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Compass className="gt-switcher-icon" />
@@ -65,7 +71,7 @@ export default function App() {
           <span className="gt-switcher-badge">Screen Navigator</span>
         </div>
 
-        <div className="gt-switcher-buttons flex gap-2">
+        <div className="gt-switcher-buttons flex gap-2 flex-wrap">
           <button
             type="button"
             className={`gt-switcher-btn ${currentView === 'landing' ? 'gt-switcher-btn--active' : ''}`}
@@ -98,8 +104,26 @@ export default function App() {
             className={`gt-switcher-btn ${currentView === 'itinerary-builder' ? 'gt-switcher-btn--active' : ''}`}
             onClick={() => setCurrentView('itinerary-builder')}
           >
-            <Calendar className="gt-icon" />
+            <CalendarIcon className="gt-icon" />
             <span>Screen 5: Build Itinerary</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'itinerary' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('itinerary')}
+          >
+            <MapPin className="gt-icon text-amber-500" />
+            <span>Screen 9: Itinerary & Budget</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'calendar' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('calendar')}
+          >
+            <CalendarIcon className="gt-icon text-amber-500" />
+            <span>Screen 11: Calendar View</span>
           </button>
 
           <button
@@ -127,10 +151,7 @@ export default function App() {
         <MainLandingPage
           currentUser={currentUser}
           trips={trips}
-          onAddTrip={(newTrip) => {
-            setTrips((prev) => [newTrip, ...prev]);
-            setActiveTrip(newTrip);
-          }}
+          onAddTrip={handleAddTrip}
           onNavigate={(view) => {
             if (view === 'trips') setCurrentView('my-trips');
             else setCurrentView(view);
@@ -175,6 +196,27 @@ export default function App() {
             if (view === 'trips') setCurrentView('my-trips');
             else setCurrentView(view);
           }}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'itinerary' && (
+        <ItineraryViewPage
+          currentUser={currentUser}
+          onBack={() => setCurrentView('landing')}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onLogout={handleLogout}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'calendar' && (
+        <CalendarViewPage
+          currentUser={currentUser}
+          onBack={() => setCurrentView('landing')}
+          onOpenCreateTrip={() => setCurrentView('create-trip')}
+          onNavigateToItinerary={() => setCurrentView('itinerary')}
+          onLogout={handleLogout}
           onShowToast={showToast}
         />
       )}

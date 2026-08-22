@@ -1,8 +1,19 @@
 /**
- * Sample Suggestions for Places to Visit and Activities to Perform
+ * Sample Places to Visit & Activity Suggestions for GlobeTrotter Travel Planning
  */
 
-export const ACTIVITY_CATEGORIES = ['All', 'Sightseeing', 'Culture', 'Food & Gastronomy', 'Adventure', 'Relaxation'];
+export const ACTIVITY_CATEGORIES = [
+  'All',
+  'Sightseeing',
+  'Culture',
+  'Culture & History',
+  'Food & Gastronomy',
+  'Food & Dining',
+  'Adventure',
+  'Adventure & Nature',
+  'Relaxation',
+  'Relaxation & Beaches',
+];
 
 export const SAMPLE_DESTINATIONS = [
   { id: 'd-1', city: 'Goa', country: 'India', region: 'Asia', tag: 'Coastal & Beaches' },
@@ -25,6 +36,7 @@ export const ACTIVITIES_DATA = [
     duration: '2 hours',
     cost: '₹100',
     costValue: 100,
+    costNumeric: 100,
     currency: '₹',
     image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=600&q=80',
     description: '17th-century Portuguese fort and lighthouse standing on Sinquerim Beach overlooking the Arabian Sea.',
@@ -38,6 +50,7 @@ export const ACTIVITIES_DATA = [
     duration: '5 hours',
     cost: '₹1,800',
     costValue: 1800,
+    costNumeric: 1800,
     currency: '₹',
     image: 'https://images.unsplash.com/photo-1544644181-1484b3fdfc62?auto=format&fit=crop&w=600&q=80',
     description: 'Four-tiered waterfall located on the Mandovi River with off-road jungle safari and natural pool swim.',
@@ -51,6 +64,7 @@ export const ACTIVITIES_DATA = [
     duration: '3 hours',
     cost: 'Free Entry',
     costValue: 0,
+    costNumeric: 0,
     currency: '$',
     image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80',
     description: 'Walk through thousands of vermilion torii gates winding up Mount Inari in ancient Kyoto.',
@@ -64,6 +78,7 @@ export const ACTIVITIES_DATA = [
     duration: '2.5 hours',
     cost: '€35',
     costValue: 35,
+    costNumeric: 35,
     currency: '€',
     image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80',
     description: 'Elevator access to the topmost observation deck offering panoramic 360° views across Paris.',
@@ -77,6 +92,7 @@ export const ACTIVITIES_DATA = [
     duration: '4 hours',
     cost: 'Free Entry',
     costValue: 0,
+    costNumeric: 0,
     currency: '€',
     image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80',
     description: 'Spectacular coastal mountain trail connecting Bomerano to Nocelle high above Positano.',
@@ -90,6 +106,7 @@ export const ACTIVITIES_DATA = [
     duration: '3 hours',
     cost: '¥4,500',
     costValue: 4500,
+    costNumeric: 4500,
     currency: '¥',
     image: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=600&q=80',
     description: 'Sample fresh sashimi, tamagoyaki omelettes, wagyu skewers, and matcha sweets with a local chef guide.',
@@ -103,6 +120,7 @@ export const ACTIVITIES_DATA = [
     duration: '2 hours',
     cost: 'CHF 40',
     costValue: 40,
+    costNumeric: 40,
     currency: 'CHF',
     image: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=600&q=80',
     description: '100-year-old funicular railway ascending to a glass-floor viewing platform 1,322 meters above sea level.',
@@ -116,6 +134,7 @@ export const ACTIVITIES_DATA = [
     duration: '3.5 hours',
     cost: 'ISK 11,900',
     costValue: 11900,
+    costNumeric: 110,
     currency: 'ISK',
     image: 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=600&q=80',
     description: 'Bathe in mineral-rich 38°C geothermal waters surrounded by volcanic lava fields with silica mud masks.',
@@ -129,8 +148,11 @@ export const ACTIVITIES_DATA = [
     duration: '2 hours',
     cost: '$140 CAD',
     costValue: 140,
+    costNumeric: 95,
     currency: '$',
     image: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?auto=format&fit=crop&w=600&q=80',
     description: 'Paddle a wooden red canoe across pristine turquoise glacial waters under the Ten Peaks.',
   },
 ];
+
+export const SAMPLE_ACTIVITIES = ACTIVITIES_DATA;
