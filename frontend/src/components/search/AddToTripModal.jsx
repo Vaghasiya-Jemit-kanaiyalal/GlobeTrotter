@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { MapPin, Calendar, Plus, Check, Compass } from 'lucide-react';
+import { MapPin, Calendar, Plus, Check } from 'lucide-react';
 import './AddToTripModal.css';
 
 export const AddToTripModal = ({
@@ -31,14 +31,14 @@ export const AddToTripModal = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={`Add "${itemName}" to Trip`}>
-      <div className="gt-add-to-trip-modal flex-col gap-4">
-        <p className="text-sm">
+    <Modal isOpen={isOpen} onClose={onClose} title={`Add "${itemName}" to Trip`} size="md">
+      <div className="gt-add-to-trip-modal flex flex-col gap-4">
+        <p className="text-sm text-navy-800 m-0">
           Select an active or upcoming travel itinerary to associate <strong>{itemName}</strong> with.
         </p>
 
         {userTrips.length > 0 ? (
-          <div className="gt-trips-radio-list flex-col gap-2">
+          <div className="gt-trips-radio-list flex flex-col gap-2.5">
             {userTrips.map((trip) => (
               <label
                 key={trip.id}
@@ -55,39 +55,39 @@ export const AddToTripModal = ({
                     onChange={() => setSelectedTripId(trip.id)}
                     className="gt-radio-input"
                   />
-                  <div className="flex-col">
-                    <strong className="text-sm">{trip.title || trip.name}</strong>
-                    <span className="text-xs text-muted flex items-center gap-2">
+                  <div className="flex flex-col gap-0.5">
+                    <strong className="text-sm text-navy-900 font-bold">{trip.title || trip.name}</strong>
+                    <div className="text-xs text-muted flex items-center gap-2 flex-wrap">
                       <span className="flex items-center gap-1">
-                        <MapPin className="w-3 h-3" />
-                        <span>{trip.primaryLocation || trip.destinations?.[0] || 'Custom'}</span>
+                        <MapPin className="w-3 h-3 text-amber-600 flex-shrink-0" />
+                        <span>{trip.primaryLocation || trip.destinations?.[0] || 'Custom Location'}</span>
                       </span>
-                      •
+                      <span>•</span>
                       <span className="flex items-center gap-1">
-                        <Calendar className="w-3 h-3" />
-                        <span>{trip.dateRange || trip.startDate || 'Dates set'}</span>
+                        <Calendar className="w-3 h-3 text-amber-600 flex-shrink-0" />
+                        <span>{trip.dateRange || trip.startDate || 'Flexible Dates'}</span>
                       </span>
-                    </span>
+                    </div>
                   </div>
                 </div>
 
                 {selectedTripId === trip.id && (
-                  <Check className="w-4 h-4 text-amber-600" />
+                  <Check className="w-4 h-4 text-amber-600 flex-shrink-0" />
                 )}
               </label>
             ))}
           </div>
         ) : (
-          <div className="gt-no-trips-box text-center py-4">
-            <p className="text-sm text-muted">No active trips available.</p>
-            <p className="text-xs text-muted" style={{ marginTop: 2 }}>
+          <div className="gt-no-trips-box text-center py-6">
+            <p className="text-sm font-semibold text-navy-900">No active trips available.</p>
+            <p className="text-xs text-muted mt-1">
               Create a travel itinerary first to add this destination/activity.
             </p>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="gt-add-to-trip-footer flex justify-between items-center" style={{ marginTop: 8 }}>
+        <div className="gt-add-to-trip-footer flex justify-between items-center pt-3 border-t border-border mt-2">
           <Button variant="outline" size="sm" icon={Plus} onClick={onCreateNewTrip}>
             Create New Trip
           </Button>
