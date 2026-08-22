@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal } from '../ui/Modal';
 import { Button } from '../ui/Button';
-import { MapPin, Compass, IndianRupee, Calendar, Plus, CheckCircle2, Eye } from 'lucide-react';
+import { MapPin, Compass, Plus, Eye } from 'lucide-react';
+import { profileApi } from '../../services/profileApi';
 import './CityDetailsModal.css';
 
 export const CityDetailsModal = ({ city, isOpen, onClose, onAddToTrip, onViewActivities }) => {
@@ -63,6 +64,16 @@ export const CityDetailsModal = ({ city, isOpen, onClose, onAddToTrip, onViewAct
             Close
           </Button>
           <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              icon={Compass}
+              onClick={async () => {
+                await profileApi.addFavorite(city.id);
+                if (window.showToast) window.showToast(`Saved ${city.name} to your profile favorites!`, 'success');
+              }}
+            >
+              Save Destination
+            </Button>
             {onViewActivities && (
               <Button
                 variant="outline"

@@ -79,10 +79,25 @@ async function getProfileStats(userId) {
   };
 }
 
+async function getSavedDestinations(userId) {
+  return userRepository.getSavedDestinations(userId);
+}
+
+async function addSavedDestination(userId, cityId) {
+  return userRepository.addSavedDestination(userId, cityId);
+}
+
+async function removeSavedDestination(userId, cityId) {
+  return userRepository.removeSavedDestination(userId, cityId);
+}
+
 module.exports = {
   getProfile,
   updateProfile,
   updateAvatar,
   getProfileTrips,
-  getProfileStats
+  getProfileStats,
+  getSavedDestinations,
+  addSavedDestination,
+  removeSavedDestination
 };

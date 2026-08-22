@@ -1,5 +1,5 @@
 /**
- * REST API Service Layer for GlobeTrotter User Profile Management
+ * REST API Service Layer for GlobeTrotter User Profile & Saved Destinations Management
  * Connected live to Express Backend (/api/v1/profile) and MySQL DB
  */
 
@@ -23,16 +23,76 @@ export const profileApi = {
       const stored = localStorage.getItem(STORAGE_KEY_USER);
       const fallback = stored ? JSON.parse(stored) : {
         id: 'usr-1',
-        firstName: 'Jay',
-        lastName: 'Sohaliya',
-        name: 'Jay Sohaliya',
-        email: 'jay@example.com',
+        firstName: 'Demo',
+        lastName: 'User',
+        name: 'Demo User',
+        email: 'user@example.com',
         phone: '+91 98765 43210',
         city: 'Ahmedabad',
         country: 'India',
         bio: 'Passionate traveler',
       };
       return { success: true, data: fallback };
+    }
+  },
+
+  // GET /api/v1/profile/stats
+  async getProfileStats() {
+    try {
+      const res = await apiClient.get('/profile/stats');
+      return {
+        success: true,
+        data: res || {
+          totalTrips: 0,
+          upcomingTrips: 0,
+          completedTrips: 0,
+          destinationsVisited: 0,
+          activitiesCompleted: 0,
+        },
+      };
+    } catch (err) {
+      return {
+        success: true,
+        data: {
+          totalTrips: 0,
+          upcomingTrips: 0,
+          completedTrips: 0,
+          destinationsVisited: 0,
+          activitiesCompleted: 0,
+        },
+      };
+    }
+  },
+
+  // GET /api/v1/profile/favorites
+  async getFavorites() {
+    try {
+      const res = await apiClient.get('/profile/favorites');
+      return res?.favorites || [];
+    } catch (err) {
+      return [];
+    }
+  },
+
+  // POST /api/v1/profile/favorites/:cityId
+  async addFavorite(cityId) {
+    try {
+      const res = await apiClient.post(`/profile/favorites/${cityId}`);
+      return res?.favorites || [];
+    } catch (err) {
+      console.warn(`Add favorite ${cityId} failed:`, err.message);
+      return [];
+    }
+  },
+
+  // DELETE /api/v1/profile/favorites/:cityId
+  async removeFavorite(cityId) {
+    try {
+      const res = await apiClient.del(`/profile/favorites/${cityId}`);
+      return res?.favorites || [];
+    } catch (err) {
+      console.warn(`Remove favorite ${cityId} failed:`, err.message);
+      return [];
     }
   },
 

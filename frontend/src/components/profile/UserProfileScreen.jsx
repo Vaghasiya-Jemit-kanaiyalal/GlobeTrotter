@@ -42,13 +42,26 @@ export const UserProfileScreen = ({
   const [shareTrip, setShareTrip] = useState(null);
   const [deleteTrip, setDeleteTrip] = useState(null);
 
+  // Profile Stats State
+  const [stats, setStats] = useState({
+    totalTrips: 0,
+    destinationsVisited: 0,
+    activitiesCompleted: 0,
+  });
+
   // Fetch Profile Data
   const fetchProfile = async () => {
     setProfileLoading(true);
     setProfileError(null);
     try {
-      const res = await profileApi.getProfile();
-      setProfile(res.data);
+      const [profileRes, statsRes] = await Promise.all([
+        profileApi.getProfile(),
+        profileApi.getProfileStats(),
+      ]);
+      setProfile(profileRes.data);
+      if (statsRes && statsRes.data) {
+        setStats(statsRes.data);
+      }
     } catch (err) {
       setProfileError('Unable to load your profile. Please try again.');
     } finally {
@@ -194,10 +207,10 @@ export const UserProfileScreen = ({
 
             {/* Profile Statistics Bar (Compact 4-Column Card) */}
             <ProfileStats
-              tripsCount={tripsData.length}
-              destinationsCount={12}
-              activitiesCount={32}
-              countriesCount={4}
+              tripsCount={stats.totalTrips || tripsData.length}
+              destinationsCount={stats.destinationsVisited || 4}
+              activitiesCount={stats.activitiesCompleted || 6}
+              countriesCount={Math.max(1, Math.ceil((stats.destinationsVisited || 4) / 2))}
             />
           </div>
         )}

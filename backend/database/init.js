@@ -32,7 +32,7 @@ async function initDatabase() {
     await connection.query(seedSql);
     console.log('Seed data inserted.');
 
-    // Hash passwords dynamically
+    // Hash passwords dynamically for all demo accounts
     const dbName = process.env.DB_NAME || 'globetrotter_db';
     await connection.changeUser({ database: dbName });
 
@@ -41,6 +41,8 @@ async function initDatabase() {
 
     await connection.query('UPDATE users SET password_hash = ? WHERE email = ?', [userHash, 'user@example.com']);
     await connection.query('UPDATE users SET password_hash = ? WHERE email = ?', [adminHash, 'admin@globetrotter.com']);
+    await connection.query('UPDATE users SET password_hash = ? WHERE email = ?', [userHash, 'jay@example.com']);
+    await connection.query('UPDATE users SET password_hash = ? WHERE email = ?', [userHash, 'alex@example.com']);
 
     console.log('Bcrypt password hashes updated successfully.');
     console.log('Database setup complete!');

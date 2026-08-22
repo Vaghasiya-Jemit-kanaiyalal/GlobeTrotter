@@ -52,10 +52,42 @@ async function getProfileStats(req, res, next) {
   }
 }
 
+async function getSavedDestinations(req, res, next) {
+  try {
+    const favorites = await profileService.getSavedDestinations(req.user.id);
+    return sendSuccess(res, 'Saved destinations retrieved', { favorites }, 200);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function addSavedDestination(req, res, next) {
+  try {
+    const cityId = parseInt(req.params.cityId, 10);
+    const favorites = await profileService.addSavedDestination(req.user.id, cityId);
+    return sendSuccess(res, 'Destination saved to favorites', { favorites }, 200);
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function removeSavedDestination(req, res, next) {
+  try {
+    const cityId = parseInt(req.params.cityId, 10);
+    const favorites = await profileService.removeSavedDestination(req.user.id, cityId);
+    return sendSuccess(res, 'Destination removed from favorites', { favorites }, 200);
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
   getProfile,
   updateProfile,
   uploadAvatar,
   getProfileTrips,
-  getProfileStats
+  getProfileStats,
+  getSavedDestinations,
+  addSavedDestination,
+  removeSavedDestination
 };

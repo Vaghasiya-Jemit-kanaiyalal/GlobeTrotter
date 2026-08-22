@@ -9,7 +9,8 @@ const { updateProfileSchema } = require('../validators/profile.validator');
 router.get('/profile', authenticate, profileController.getProfile);
 router.put('/profile', authenticate, validate(updateProfileSchema), profileController.updateProfile);
 router.post('/profile/avatar', authenticate, upload.single('avatar'), profileController.uploadAvatar);
-router.get('/profile/trips', authenticate, profileController.getProfileTrips);
-router.get('/profile/stats', authenticate, profileController.getProfileStats);
+router.get('/profile/favorites', authenticate, profileController.getSavedDestinations);
+router.post('/profile/favorites/:cityId', authenticate, profileController.addSavedDestination);
+router.delete('/profile/favorites/:cityId', authenticate, profileController.removeSavedDestination);
 
 module.exports = router;
