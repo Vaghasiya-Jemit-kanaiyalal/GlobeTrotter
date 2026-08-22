@@ -1,0 +1,143 @@
+.gt-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  width: 100%;
+}
+
+.gt-field__label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-navy-800);
+}
+
+.gt-field__required {
+  color: var(--color-error);
+}
+
+.gt-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.gt-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-base);
+  color: var(--color-navy-800);
+  background-color: var(--color-bg-input);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+.gt-input::placeholder {
+  color: var(--color-navy-600);
+  opacity: 0.7;
+}
+
+.gt-input:hover:not(:disabled) {
+  border-color: var(--color-border-hover);
+  background-color: var(--color-bg-input-hover);
+}
+
+.gt-input:focus {
+  outline: none;
+  border-color: var(--color-border-focus);
+  box-shadow: var(--shadow-focus);
+  background-color: var(--color-bg-input);
+}
+
+.gt-input:disabled {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-navy-600);
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+/* Left Icon */
+.gt-input--has-left-icon {
+  padding-left: 2.75rem;
+}
+
+.gt-input__icon-left {
+  position: absolute;
+  left: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-600);
+  pointer-events: none;
+}
+
+.gt-input__icon-left .gt-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Right Icon & Password Toggle */
+.gt-input--has-right-icon {
+  padding-right: 2.75rem;
+}
+
+.gt-input__icon-right {
+  position: absolute;
+  right: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gt-input__icon-right--error {
+  color: var(--color-error);
+}
+
+.gt-input__icon-right--success {
+  color: var(--color-success);
+}
+
+.gt-input__toggle-password {
+  position: absolute;
+  right: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  border: none;
+  background: transparent;
+  color: var(--color-navy-600);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition-fast);
+}
+
+.gt-input__toggle-password:hover {
+  color: var(--color-navy-900);
+}
+
+/* Error States */
+.gt-field--error .gt-input {
+  border-color: var(--color-error);
+  background-color: var(--color-error-bg);
+}
+
+.gt-field--error .gt-input:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.gt-field__error-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-error);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.gt-field__helper-text {
+  font-size: var(--font-size-xs);
+  color: var(--color-navy-600);
+  margin-top: 2px;
+}

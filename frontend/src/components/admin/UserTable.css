@@ -1,0 +1,85 @@
+/* User Table Styles */
+.gt-user-table-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.gt-user-table {
+  border-spacing: 0;
+}
+
+.gt-user-table th {
+  background-color: var(--color-bg-app);
+  padding: 0.75rem 1rem;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-navy-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gt-user-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.gt-user-avatar-small {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.gt-user-avatar-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gt-user-status-pill {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.gt-user-status-pill--active {
+  background-color: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.gt-user-status-pill--disabled {
+  background-color: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
+}
+
+.gt-user-act-btn {
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-md);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-700);
+  cursor: pointer;
+}
+
+.gt-user-act-btn:hover {
+  background-color: var(--color-navy-900);
+  color: #FFFFFF;
+}
+
+.gt-user-act-btn--danger:hover {
+  background-color: var(--color-error);
+  color: #FFFFFF;
+}

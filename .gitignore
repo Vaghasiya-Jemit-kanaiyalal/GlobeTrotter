@@ -1,0 +1,19 @@
+# Node dependencies
+node_modules/
+
+# Environment configuration
+.env
+.env.local
+
+# Build output
+dist/
+build/
+
+# Uploaded files
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# Logs and OS files
+*.log
+.DS_Store
+Thumbs.db

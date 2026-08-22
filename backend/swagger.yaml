@@ -1,0 +1,329 @@
+openapi: 3.0.3
+info:
+  title: GlobeTrotter Backend REST API
+  description: Official production-ready API specification for GlobeTrotter Travel Planning Platform (Screens 4, 5, 6, 7, 9, 10, 11 & 12).
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000/api/v1
+    description: Local Development Server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    StandardResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data:
+          type: object
+
+    ErrorResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+
+paths:
+  /health:
+    get:
+      summary: API Health Check
+      responses:
+        '200':
+          description: API running cleanly and DB connected.
+
+  /auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [firstName, lastName, email, password]
+              properties:
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: User registered successfully.
+
+  /auth/login:
+    post:
+      summary: Authenticate user & return JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Login successful.
+
+  /profile:
+    get:
+      summary: Get User Profile (Screen 7)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile details.
+
+  /trips:
+    get:
+      summary: Get User Trips Listing (Screen 6)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: status
+          schema:
+            type: string
+            enum: [ongoing, upcoming, completed]
+        - in: query
+          name: search
+          schema:
+            type: string
+      responses:
+        '200':
+          description: User trips with dynamic status.
+
+    post:
+      summary: Create New Trip with optional initial city stop (Screen 4)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name, startDate, endDate]
+              properties:
+                name:
+                  type: string
+                startDate:
+                  type: string
+                endDate:
+                  type: string
+                cityId:
+                  type: integer
+                budgetLimit:
+                  type: number
+      responses:
+        '201':
+          description: Trip created successfully.
+
+  /trips/{tripId}/itinerary:
+    get:
+      summary: Get Complete Itinerary with Day Grouping & Expenses (Screen 9)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Complete itinerary tree.
+
+  /trips/{tripId}/budget:
+    get:
+      summary: Get Trip Budget Summary (Screen 9)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Budget calculations and remaining balance.
+
+    post:
+      summary: Create / Update Trip Budget (Screen 9)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [totalBudget]
+              properties:
+                totalBudget:
+                  type: number
+                currency:
+                  type: string
+      responses:
+        '200':
+          description: Budget updated.
+
+  /trips/{tripId}/expenses:
+    get:
+      summary: List Trip Expenses (Screen 9)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Expenses list.
+
+    post:
+      summary: Add Expense to Trip (Screen 9)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: tripId
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [title, category, amount, expenseDate]
+              properties:
+                title:
+                  type: string
+                category:
+                  type: string
+                  enum: [Transport, Accommodation, Food, Activity, Shopping, Other]
+                amount:
+                  type: number
+                expenseDate:
+                  type: string
+      responses:
+        '201':
+          description: Expense recorded.
+
+  /community/posts:
+    get:
+      summary: Fetch Community Feed (Screen 10)
+      parameters:
+        - in: query
+          name: search
+          schema:
+            type: string
+        - in: query
+          name: postType
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Public community feed.
+
+    post:
+      summary: Share Trip / Experience to Community (Screen 10)
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [tripId, title, description]
+              properties:
+                tripId:
+                  type: integer
+                title:
+                  type: string
+                description:
+                  type: string
+                postType:
+                  type: string
+                visibility:
+                  type: string
+                  enum: [public, private]
+      responses:
+        '201':
+          description: Community post created.
+
+  /calendar:
+    get:
+      summary: Get Calendar Events (Screen 11)
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: month
+          schema:
+            type: integer
+        - in: query
+          name: year
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Calendar events (trips and activities).
+
+  /admin/dashboard:
+    get:
+      summary: Get Admin Dashboard Summary (Screen 12 - Admin Only)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Summary platform statistics.
+        '403':
+          description: Admin access required.
+
+  /admin/users:
+    get:
+      summary: Manage Users List (Screen 12 - Admin Only)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User account listings.
+        '403':
+          description: Admin access required.

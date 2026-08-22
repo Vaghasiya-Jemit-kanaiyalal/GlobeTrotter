@@ -1,0 +1,43 @@
+/* Day Budget Summary Styles */
+.gt-day-budget-card {
+  background-color: var(--color-bg-subtle);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.85rem 1rem;
+  margin-top: 1rem;
+  margin-left: 90px; /* Align with timeline card offset */
+}
+
+.gt-day-budget-title {
+  color: var(--color-navy-800);
+}
+
+.gt-day-budget-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.gt-day-budget-row {
+  gap: 0.5rem;
+}
+
+.gt-day-budget-item-name {
+  max-width: 70%;
+}
+
+.gt-day-budget-divider {
+  height: 1px;
+  background-color: var(--color-border);
+  margin: 0.35rem 0;
+}
+
+.gt-day-budget-row--total {
+  padding-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+  .gt-day-budget-card {
+    margin-left: 0;
+  }
+}

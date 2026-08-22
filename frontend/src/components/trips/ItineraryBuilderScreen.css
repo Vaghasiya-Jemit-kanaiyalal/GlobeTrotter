@@ -1,0 +1,109 @@
+.gt-itinerary-screen {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  padding-bottom: 60px;
+}
+
+.gt-itinerary-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.gt-itinerary-top-bar {
+  padding-bottom: var(--space-2);
+}
+
+.gt-itinerary-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-success);
+  background-color: var(--color-success-bg);
+  border: 1px solid #BBF7D0;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.gt-itinerary-hero-card {
+  background-color: #FFFFFF;
+}
+
+.gt-itinerary-tag {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-amber-600);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.gt-itinerary-title {
+  font-size: 2.25rem;
+  color: var(--color-navy-900);
+}
+
+.gt-itinerary-meta {
+  color: var(--color-navy-700);
+  margin-top: var(--space-1);
+}
+
+.gt-itinerary-meta .gt-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--color-amber-600);
+}
+
+.gt-itinerary-section-title {
+  font-size: 1.5rem;
+  color: var(--color-navy-900);
+  margin-bottom: var(--space-4);
+}
+
+.gt-timeline-day {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gt-day-pill {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: #FFFFFF;
+  background-color: var(--color-navy-900);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.gt-timeline-day-header h3 {
+  font-size: var(--font-size-lg);
+  color: var(--color-navy-900);
+}
+
+.gt-event-card {
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.gt-event-img {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+}
+
+.gt-event-cost {
+  color: var(--color-navy-900);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+}

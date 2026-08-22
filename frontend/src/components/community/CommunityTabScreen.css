@@ -1,0 +1,49 @@
+/* Community Tab Screen Page Styles */
+.gt-community-tab-root {
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  color: var(--color-navy-800);
+}
+
+.gt-community-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 3rem 1.25rem;
+}
+
+/* Two-column responsive desktop layout */
+.gt-community-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.gt-community-feed-column {
+  min-width: 0;
+}
+
+.gt-community-sidebar-column {
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .gt-community-layout-grid {
+    grid-template-columns: 1fr 300px;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 840px) {
+  .gt-community-layout-grid {
+    grid-template-columns: 1fr; /* Stack vertically on mobile and small tablets */
+  }
+
+  .gt-community-sidebar-column {
+    order: 2;
+  }
+
+  .gt-community-feed-column {
+    order: 1;
+  }
+}

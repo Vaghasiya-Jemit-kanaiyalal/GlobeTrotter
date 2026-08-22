@@ -1,0 +1,115 @@
+.gt-section {
+  width: 100%;
+  padding: var(--space-8) var(--space-6);
+}
+
+.gt-section__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gt-section__header {
+  margin-bottom: var(--space-6);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.gt-section__eyebrow {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-amber-600);
+  margin-bottom: var(--space-1);
+}
+
+.gt-section__eyebrow .gt-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.gt-section__title {
+  font-size: 2rem;
+  color: var(--color-navy-900);
+}
+
+.gt-section__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-navy-600);
+  max-width: 600px;
+  margin-top: var(--space-1);
+}
+
+.gt-section__count-badge {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-navy-600);
+}
+
+.gt-dest-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-5);
+}
+
+@media (max-width: 1024px) {
+  .gt-dest-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .gt-dest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gt-section {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .gt-section__title {
+    font-size: 1.65rem;
+  }
+}
+
+/* Empty State */
+.gt-dest-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-10) var(--space-6);
+  background-color: #FFFFFF;
+  border-radius: var(--radius-xl);
+  border: 1px dashed var(--color-border);
+  gap: var(--space-3);
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.gt-dest-empty__icon-box {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-600);
+}
+
+.gt-dest-empty__icon {
+  width: 28px;
+  height: 28px;
+}
+
+.gt-dest-empty__title {
+  font-size: var(--font-size-lg);
+  color: var(--color-navy-900);
+}
+
+.gt-dest-empty__text {
+  font-size: var(--font-size-sm);
+  color: var(--color-navy-600);
+  line-height: 1.5;
+}

@@ -1,0 +1,5 @@
+/* Share Experience Modal Styles */
+.gt-share-experience-form {
+  display: flex;
+  flex-direction: column;
+}

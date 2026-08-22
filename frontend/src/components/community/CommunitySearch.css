@@ -1,0 +1,108 @@
+/* Community Search Controls Styles */
+.gt-comm-controls-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+.gt-comm-controls-grid {
+  display: grid;
+  grid-template-columns: 2fr repeat(4, 1fr);
+  gap: 0.85rem;
+  align-items: end;
+}
+
+.gt-comm-control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.gt-comm-control-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-navy-700);
+}
+
+.gt-comm-input,
+.gt-comm-select {
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  font-size: var(--font-size-sm);
+  background-color: var(--color-bg-app);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-navy-900);
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+.gt-comm-input--search {
+  padding-left: 2.25rem;
+  padding-right: 2rem;
+}
+
+.gt-comm-input:focus,
+.gt-comm-select:focus {
+  border-color: var(--color-amber-600);
+  background-color: #FFFFFF;
+  box-shadow: var(--shadow-focus);
+}
+
+.gt-comm-icon-left {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0.9rem;
+  height: 0.9rem;
+  color: var(--color-navy-600);
+  pointer-events: none;
+}
+
+.gt-comm-clear-btn {
+  position: absolute;
+  right: 0.6rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: var(--color-navy-600);
+  cursor: pointer;
+  padding: 2px;
+}
+
+.gt-comm-controls-footer {
+  border-top: 1px dashed var(--color-border);
+}
+
+.gt-comm-reset-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-amber-600);
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.gt-comm-reset-btn:hover {
+  color: var(--color-amber-700);
+}
+
+@media (max-width: 1024px) {
+  .gt-comm-controls-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gt-comm-control-search {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .gt-comm-controls-grid {
+    grid-template-columns: 1fr;
+  }
+}

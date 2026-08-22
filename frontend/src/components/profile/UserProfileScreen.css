@@ -1,0 +1,78 @@
+.gt-user-profile-screen {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  padding-bottom: 60px;
+}
+
+.gt-profile-container {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.gt-profile-main-card {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 1.25rem 1.5rem;
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.gt-profile-top-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.gt-profile-details-wrapper {
+  flex: 1;
+  width: 100%;
+}
+
+.gt-profile-error-card {
+  background-color: #FFFFFF;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.gt-profile-trip-section {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.gt-account-management-box {
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-5);
+  margin-top: var(--space-3);
+}
+
+@media (max-width: 768px) {
+  .gt-profile-container {
+    padding: 1rem;
+    gap: 1.25rem;
+  }
+
+  .gt-profile-main-card {
+    padding: 1rem;
+  }
+
+  .gt-profile-top-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}

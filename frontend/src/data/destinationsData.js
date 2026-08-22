@@ -1,0 +1,78 @@
+/**
+ * Curated Regional Destinations for GlobeTrotter Travel Planning
+ */
+
+export const REGIONS = ['All', 'Asia', 'Europe', 'North America'];
+
+export const TRAVEL_STYLES = ['All', 'Cultural & Historic', 'Nature & Adventure', 'Coastal & Islands', 'City & Architecture'];
+
+export const DESTINATIONS_DATA = [
+  {
+    id: 'dest-1',
+    city: 'Goa',
+    country: 'India',
+    region: 'Asia',
+    style: 'Coastal & Islands',
+    rating: 4.8,
+    reviewCount: '1.2k',
+    costTier: '₹₹',
+    costDescription: 'Moderate Coastal',
+    image: 'https://images.unsplash.com/photo-1512343879784-a960bf40e7f2?auto=format&fit=crop&w=800&q=80',
+    summary: 'Sun-kissed beaches, vibrant nightlife, Portuguese heritage, and seafood havens.',
+    highlights: ['Fort Aguada', 'Baga Beach', 'Fontainhas Latin Quarter', 'Grand Island Scuba'],
+    bestSeason: 'November – February',
+    avgDailyBudget: '₹3,500 - ₹7,000 / day',
+    featured: true,
+  },
+  {
+    id: 'dest-2',
+    city: 'Paris',
+    country: 'France',
+    region: 'Europe',
+    style: 'City & Architecture',
+    rating: 4.9,
+    reviewCount: '2.5k',
+    costTier: '₹₹₹₹',
+    costDescription: 'Luxury European Capital',
+    image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=800&q=80',
+    summary: 'The City of Light, home to the Eiffel Tower, world-class art museums, fine dining, and fashion.',
+    highlights: ['Eiffel Tower Summit', 'Louvre Museum', 'Seine River Cruise', 'Montmartre'],
+    bestSeason: 'May – September',
+    avgDailyBudget: '₹18,000 - ₹35,000 / day',
+    featured: true,
+  },
+  {
+    id: 'dest-3',
+    city: 'Jaipur',
+    country: 'India',
+    region: 'Asia',
+    style: 'Cultural & Historic',
+    rating: 4.9,
+    reviewCount: '1.4k',
+    costTier: '₹₹',
+    costDescription: 'Royal Heritage',
+    image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=800&q=80',
+    summary: 'The Pink City famous for royal palaces, ancient forts, rich handicrafts, and vibrant bazaars.',
+    highlights: ['Amer Fort', 'Hawa Mahal', 'City Palace', 'Johari Bazaar'],
+    bestSeason: 'October – March',
+    avgDailyBudget: '₹4,000 - ₹9,000 / day',
+    featured: true,
+  },
+  {
+    id: 'dest-4',
+    city: 'Kyoto',
+    country: 'Japan',
+    region: 'Asia',
+    style: 'Cultural & Historic',
+    rating: 4.9,
+    reviewCount: '1.8k',
+    costTier: '₹₹₹',
+    costDescription: 'Cultural Capital',
+    image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=800&q=80',
+    summary: 'Centuries of serene Buddhist temples, bamboo groves, tea ceremonies, and classical imperial gardens.',
+    highlights: ['Fushimi Inari Shrine', 'Arashiyama Bamboo Grove', 'Gion District', 'Kinkaku-ji Temple'],
+    bestSeason: 'March – May & October – November',
+    avgDailyBudget: '₹12,000 - ₹22,000 / day',
+    featured: false,
+  },
+];

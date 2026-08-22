@@ -1,0 +1,9 @@
+/* Activity Category Chart Styles */
+.gt-stacked-bar-seg {
+  transition: opacity var(--transition-fast);
+  cursor: pointer;
+}
+
+.gt-stacked-bar-seg:hover {
+  opacity: 0.85;
+}

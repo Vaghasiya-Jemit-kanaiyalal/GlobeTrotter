@@ -1,0 +1,99 @@
+.gt-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  line-height: 1.25;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast), opacity var(--transition-fast);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.gt-btn--full {
+  width: 100%;
+}
+
+/* Sizes */
+.gt-btn--sm {
+  padding: 0.5rem 0.875rem;
+  font-size: var(--font-size-sm);
+}
+
+.gt-btn--md {
+  padding: 0.75rem 1.25rem;
+  font-size: var(--font-size-base);
+}
+
+.gt-btn--lg {
+  padding: 0.875rem 1.5rem;
+  font-size: var(--font-size-lg);
+}
+
+/* Variants */
+.gt-btn--primary {
+  background-color: var(--color-amber-600);
+  color: #FFFFFF;
+  border-color: var(--color-amber-600);
+  box-shadow: var(--shadow-sm);
+}
+
+.gt-btn--primary:hover:not(:disabled) {
+  background-color: var(--color-amber-700);
+  border-color: var(--color-amber-700);
+}
+
+.gt-btn--secondary {
+  background-color: var(--color-navy-900);
+  color: #FFFFFF;
+  border-color: var(--color-navy-900);
+  box-shadow: var(--shadow-sm);
+}
+
+.gt-btn--secondary:hover:not(:disabled) {
+  background-color: var(--color-navy-800);
+}
+
+.gt-btn--outline {
+  background-color: transparent;
+  color: var(--color-navy-800);
+  border-color: var(--color-border-hover);
+}
+
+.gt-btn--outline:hover:not(:disabled) {
+  background-color: var(--color-bg-subtle);
+  border-color: var(--color-navy-600);
+}
+
+.gt-btn--text {
+  background-color: transparent;
+  color: var(--color-amber-600);
+  border-color: transparent;
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
+}
+
+.gt-btn--text:hover:not(:disabled) {
+  color: var(--color-amber-700);
+  background-color: var(--color-amber-50);
+}
+
+/* Disabled & Loading States */
+.gt-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.gt-btn__spinner {
+  width: 18px;
+  height: 18px;
+}
+
+.gt-btn__icon {
+  width: 18px;
+  height: 18px;
+}

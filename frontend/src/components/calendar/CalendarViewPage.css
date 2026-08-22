@@ -1,0 +1,37 @@
+/* Calendar View Screen Page Styles */
+.gt-calendar-view-root {
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  color: var(--color-navy-800);
+}
+
+.gt-calendar-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 3rem 1.25rem;
+}
+
+.gt-calendar-page-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  color: var(--color-navy-900);
+}
+
+.gt-cal-badge-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  color: var(--color-navy-800);
+  font-weight: 500;
+}
+
+.gt-cal-badge-item--highlight {
+  background-color: #FEF3C7;
+  border-color: #FDE68A;
+  color: #92400E;
+}

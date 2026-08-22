@@ -1,0 +1,190 @@
+/* Premium GlobeTrotter Hero Banner */
+.gt-hero {
+  position: relative;
+  width: 100%;
+  padding: 5rem var(--space-6) 4.5rem;
+  background-color: var(--color-navy-900);
+  color: #FFFFFF;
+  overflow: hidden;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gt-hero__background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center right;
+  z-index: 0;
+  transform: scale(1.02);
+  transition: transform 10s ease-out;
+}
+
+.gt-hero:hover .gt-hero__background {
+  transform: scale(1.05);
+}
+
+/* Subtle dark gradient on the left for text readability while revealing cinematic photo on right */
+.gt-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 23, 42, 0.94) 0%,
+    rgba(15, 23, 42, 0.85) 38%,
+    rgba(15, 23, 42, 0.55) 70%,
+    rgba(15, 23, 42, 0.25) 100%
+  );
+}
+
+.gt-hero__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.gt-hero__content {
+  max-width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gt-hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.4rem 0.95rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(217, 119, 6, 0.2);
+  border: 1px solid rgba(217, 119, 6, 0.5);
+  color: #FBBF24;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  align-self: flex-start;
+  backdrop-filter: blur(8px);
+}
+
+.gt-hero__badge .gt-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.gt-hero__title {
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 1.12;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+}
+
+.gt-hero__title-accent {
+  color: var(--color-amber-500);
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gt-hero__description {
+  font-size: var(--font-size-lg);
+  line-height: 1.6;
+  color: #CBD5E1;
+  max-width: 560px;
+  font-weight: 400;
+}
+
+.gt-hero__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.gt-hero__primary-btn {
+  background-color: var(--color-amber-600) !important;
+  border-color: var(--color-amber-600) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 18px rgba(217, 119, 6, 0.45);
+  font-weight: 700;
+}
+
+.gt-hero__primary-btn:hover:not(:disabled) {
+  background-color: var(--color-amber-700) !important;
+  border-color: var(--color-amber-700) !important;
+}
+
+.gt-hero__secondary-btn {
+  color: #FFFFFF !important;
+  border-color: rgba(255, 255, 255, 0.4) !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(8px);
+  font-weight: 600;
+}
+
+.gt-hero__secondary-btn:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.22) !important;
+  border-color: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+.gt-hero__stats {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  flex-wrap: wrap;
+}
+
+.gt-hero__stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.gt-hero__stat-item strong {
+  font-size: var(--font-size-xl);
+  color: #FFFFFF;
+  font-weight: 800;
+}
+
+.gt-hero__stat-item span {
+  font-size: var(--font-size-xs);
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+.gt-hero__stat-divider {
+  width: 1px;
+  height: 28px;
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 768px) {
+  .gt-hero {
+    padding: 3.5rem var(--space-4) 3rem;
+  }
+
+  .gt-hero__title {
+    font-size: 2.25rem;
+  }
+
+  .gt-hero__description {
+    font-size: var(--font-size-base);
+  }
+
+  .gt-hero__stat-divider {
+    display: none;
+  }
+
+  .gt-hero__overlay {
+    background: linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.95) 0%,
+      rgba(15, 23, 42, 0.82) 100%
+    );
+  }
+}

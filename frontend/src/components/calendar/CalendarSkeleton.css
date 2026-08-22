@@ -1,0 +1,29 @@
+/* Calendar Skeleton Styles */
+.gt-cal-skeleton-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.gt-cal-skeleton-header,
+.gt-cal-skeleton-cell {
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+}
+
+.gt-cal-error-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-error-border);
+  border-radius: var(--radius-xl);
+  padding: 3rem 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.gt-cal-error-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: var(--color-error-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
