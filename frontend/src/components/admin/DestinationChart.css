@@ -1,0 +1,4 @@
+/* Destination Chart Styles */
+.gt-dest-fill {
+  transition: width 300ms ease;
+}

@@ -1,0 +1,5 @@
+/* Admin Sidebar Styles */
+.gt-admin-sidebar-sticky {
+  position: sticky;
+  top: 80px;
+}
