@@ -1,0 +1,97 @@
+.gt-login-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.gt-auth-header {
+  margin-bottom: var(--space-2);
+}
+
+.gt-user-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-1);
+}
+
+.gt-user-visual__avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-navy-700);
+  margin-bottom: var(--space-2);
+  box-shadow: var(--shadow-sm);
+}
+
+.gt-user-visual__icon {
+  width: 32px;
+  height: 32px;
+}
+
+.gt-user-visual__welcome {
+  font-size: var(--font-size-xl);
+  color: var(--color-navy-900);
+}
+
+.gt-user-visual__subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-navy-600);
+}
+
+.gt-auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gt-auth-options {
+  margin-top: var(--space-1);
+}
+
+.gt-forgot-password-btn {
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-amber-600);
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.gt-forgot-password-btn:hover {
+  color: var(--color-amber-700);
+  text-decoration: underline;
+}
+
+.gt-submit-btn {
+  margin-top: var(--space-2);
+}
+
+.gt-auth-footer {
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.gt-switch-link {
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-amber-600);
+  cursor: pointer;
+  padding: 0;
+  transition: color var(--transition-fast);
+}
+
+.gt-switch-link:hover {
+  color: var(--color-amber-700);
+  text-decoration: underline;
+}

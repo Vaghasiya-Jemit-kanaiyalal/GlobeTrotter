@@ -1,0 +1,100 @@
+.gt-trips-section {
+  background-color: #F1F5F9;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gt-trips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-6);
+}
+
+.gt-empty-state-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-navy-700);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.gt-empty-state-toggle-btn:hover {
+  border-color: var(--color-navy-700);
+  color: var(--color-navy-900);
+}
+
+.gt-empty-state-toggle-btn .gt-icon {
+  width: 14px;
+  height: 14px;
+}
+
+@media (max-width: 1024px) {
+  .gt-trips-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .gt-trips-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Empty State Container */
+.gt-trips-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 3.5rem var(--space-6);
+  background-color: #FFFFFF;
+  border-radius: var(--radius-xl);
+  border: 1px dashed var(--color-border);
+  gap: var(--space-3);
+  max-width: 580px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+}
+
+.gt-trips-empty__compass-badge {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-amber-50);
+  border: 1px solid var(--color-amber-100);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-amber-600);
+  margin-bottom: var(--space-1);
+}
+
+.gt-trips-empty__icon {
+  width: 32px;
+  height: 32px;
+}
+
+.gt-trips-empty__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-navy-900);
+}
+
+.gt-trips-empty__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-navy-600);
+  line-height: 1.5;
+  max-width: 440px;
+}
+
+.gt-trips-empty__cta {
+  margin-top: var(--space-3);
+  box-shadow: 0 4px 10px rgba(217, 119, 6, 0.25);
+}
