@@ -1,0 +1,34 @@
+.gt-card {
+  width: 100%;
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-8);
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.gt-card--max-sm {
+  max-width: 400px;
+}
+
+.gt-card--max-md {
+  max-width: 460px;
+}
+
+.gt-card--max-lg {
+  max-width: 640px;
+}
+
+.gt-card--max-xl {
+  max-width: 760px;
+}
+
+@media (max-width: 640px) {
+  .gt-card {
+    padding: var(--space-6) var(--space-5);
+    border-radius: var(--radius-lg);
+  }
+}
