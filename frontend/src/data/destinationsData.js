@@ -102,7 +102,7 @@ export const DESTINATIONS_DATA = [
     reviewCount: '890',
     costTier: '₹₹',
     costDescription: 'Value – Moderate',
-    image: 'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?auto=format&fit=crop&w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1576485290814-1c72aa4bbb8e?auto=format&fit=crop&w=800&q=80',
     summary: 'Iconic Table Mountain backdrop, world-class Cape Winelands, penguin colonies at Boulders Beach, and rugged coastlines.',
     highlights: ['Table Mountain Cableway', 'Cape Point Scenic Drive', 'Stellenbosch Wine Region', 'Boulders Beach Penguins'],
     bestSeason: 'November – March (Summer)',

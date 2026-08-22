@@ -5,11 +5,16 @@ import './ProfileDetails.css';
 
 export const ProfileDetails = ({ profile, onEditClick }) => {
   return (
-    <div className="gt-profile-details-box flex-col gap-4">
-      <div className="gt-profile-details__header flex justify-between items-center flex-wrap gap-2">
+    <div className="gt-profile-details-box">
+      {/* Header Row: Name, Member Badge & Edit Profile CTA */}
+      <div className="gt-profile-details__header">
         <div>
-          <h2 className="gt-profile-name brand-serif">{profile.name || `${profile.firstName} ${profile.lastName}`}</h2>
-          <span className="gt-profile-badge">Member since {profile.memberSince || '2024'}</span>
+          <h2 className="gt-profile-name brand-serif">
+            {profile.name || `${profile.firstName} ${profile.lastName}`}
+          </h2>
+          <span className="gt-profile-badge">
+            Member since {profile.memberSince || '2024'}
+          </span>
         </div>
 
         <Button
@@ -17,16 +22,17 @@ export const ProfileDetails = ({ profile, onEditClick }) => {
           size="sm"
           icon={Edit3}
           onClick={onEditClick}
+          className="gt-edit-profile-btn"
         >
           Edit Profile
         </Button>
       </div>
 
-      {/* Grid Information Fields */}
-      <div className="gt-profile-fields-grid grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {/* 2-Column Information Grid - Spans Full Width */}
+      <div className="gt-profile-fields-grid">
         {/* Email */}
         <div className="gt-info-field">
-          <span className="gt-info-field__label flex items-center gap-1">
+          <span className="gt-info-field__label">
             <Mail className="gt-icon" />
             <span>Email Address</span>
           </span>
@@ -35,7 +41,7 @@ export const ProfileDetails = ({ profile, onEditClick }) => {
 
         {/* Phone */}
         <div className="gt-info-field">
-          <span className="gt-info-field__label flex items-center gap-1">
+          <span className="gt-info-field__label">
             <Phone className="gt-icon" />
             <span>Phone Number</span>
           </span>
@@ -44,7 +50,7 @@ export const ProfileDetails = ({ profile, onEditClick }) => {
 
         {/* City */}
         <div className="gt-info-field">
-          <span className="gt-info-field__label flex items-center gap-1">
+          <span className="gt-info-field__label">
             <MapPin className="gt-icon" />
             <span>City</span>
           </span>
@@ -53,7 +59,7 @@ export const ProfileDetails = ({ profile, onEditClick }) => {
 
         {/* Country */}
         <div className="gt-info-field">
-          <span className="gt-info-field__label flex items-center gap-1">
+          <span className="gt-info-field__label">
             <Globe className="gt-icon" />
             <span>Country</span>
           </span>
@@ -61,14 +67,14 @@ export const ProfileDetails = ({ profile, onEditClick }) => {
         </div>
       </div>
 
-      {/* Additional Info Bio */}
+      {/* Shortened & Refined Travel Bio Box - Spans Full Width */}
       {profile.additionalInfo && (
         <div className="gt-info-field gt-info-field--full">
-          <span className="gt-info-field__label flex items-center gap-1">
+          <span className="gt-info-field__label">
             <Info className="gt-icon" />
-            <span>Additional Information / Travel Bio</span>
+            <span>Travel Bio & Style</span>
           </span>
-          <p className="gt-info-field__bio text-sm">{profile.additionalInfo}</p>
+          <p className="gt-info-field__bio">{profile.additionalInfo}</p>
         </div>
       )}
     </div>
