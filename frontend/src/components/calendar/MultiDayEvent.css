@@ -1,0 +1,36 @@
+/* Multi Day Event Bar Styles */
+.gt-multiday-bar {
+  background-color: var(--color-amber-600);
+  color: #FFFFFF;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 3px;
+  transition: all var(--transition-fast);
+}
+
+.gt-multiday-bar:hover {
+  background-color: var(--color-amber-700);
+  transform: scaleY(1.05);
+}
+
+.gt-multiday-bar--start {
+  border-top-left-radius: var(--radius-sm);
+  border-bottom-left-radius: var(--radius-sm);
+  margin-left: 2px;
+}
+
+.gt-multiday-bar--end {
+  border-top-right-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+  margin-right: 2px;
+}
+
+.gt-multiday-title {
+  letter-spacing: 0.04em;
+  font-family: var(--font-sans);
+}

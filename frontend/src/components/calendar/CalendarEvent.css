@@ -1,0 +1,55 @@
+/* Calendar Event Pill Styles */
+.gt-cal-event-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.725rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-bottom: 3px;
+  line-height: 1.2;
+}
+
+.gt-cal-event-pill:hover {
+  transform: translateY(-1px);
+  filter: brightness(0.95);
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.1);
+}
+
+.gt-cal-event-pill--trip {
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.gt-cal-event-pill--activity {
+  background-color: #CCFBF1;
+  color: #0F766E;
+  border: 1px solid #99F6E4;
+}
+
+.gt-cal-event-pill--travel {
+  background-color: #E0F2FE;
+  color: #0369A1;
+  border: 1px solid #BAE6FD;
+}
+
+.gt-cal-event-pill--stay {
+  background-color: #F1F5F9;
+  color: #334155;
+  border: 1px solid #E2E8F0;
+}
+
+.gt-event-title-text {
+  font-weight: 700;
+  max-width: 100%;
+}
+
+.gt-event-time-badge {
+  font-size: 0.65rem;
+  opacity: 0.85;
+  font-weight: 500;
+}

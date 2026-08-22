@@ -1,0 +1,76 @@
+/* Itinerary View Screen Page Styles */
+.gt-itinerary-view-root {
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  color: var(--color-navy-800);
+}
+
+.gt-itinerary-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.25rem 1.25rem 3rem 1.25rem;
+}
+
+.gt-demo-state-bar {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.gt-state-toggle-btn {
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-sm);
+  color: var(--color-navy-700);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.gt-state-toggle-btn:hover {
+  background-color: #E2E8F0;
+}
+
+.gt-state-toggle-btn--active {
+  background-color: var(--color-error-bg);
+  border-color: var(--color-error-border);
+  color: var(--color-error);
+  font-weight: 700;
+}
+
+/* Two-column responsive desktop layout */
+.gt-itinerary-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.gt-itinerary-timeline-column {
+  min-width: 0; /* Prevent flex/grid item expansion overflow */
+}
+
+.gt-itinerary-budget-column {
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .gt-itinerary-layout-grid {
+    grid-template-columns: 1fr 320px;
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 840px) {
+  .gt-itinerary-layout-grid {
+    grid-template-columns: 1fr; /* Stack vertically on mobile and small tablets */
+  }
+
+  .gt-itinerary-budget-column {
+    order: 2;
+  }
+
+  .gt-itinerary-timeline-column {
+    order: 1;
+  }
+}

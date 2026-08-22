@@ -1,0 +1,80 @@
+/* Budget Status Component Styles */
+.gt-budget-status-card {
+  background: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.gt-budget-status-card--over {
+  border-color: #FCA5A5;
+  background-color: #FEF2F2;
+}
+
+.gt-status-pill {
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 600;
+}
+
+.gt-status-pill--success {
+  background-color: #F0FDF4;
+  color: #166534;
+  border: 1px solid #BBF7D0;
+}
+
+.gt-status-pill--danger {
+  background-color: #FEF2F2;
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
+}
+
+.gt-status-num-item {
+  background-color: var(--color-bg-app);
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+}
+
+.gt-num-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-navy-600);
+  font-weight: 600;
+}
+
+.gt-num-val {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-navy-900);
+  margin-top: 0.15rem;
+}
+
+.gt-budget-bar-track {
+  width: 100%;
+  height: 8px;
+  background-color: var(--color-border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.gt-budget-bar-fill {
+  height: 100%;
+  background-color: var(--color-amber-600);
+  border-radius: var(--radius-full);
+  transition: width 300ms ease;
+}
+
+.gt-budget-bar-fill--over {
+  background-color: var(--color-error);
+}
+
+.gt-over-budget-warning {
+  background-color: #FFF5F5;
+  border: 1px solid #FED7D7;
+  color: #9B2C2C;
+}

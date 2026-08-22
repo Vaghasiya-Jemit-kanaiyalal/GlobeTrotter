@@ -1,0 +1,92 @@
+.gt-my-trips-screen {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-bg-app);
+  padding-bottom: 80px;
+}
+
+.gt-my-trips-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.gt-my-trips-title {
+  font-size: 2.25rem;
+  color: var(--color-navy-900);
+}
+
+.gt-my-trips-subtitle {
+  font-size: var(--font-size-base);
+  color: var(--color-navy-600);
+}
+
+.gt-trips-stat-pill {
+  font-size: var(--font-size-xs);
+  color: var(--color-navy-800);
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.gt-trips-stat-pill--ongoing {
+  background-color: var(--color-amber-50);
+  border-color: var(--color-amber-100);
+  color: var(--color-amber-700);
+}
+
+.gt-trips-stat-pill--upcoming {
+  background-color: #F0F9FF;
+  border-color: #BAE6FD;
+  color: #0284C7;
+}
+
+.gt-trips-stat-pill--completed {
+  background-color: var(--color-success-bg);
+  border-color: #BBF7D0;
+  color: var(--color-success);
+}
+
+.gt-trip-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.gt-trip-section-header {
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.gt-trip-section-title {
+  font-size: var(--font-size-xl);
+  color: var(--color-navy-900);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.gt-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.gt-dot--ongoing { background-color: var(--color-amber-600); }
+.gt-dot--upcoming { background-color: #0284C7; }
+.gt-dot--completed { background-color: var(--color-success); }
+
+.gt-trips-error-box,
+.gt-trips-no-results {
+  background-color: #FFFFFF;
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  max-width: 480px;
+  margin: 0 auto;
+}
