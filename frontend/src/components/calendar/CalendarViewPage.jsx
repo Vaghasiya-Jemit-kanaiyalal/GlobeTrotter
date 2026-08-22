@@ -8,7 +8,7 @@ import { EventPopover } from './EventPopover';
 import { DayDetails } from './DayDetails';
 import { EmptyCalendar } from './EmptyCalendar';
 import { CalendarSkeleton, CalendarError } from './CalendarSkeleton';
-import { Calendar as CalendarIcon, Compass, Sparkles, RefreshCw, AlertCircle, Eye } from 'lucide-react';
+import { Calendar as CalendarIcon, Compass } from 'lucide-react';
 import './CalendarViewPage.css';
 
 export const CalendarViewPage = ({
@@ -32,7 +32,7 @@ export const CalendarViewPage = ({
   const [filterDestination, setFilterDestination] = useState('All');
   const [sortBy, setSortBy] = useState('date');
 
-  // Loading & Error States for Demo Testing
+  // Loading & Error States
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHasError] = useState(false);
 
@@ -106,12 +106,12 @@ export const CalendarViewPage = ({
     setSortBy('date');
   };
 
-  const handleSimulateReload = () => {
+  const handleReload = () => {
     setIsLoading(true);
     setHasError(false);
     setTimeout(() => {
       setIsLoading(false);
-    }, 600);
+    }, 400);
   };
 
   const isFiltered = Boolean(searchQuery || filterType !== 'All' || filterDestination !== 'All');
@@ -127,34 +127,6 @@ export const CalendarViewPage = ({
       />
 
       <main className="gt-calendar-container">
-        {/* State Simulator Controls (For testing Loading / Error states as required by Section 15) */}
-        <div className="gt-demo-state-bar flex items-center justify-between gap-2 p-2 mb-4 bg-subtle rounded-lg border text-xs">
-          <span className="font-semibold text-navy-800 flex items-center gap-1">
-            <Eye className="w-3.5 h-3.5 text-amber-600" />
-            Screen 11 Demo Controls:
-          </span>
-
-          <div className="flex gap-2">
-            <button
-              type="button"
-              className="gt-state-toggle-btn"
-              onClick={handleSimulateReload}
-            >
-              <RefreshCw className="w-3 h-3 inline mr-1" />
-              Simulate Loading
-            </button>
-
-            <button
-              type="button"
-              className={`gt-state-toggle-btn ${hasError ? 'gt-state-toggle-btn--active' : ''}`}
-              onClick={() => setHasError(!hasError)}
-            >
-              <AlertCircle className="w-3 h-3 inline mr-1" />
-              {hasError ? 'Clear Error' : 'Simulate Error State'}
-            </button>
-          </div>
-        </div>
-
         {/* 2. Calendar View Heading & Badges */}
         <div className="gt-calendar-view-heading flex items-center justify-between flex-wrap gap-2 mb-4">
           <div>
@@ -203,7 +175,7 @@ export const CalendarViewPage = ({
 
         {/* Main Content Layout */}
         {hasError ? (
-          <CalendarError onRetry={handleSimulateReload} />
+          <CalendarError onRetry={handleReload} />
         ) : isLoading ? (
           <CalendarSkeleton />
         ) : filteredEvents.length === 0 && isFiltered ? (
