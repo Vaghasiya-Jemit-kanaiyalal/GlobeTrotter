@@ -3,14 +3,15 @@ import { MainLandingPage } from './components/landing/MainLandingPage';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { ForgotPasswordModal } from './components/auth/ForgotPasswordModal';
+import { ItineraryViewPage } from './components/itinerary/ItineraryViewPage';
 import { Toast } from './components/ui/Toast';
 import { INITIAL_TRIPS_DATA } from './data/tripsData';
-import { Home, LogIn, UserPlus, Compass } from 'lucide-react';
+import { Home, LogIn, UserPlus, Compass, MapPin } from 'lucide-react';
 import './styles/global.css';
 import './App.css';
 
 export default function App() {
-  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'login' | 'register'
+  const [currentView, setCurrentView] = useState('landing'); // 'landing' | 'login' | 'register' | 'itinerary'
   const [currentUser, setCurrentUser] = useState({
     name: 'Alex Morgan',
     firstName: 'Alex',
@@ -57,14 +58,23 @@ export default function App() {
           <span className="gt-switcher-badge">Screen Navigator</span>
         </div>
 
-        <div className="gt-switcher-buttons flex gap-2">
+        <div className="gt-switcher-buttons flex gap-2 flex-wrap">
           <button
             type="button"
             className={`gt-switcher-btn ${currentView === 'landing' ? 'gt-switcher-btn--active' : ''}`}
             onClick={() => setCurrentView('landing')}
           >
             <Home className="gt-icon" />
-            <span>Screen 3: Main Landing Page</span>
+            <span>Screen 3: Landing Page</span>
+          </button>
+
+          <button
+            type="button"
+            className={`gt-switcher-btn ${currentView === 'itinerary' ? 'gt-switcher-btn--active' : ''}`}
+            onClick={() => setCurrentView('itinerary')}
+          >
+            <MapPin className="gt-icon text-amber-500" />
+            <span>Screen 9: Itinerary & Budget View</span>
           </button>
 
           <button
@@ -94,6 +104,19 @@ export default function App() {
           trips={trips}
           onAddTrip={handleAddTrip}
           onNavigate={(view) => setCurrentView(view)}
+          onLogout={handleLogout}
+          onShowToast={showToast}
+        />
+      )}
+
+      {currentView === 'itinerary' && (
+        <ItineraryViewPage
+          currentUser={currentUser}
+          onBack={() => setCurrentView('landing')}
+          onOpenCreateTrip={() => {
+            setCurrentView('landing');
+            showToast('Opening Create Trip modal on Landing Page');
+          }}
           onLogout={handleLogout}
           onShowToast={showToast}
         />
@@ -140,3 +163,4 @@ export default function App() {
     </div>
   );
 }
+

@@ -1,0 +1,45 @@
+/* Expense Display Badge Styles */
+.gt-expense-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  letter-spacing: -0.01em;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.gt-expense-badge--sm {
+  font-size: var(--font-size-xs);
+  padding: 2px 10px;
+  background-color: var(--color-bg-subtle);
+  color: var(--color-navy-800);
+}
+
+.gt-expense-badge--md {
+  font-size: var(--font-size-sm);
+  padding: 4px 12px;
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+}
+
+.gt-expense-badge--lg {
+  font-size: var(--font-size-base);
+  padding: 6px 16px;
+  background-color: #FEF3C7;
+  color: #92400E;
+  border: 1px solid #FDE68A;
+  font-weight: 700;
+}
+
+.gt-expense-badge--free {
+  background-color: #F0FDF4 !important;
+  color: #166534 !important;
+  border-color: #BBF7D0 !important;
+}
+
+.gt-expense-free {
+  font-weight: 600;
+}
