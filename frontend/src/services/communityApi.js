@@ -119,12 +119,13 @@ export const communityApi = {
     }
   },
 
-  /**
-   * POST /api/v1/community/posts/:id/like
-   */
+  // POST /api/v1/community/posts/:id/like
   async toggleLikePost(postId) {
     try {
-      await apiClient.post(`/community/posts/${postId}/like`);
+      const numId = parseInt(postId, 10);
+      if (!isNaN(numId)) {
+        await apiClient.post(`/community/posts/${numId}/like`);
+      }
     } catch (err) {
       console.warn(`Like post ${postId} backend sync warning:`, err.message);
     }
@@ -140,7 +141,8 @@ export const communityApi = {
       }
       return p;
     });
-    return postsMemoryStore.find((p) => String(p.id) === String(postId)) || { id: postId, isLiked: true, likes: 1 };
+
+    return postsMemoryStore.find((p) => String(p.id) === String(postId)) || null;
   },
 
   /**

@@ -68,12 +68,23 @@ export const CommunityTabScreen = ({
 
   // Handlers
   const handleLikePost = async (postId) => {
+    setPosts((prev) =>
+      prev.map((p) => {
+        if (String(p.id) === String(postId)) {
+          const isLiked = !p.isLiked;
+          return {
+            ...p,
+            isLiked,
+            likes: isLiked ? p.likes + 1 : Math.max(0, p.likes - 1),
+          };
+        }
+        return p;
+      })
+    );
+
     const updatedPost = await communityApi.toggleLikePost(postId);
-    if (updatedPost) {
-      setPosts((prev) => prev.map((p) => (p.id === postId ? updatedPost : p)));
-      if (onShowToast) {
-        onShowToast(updatedPost.isLiked ? 'Added to your saved community favorites' : 'Removed from favorites', 'info');
-      }
+    if (updatedPost && onShowToast) {
+      onShowToast(updatedPost.isLiked ? 'Added to your saved community favorites' : 'Removed from favorites', 'info');
     }
   };
 
