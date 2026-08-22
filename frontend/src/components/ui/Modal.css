@@ -18,6 +18,27 @@
   box-shadow: var(--shadow-lg);
   border: 1px solid var(--color-border);
   overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.gt-modal-container--sm {
+  max-width: 400px;
+}
+
+.gt-modal-container--medium,
+.gt-modal-container--md {
+  max-width: 560px;
+}
+
+.gt-modal-container--large,
+.gt-modal-container--lg {
+  max-width: 780px;
+}
+
+.gt-modal-container--xl {
+  max-width: 920px;
 }
 
 .gt-modal-header {
