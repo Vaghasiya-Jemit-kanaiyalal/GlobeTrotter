@@ -1,0 +1,81 @@
+.gt-trip-summary-card {
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6) var(--space-8);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.gt-trip-summary__eyebrow {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-amber-600);
+  margin-bottom: 2px;
+}
+
+.gt-trip-summary__eyebrow .gt-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.gt-trip-summary__title {
+  font-size: 2.25rem;
+  color: var(--color-navy-900);
+}
+
+.gt-trip-summary__bar {
+  background-color: var(--color-bg-app);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-6);
+}
+
+.gt-summary-spec {
+  display: flex;
+  flex-direction: column;
+}
+
+.gt-summary-spec__icon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-amber-600);
+}
+
+.gt-summary-spec__label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-navy-600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gt-summary-spec__value {
+  font-size: var(--font-size-base);
+  font-weight: 700;
+  color: var(--color-navy-900);
+}
+
+.gt-summary-spec__value--accent {
+  color: var(--color-amber-600);
+}
+
+.gt-summary-divider {
+  width: 1px;
+  height: 32px;
+  background-color: var(--color-border);
+}
+
+@media (max-width: 860px) {
+  .gt-trip-summary-card {
+    padding: var(--space-5);
+  }
+
+  .gt-summary-divider {
+    display: none;
+  }
+}

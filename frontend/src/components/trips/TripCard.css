@@ -1,0 +1,161 @@
+.gt-universal-trip-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.gt-universal-trip-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-hover);
+}
+
+.gt-trip-card--ongoing {
+  border-color: var(--color-amber-600);
+}
+
+.gt-trip-card__image-box {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  background-color: var(--color-bg-subtle);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.gt-trip-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 400ms ease;
+}
+
+.gt-universal-trip-card:hover .gt-trip-card__img {
+  transform: scale(1.04);
+}
+
+.gt-trip-card__status-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  backdrop-filter: blur(4px);
+}
+
+.gt-status-badge--ongoing {
+  background-color: rgba(254, 243, 199, 0.95);
+  color: var(--color-amber-700);
+  border: 1px solid var(--color-amber-100);
+}
+
+.gt-status-badge--upcoming {
+  background-color: rgba(240, 249, 255, 0.95);
+  color: #0284C7;
+  border: 1px solid #BAE6FD;
+}
+
+.gt-status-badge--completed {
+  background-color: rgba(240, 253, 244, 0.95);
+  color: var(--color-success);
+  border: 1px solid #BBF7D0;
+}
+
+.gt-trip-card__days-remaining {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  background-color: rgba(15, 23, 42, 0.82);
+  color: #FFFFFF;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.gt-trip-card__body {
+  padding: var(--space-4) var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex: 1;
+}
+
+.gt-trip-card__location {
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  color: var(--color-navy-700);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.gt-trip-card__location .gt-icon {
+  width: 13px;
+  height: 13px;
+  color: var(--color-amber-600);
+}
+
+.gt-card-menu-container {
+  position: relative;
+}
+
+.gt-card-menu-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-navy-600);
+  cursor: pointer;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.gt-card-menu-btn:hover {
+  color: var(--color-navy-900);
+  background-color: var(--color-bg-subtle);
+}
+
+.gt-trip-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-navy-900);
+  cursor: pointer;
+}
+
+.gt-trip-card__title:hover {
+  color: var(--color-amber-600);
+}
+
+.gt-trip-card__date {
+  color: var(--color-navy-600);
+  font-weight: 500;
+}
+
+.gt-trip-card__date .gt-icon {
+  width: 13px;
+  height: 13px;
+  color: var(--color-amber-600);
+}
+
+.gt-trip-card__specs-row {
+  margin-top: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-navy-700);
+}
+
+.gt-trip-card__budget {
+  color: var(--color-navy-900);
+}
+
+.gt-trip-card__actions-bar {
+  margin-top: var(--space-2);
+}

@@ -1,0 +1,127 @@
+.gt-cta-section {
+  width: 100%;
+  padding: var(--space-10) var(--space-6);
+  background-color: var(--color-bg-app);
+}
+
+.gt-cta-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gt-cta-card {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: var(--radius-xl);
+  padding: 3.5rem var(--space-8);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-6);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.gt-cta-content {
+  max-width: 620px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+  z-index: 1;
+}
+
+.gt-cta-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  background-color: rgba(217, 119, 6, 0.2);
+  border: 1px solid rgba(217, 119, 6, 0.4);
+  color: #FBBF24;
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  align-self: flex-start;
+}
+
+.gt-cta-badge .gt-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.gt-cta-title {
+  font-size: 2.25rem;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.gt-cta-text {
+  font-size: var(--font-size-base);
+  color: #CBD5E1;
+  line-height: 1.5;
+}
+
+.gt-cta-features {
+  margin-top: var(--space-2);
+}
+
+.gt-cta-feature-item {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: #E2E8F0;
+  background-color: rgba(255, 255, 255, 0.08);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+.gt-cta-feature-item .gt-icon {
+  width: 14px;
+  height: 14px;
+  color: #FBBF24;
+}
+
+.gt-cta-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.gt-cta-btn {
+  font-size: var(--font-size-lg);
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 16px rgba(217, 119, 6, 0.4);
+}
+
+.gt-cta-subtext {
+  color: #94A3B8;
+  font-weight: 500;
+}
+
+@media (max-width: 900px) {
+  .gt-cta-card {
+    flex-direction: column;
+    text-align: center;
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .gt-cta-badge {
+    align-self: center;
+  }
+
+  .gt-cta-title {
+    font-size: 1.75rem;
+  }
+
+  .gt-cta-features {
+    justify-content: center;
+  }
+}

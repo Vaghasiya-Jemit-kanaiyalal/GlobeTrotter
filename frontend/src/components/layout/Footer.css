@@ -1,0 +1,116 @@
+.gt-footer {
+  background-color: #FFFFFF;
+  border-top: 1px solid var(--color-border);
+  padding: 4rem var(--space-6) 2rem;
+  color: var(--color-navy-800);
+}
+
+.gt-footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.gt-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-8);
+  margin-bottom: var(--space-8);
+}
+
+.gt-footer__brand-col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  max-width: 380px;
+}
+
+.gt-footer__bio {
+  font-size: var(--font-size-sm);
+  color: var(--color-navy-600);
+  line-height: 1.5;
+}
+
+.gt-footer__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-navy-700);
+  background-color: var(--color-bg-subtle);
+  border: 1px solid var(--color-border);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.gt-footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.gt-footer__heading {
+  font-size: var(--font-size-sm);
+  font-weight: 700;
+  color: var(--color-navy-900);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.gt-footer__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.gt-footer__link {
+  background: transparent;
+  border: none;
+  font-size: var(--font-size-sm);
+  color: var(--color-navy-600);
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color var(--transition-fast);
+}
+
+.gt-footer__link:hover {
+  color: var(--color-amber-600);
+  text-decoration: underline;
+}
+
+.gt-footer__text-muted {
+  font-size: var(--font-size-sm);
+  color: #94A3B8;
+}
+
+.gt-footer__bottom {
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-navy-600);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+@media (max-width: 900px) {
+  .gt-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+  }
+
+  .gt-footer__brand-col {
+    grid-column: span 2;
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 540px) {
+  .gt-footer__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gt-footer__brand-col {
+    grid-column: span 1;
+  }
+}
